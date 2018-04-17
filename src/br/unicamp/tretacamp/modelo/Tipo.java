@@ -1,8 +1,5 @@
 package br.unicamp.tretacamp.modelo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public enum Tipo {
 	AGUA("Água"),
 	TERRA("Terra"),
@@ -16,4 +13,9 @@ public enum Tipo {
 	Tipo(String nome) {
 		this.nome = nome;
 	}
+
+	public String getNome() {
+		return nome;
+	}
+	
 }
