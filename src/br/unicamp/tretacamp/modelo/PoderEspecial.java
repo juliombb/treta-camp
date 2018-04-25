@@ -12,6 +12,8 @@ public class PoderEspecial extends Poder {
 	public void aplicar (Drego conjurante, Drego atingido) {
 		if (condicao.verificar(conjurante)) {
 			super.aplicar(conjurante, atingido);
+			
+			// extras
 		}
 	}
 
