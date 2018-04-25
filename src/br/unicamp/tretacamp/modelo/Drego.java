@@ -43,72 +43,95 @@ public class Drego {
 		this.vida += aumento; 
 	}
 	
-	public void adicionarEfeito(Efeito efeito) {
+	public boolean adicionarEfeito(Efeito efeito) {
 		if(!efeitos.contains(efeito)) {
-			efeitos.add(efeito);
+			return efeitos.add(efeito);
 		}
+		
+		return false;
 	}
 	
-	public void adicionarItem(Item item) {
+	public boolean adicionarItem(Item item) {
 		if(!itens.contains(item)) {
-			itens.add(item);
+			return itens.add(item);
 		}
-	}
 		
+		return false;
+	}
+	
+	public boolean adicionarPoder(Poder poder) {
+		if (!poderes.contains(poder)) {
+			return this.poderes.add(poder);
+		}
+		
+		return false;
+	}	
 	
 	public String getNome() {
 		return nome;
 	}
+	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
 	public String getVisual() {
 		return visual;
 	}
+	
 	public void setVisual(String visual) {
 		this.visual = visual;
 	}
+	
 	public double getVida() {
 		return vida;
 	}
+	
 	public void setVida(double vida) {
 		this.vida = vida;
 	}
+	
 	public double getEnergia() {
 		return energia;
 	}
+	
 	public void setEnergia(double energia) {
 		this.energia = energia;
 	}
+	
 	public Tipo getTipo() {
 		return tipo;
 	}
+	
 	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
 	}
+	
 	public Diferencial getDiferencial() {
 		return diferencial;
 	}
+	
 	public void setDiferencial(Diferencial diferencial) {
 		this.diferencial = diferencial;
 	}
+	
 	public ArrayList<Item> getItens() {
 		return itens;
 	}
-	public void setItens(ArrayList<Item> itens) {
-		this.itens = itens;
-	}
+	
 	public ArrayList<Efeito> getEfeitos() {
 		return efeitos;
 	}
-	public void setEfeitos(ArrayList<Efeito> efeitos) {
-		this.efeitos = efeitos;
-	}
+	
 	public ArrayList<Poder> getPoderes() {
 		return poderes;
 	}
-	public void setPoderes(ArrayList<Poder> poderes) {
-		this.poderes = poderes;
+
+	@Override
+	public String toString() {
+		return "Drego [nome=" + nome + ", poderes=" + poderes + ", visual=" + visual + ", vida=" + vida + ", energia="
+				+ energia + ", tipo=" + tipo + ", diferencial=" + diferencial + ", itens=" + itens + ", efeitos="
+				+ efeitos + "]";
 	}
-	
+
 }

@@ -35,4 +35,13 @@ public class Efeito {
 		this.duracaoEmTurnos = duracaoEmTurnos;
 	}
 	
+	public Efeito clone() {
+		return new Efeito(this.tipoEfeito, this.valor, this.duracaoEmTurnos);
+	}
+
+	@Override
+	public String toString() {
+		return "Efeito [tipoEfeito=" + tipoEfeito + ", valor=" + valor + ", duracaoEmTurnos=" + duracaoEmTurnos + "]";
+	}
+	
 }

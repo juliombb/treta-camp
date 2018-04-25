@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class PoderEspecial extends Poder {
 	private Condicao condicao;
-	private final static Map<Tipo, List<Tipo>> tipoFraquezas = popularTipoFraquesas();
+	private final static Map<Tipo, List<Tipo>> tipoFraquezas = popularTipoFraquezas();
 	
 	public PoderEspecial(String nome, double dano, double custo, Condicao condicao) {
 		super(nome, dano, custo);
@@ -40,10 +40,10 @@ public class PoderEspecial extends Poder {
 			return 0.25;
 		}
 		
-		return 0.1;
+		return 0.0;
 	}
 	
-	private static Map<Tipo, List<Tipo>> popularTipoFraquesas() {
+	private static Map<Tipo, List<Tipo>> popularTipoFraquezas() {
 		Map<Tipo, List<Tipo>> tipoFraquezas = new HashMap<Tipo, List<Tipo>>();
 		
 		tipoFraquezas.put(Tipo.AGUA, Arrays.asList(Tipo.TERRA, Tipo.METAL));
@@ -55,4 +55,11 @@ public class PoderEspecial extends Poder {
 		
 		return tipoFraquezas;
 	}
+
+	@Override
+	public String toString() {
+		return "PoderEspecial [" + super.toString() + ", condicao=" + condicao + "]";
+	}
+	
+	
 }
