@@ -5,31 +5,48 @@ import java.util.ArrayList;
 public class Poder {
 	private String nome;
 	private ArrayList<Efeito> efeitos;
-	private double dano;
+	private double danoInstantaneo;
 	private double custo;
 	
 	public Poder(String nome, double dano, double custo) {
 		this.nome = nome;
-		this.dano = dano;
+		this.danoInstantaneo = dano;
 		this.custo = custo;
 		this.efeitos = new ArrayList<Efeito>();
 	}
 	
-	public void aplicar (Drego conjurante, Drego atingido) {
-		for(int i=0; i<efeitos.size(); i++) {
-			switch(efeitos.get(i)) {
-				case PARALIZAR:
-					break;
-				case QUEIMAR:
-					break;
-				case SUGAR:
-					break;
-				default:
-					break;
-					
-			}
+	public void aplicar(Drego conjurante, Drego atingido) {
+		atingido.diminuirVida(this.danoInstantaneo);
+		
+		if (atingido.getDiferencial().equals(Diferencial.DEFESA_PERFURANTE)) {
+			conjurante.diminuirVida(0.2 * this.danoInstantaneo);
 		}
-		atingido.diminuirVida(this.dano);
+		
+		efeitos.forEach((efeito) -> {
+			switch(efeito.getTipoEfeito()) {
+			case PARALIZAR:
+				atingido.adicionarEfeito(efeito);
+				break;
+			case QUEIMAR:
+				if (!atingido.getDiferencial().equals(Diferencial.PROTECAO_FOGO)) {
+					atingido.adicionarEfeito(efeito);
+				}
+				break;
+			case SUGAR:
+				conjurante.aumentarVida(0.2 * this.danoInstantaneo);
+				break;
+			case ATORDOAR:
+				atingido.adicionarEfeito(efeito);
+				break;
+			case ENFRAQUECER:
+				atingido.adicionarEfeito(efeito);
+				break;
+			default:
+				break;
+		}
+		
+		});
+		
 	}
 	
 	public String getNome() {
@@ -44,16 +61,16 @@ public class Poder {
 		return efeitos;
 	}
 
-	public void setEfeitos(ArrayList<Efeito> efeitos) {
-		this.efeitos = efeitos;
+	public boolean adicionarEfeito(Efeito efeito) {
+		return this.efeitos.add(efeito);
 	}
 
-	public double getDano() {
-		return dano;
+	public double getDanoInstantaneo() {
+		return danoInstantaneo;
 	}
 
-	public void setDano(double dano) {
-		this.dano = dano;
+	public void setDanoInstantaneo(double dano) {
+		this.danoInstantaneo = dano;
 	}
 
 	public double getCusto() {
@@ -66,9 +83,6 @@ public class Poder {
 
 	@Override
 	public String toString() {
-		return "Poder [nome=" + nome + ", efeitos=" + efeitos + ", dano=" + dano + ", custo=" + custo + "]";
+		return "Poder [nome=" + nome + ", efeitos=" + efeitos + ", danoInstantaneo=" + danoInstantaneo + ", custo=" + custo + "]";
 	}
-	
-	
-	
 }

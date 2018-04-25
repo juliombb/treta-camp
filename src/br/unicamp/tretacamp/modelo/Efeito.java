@@ -1,34 +1,38 @@
 package br.unicamp.tretacamp.modelo;
 
-import java.time.Duration;
-
-public enum Efeito {
-	PARALIZAR,
-	QUEIMAR,
-	SUGAR;
-	
-	private String nome;
+public class Efeito {
+	private TipoEfeito tipoEfeito;
 	private double valor;
-	private Duration duracao;
-	public String getNome() {
-		return nome;
+	private int duracaoEmTurnos;
+	
+	public Efeito(TipoEfeito tipoEfeito, double valor, int duracaoEmTurnos) {
+		this.tipoEfeito = tipoEfeito;
+		this.valor = valor;
+		this.duracaoEmTurnos = duracaoEmTurnos;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+
+	public TipoEfeito getTipoEfeito() {
+		return tipoEfeito;
 	}
+
+	public void setTipoEfeito(TipoEfeito tipoEfeito) {
+		this.tipoEfeito = tipoEfeito;
+	}
+
 	public double getValor() {
 		return valor;
 	}
+
 	public void setValor(double valor) {
 		this.valor = valor;
 	}
-	public Duration getDuracao() {
-		return duracao;
+
+	public int getDuracaoEmTurnos() {
+		return duracaoEmTurnos;
 	}
-	public void setDuracao(Duration duracao) {
-		this.duracao = duracao;
+
+	public void setDuracaoEmTurnos(int duracaoEmTurnos) {
+		this.duracaoEmTurnos = duracaoEmTurnos;
 	}
-	
-	
 	
 }
