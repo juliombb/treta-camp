@@ -10,6 +10,7 @@ public class Drego {
 	private Tipo tipo;
 	private Diferencial diferencial;
 	private ArrayList<Item> itens;
+	private ArrayList<Efeito> efeitos;
 	
 	public void diminuirVida(double dano) {
 		if(dano>this.vida) {
@@ -67,6 +68,13 @@ public class Drego {
 	}
 	public void setItens(ArrayList<Item> itens) {
 		this.itens = itens;
+	}
+
+	public ArrayList<Efeito> getEfeitos() {
+		return efeitos;
+	}
+	public void setEfeitos(ArrayList<Efeito> efeitos) {
+		this.efeitos = efeitos;
 	}
 	
 	

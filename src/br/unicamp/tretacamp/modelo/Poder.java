@@ -8,13 +8,27 @@ public class Poder {
 	private double dano;
 	private double custo;
 	
+	public Poder(String nome, double dano, double custo) {
+		this.nome = nome;
+		this.dano = dano;
+		this.custo = custo;
+		this.efeitos = new ArrayList<Efeito>();
+	}
+	
 	public void aplicar (Drego conjurante, Drego atingido) {
-		/*for(int i=0; i<efeitos.size(); i++) {
+		for(int i=0; i<efeitos.size(); i++) {
 			switch(efeitos.get(i)) {
 				case PARALIZAR:
+					break;
+				case QUEIMAR:
+					break;
+				case SUGAR:
+					break;
+				default:
+					break;
 					
 			}
-		}*/
+		}
 		atingido.diminuirVida(this.dano);
 	}
 	
@@ -49,5 +63,12 @@ public class Poder {
 	public void setCusto(double custo) {
 		this.custo = custo;
 	}
+
+	@Override
+	public String toString() {
+		return "Poder [nome=" + nome + ", efeitos=" + efeitos + ", dano=" + dano + ", custo=" + custo + "]";
+	}
+	
+	
 	
 }
