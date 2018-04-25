@@ -103,6 +103,4 @@ public class Drego {
 	public void setEfeitos(ArrayList<Efeito> efeitos) {
 		this.efeitos = efeitos;
 	}
-	
-	
 }
