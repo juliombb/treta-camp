@@ -12,11 +12,11 @@ public class Drego {
 	private ArrayList<Item> itens;
 	
 	public void diminuirVida(double dano) {
-		if(dano>this.vida) {
+		if (dano > this.vida) {
 			this.vida = 0;
 		}
 		else {
-			this.vida-=dano;
+			this.vida -= dano;
 		}
 	}
 	

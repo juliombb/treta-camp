@@ -6,8 +6,7 @@ public enum Diferencial {
 	
 	private String nome;
 	private double valor;
-	
-	
+
 	public String getNome() {
 		return nome;
 	}
