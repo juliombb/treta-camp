@@ -46,6 +46,12 @@ public class Drego {
 			efeitos.add(efeito);
 		}
 	}
+	
+	public void adicionarItem(Item item) {
+		if(!itens.contains(item)) {
+			itens.add(item);
+		}
+	}
 		
 	
 	public String getNome() {
@@ -96,7 +102,6 @@ public class Drego {
 	public void setItens(ArrayList<Item> itens) {
 		this.itens = itens;
 	}
-
 	public ArrayList<Efeito> getEfeitos() {
 		return efeitos;
 	}
