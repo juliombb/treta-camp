@@ -12,6 +12,22 @@ public class Drego {
 	private ArrayList<Item> itens;
 	private ArrayList<Efeito> efeitos;
 	
+	public Drego() {
+		this.itens = new ArrayList<Item>();
+		this.efeitos = new ArrayList<Efeito>();
+	}
+	
+	public Drego(String nome, String visual, double vida, double energia, Tipo tipo, Diferencial diferencial) {
+		this.nome = nome;
+		this.visual = visual;
+		this.vida = vida;
+		this.energia = energia;
+		this.tipo =tipo;
+		this.diferencial = diferencial;
+		this.itens = new ArrayList<Item>();
+		this.efeitos = new ArrayList<Efeito>();
+	}
+	
 	public void diminuirVida(double dano) {
 		if (dano > this.vida) {
 			this.vida = 0;
@@ -20,6 +36,17 @@ public class Drego {
 			this.vida -= dano;
 		}
 	}
+	
+	public void aumentarVida(double aumento) {
+		this.vida += aumento; 
+	}
+	
+	public void adicionarEfeito(Efeito efeito) {
+		if(!efeitos.contains(efeito)) {
+			efeitos.add(efeito);
+		}
+	}
+		
 	
 	public String getNome() {
 		return nome;
