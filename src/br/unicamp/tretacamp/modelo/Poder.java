@@ -3,16 +3,16 @@ package br.unicamp.tretacamp.modelo;
 import java.util.ArrayList;
 
 public class Poder {
-	private String nome;
-	private ArrayList<Efeito> efeitos;
-	private double danoInstantaneo;
-	private double custo;
+	private final String nome;
+	private final ArrayList<Efeito> efeitos;
+	private final double danoInstantaneo;
+	private final double custo;
 	
-	public Poder(String nome, double dano, double custo) {
+	public Poder(String nome, double dano, double custo, ArrayList<Efeito> efeitos) {
 		this.nome = nome;
 		this.danoInstantaneo = dano;
 		this.custo = custo;
-		this.efeitos = new ArrayList<Efeito>();
+		this.efeitos = efeitos;
 	}
 	
 	public void aplicar(Drego conjurante, Drego atingido) {
@@ -71,36 +71,16 @@ public class Poder {
 		return nome;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
 	public ArrayList<Efeito> getEfeitos() {
 		return efeitos;
-	}
-
-	public boolean adicionarEfeito(Efeito efeito) {
-		if (!efeitos.contains(efeito)) {
-			return this.efeitos.add(efeito);
-		}
-		
-		return false;
 	}
 
 	public double getDanoInstantaneo() {
 		return danoInstantaneo;
 	}
 
-	public void setDanoInstantaneo(double dano) {
-		this.danoInstantaneo = dano;
-	}
-
 	public double getCusto() {
 		return custo;
-	}
-
-	public void setCusto(double custo) {
-		this.custo = custo;
 	}
 
 	@Override

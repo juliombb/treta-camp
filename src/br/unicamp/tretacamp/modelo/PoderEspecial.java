@@ -1,5 +1,6 @@
 package br.unicamp.tretacamp.modelo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -9,11 +10,17 @@ public class PoderEspecial extends Poder {
 	private Condicao condicao;
 	private final static Map<Tipo, List<Tipo>> tipoFraquezas = popularTipoFraquezas();
 	
-	public PoderEspecial(String nome, double dano, double custo, Condicao condicao) {
-		super(nome, dano, custo);
+	public PoderEspecial(String nome, double dano, double custo, Condicao condicao, ArrayList<Efeito> efeitos) {
+		super(nome, dano, custo, efeitos);
 		this.condicao = condicao;
 	}
 	
+	
+	/*
+	 * Poder especial, além de aplicar normalmente o poder caso seja válida uma condição,
+	 * também aumenta o dano causado caso o tipo do Drego seja atingido seja fraco contra
+	 * o tipo do Drego conjurante.
+	 * */
 	@Override
 	public void aplicar (Drego conjurante, Drego atingido) {
 		if (condicao.verificar(conjurante)) {
