@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Drego {
 	private String nome;
-	private Poder[] poder;
+	private ArrayList<Poder> poderes;
 	private String visual;
 	private double vida;
 	private double energia;
@@ -15,6 +15,7 @@ public class Drego {
 	public Drego() {
 		this.itens = new ArrayList<Item>();
 		this.efeitos = new ArrayList<Efeito>();
+		this.poderes = new ArrayList<Poder>();
 	}
 	
 	public Drego(String nome, String visual, double vida, double energia, Tipo tipo, Diferencial diferencial) {
@@ -26,6 +27,7 @@ public class Drego {
 		this.diferencial = diferencial;
 		this.itens = new ArrayList<Item>();
 		this.efeitos = new ArrayList<Efeito>();
+		this.poderes = new ArrayList<Poder>();
 	}
 	
 	public void diminuirVida(double dano) {
@@ -59,12 +61,6 @@ public class Drego {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-	public Poder[] getPoder() {
-		return poder;
-	}
-	public void setPoder(Poder[] poder) {
-		this.poder = poder;
 	}
 	public String getVisual() {
 		return visual;
@@ -108,4 +104,11 @@ public class Drego {
 	public void setEfeitos(ArrayList<Efeito> efeitos) {
 		this.efeitos = efeitos;
 	}
+	public ArrayList<Poder> getPoderes() {
+		return poderes;
+	}
+	public void setPoderes(ArrayList<Poder> poderes) {
+		this.poderes = poderes;
+	}
+	
 }
