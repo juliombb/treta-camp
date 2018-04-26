@@ -16,6 +16,15 @@ public class Poder {
 	}
 	
 	public boolean aplicar(Drego conjurante, Drego atingido) {
+		if (conjurante.getEfeitos()
+				.stream()
+				.anyMatch((efeito) ->
+					efeito.getTipoEfeito() == TipoEfeito.PARALIZAR
+					&& efeito.getDuracaoEmTurnos() > 0)) {
+
+			return false;
+		}
+
 		if (conjurante.getEnergia() < this.custo) {
 			return false;
 		}
@@ -43,7 +52,7 @@ public class Poder {
 		 * 
 		 * */
 		
-		efeitos.forEach((efeito) -> {
+		this.efeitos.forEach((efeito) -> {
 			switch(efeito.getTipoEfeito()) {
 				case PARALIZAR:
 					atingido.adicionarEfeito(efeito.clone());
