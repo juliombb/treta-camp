@@ -22,14 +22,18 @@ public class PoderEspecial extends Poder {
 	 * o tipo do Drego conjurante.
 	 * */
 	@Override
-	public void aplicar (Drego conjurante, Drego atingido) {
+	public boolean aplicar (Drego conjurante, Drego atingido) {
 		if (condicao.verificar(conjurante)) {
-			super.aplicar(conjurante, atingido);
-			
-			double porcentagemAumento = getPorcentagemAumentoEfeito(conjurante, atingido);
-			
-			atingido.diminuirVida(porcentagemAumento * getDanoInstantaneo());
+			if (super.aplicar(conjurante, atingido)) {
+				double porcentagemAumento = getPorcentagemAumentoEfeito(conjurante, atingido);
+				
+				atingido.diminuirVida(porcentagemAumento * getDanoInstantaneo());
+				
+				return true;
+			}
 		}
+		
+		return false;
 	}
 
 	public Condicao getCondicao() {
