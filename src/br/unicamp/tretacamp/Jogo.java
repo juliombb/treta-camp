@@ -81,9 +81,9 @@ public class Jogo extends Application {
 
 
       // Aqui ficaria a parte visual
-      // para a primeira entrega, essa parte está
+      // para a primeira entrega, essa parte esta
       // limitada e a batalha acontece na linha de comando.
-      // por enquanto só mostramos as imagens
+      // por enquanto so mostramos as imagens
       {
         ImageView imagemJog = new ImageView(
           "resources/" + jogador.getVisual());
@@ -141,8 +141,8 @@ public class Jogo extends Application {
     }
   }
   
-	  // TODO: Caso o usuario selecione uma opção invalida ou um poder cujo custo
-  	  // não corresponda com a quantidade de energia que ele possua exigir uma opção válida
+	  // TODO: Caso o usuario selecione uma opcao invalida ou um poder cujo custo
+  	  // nao corresponda com a quantidade de energia que ele possua exigir uma opcao valida
 	  private void poderJogador(Drego jogador, Drego inimigo, Scanner sc) {
 	  int j=1;
 	  String out;
@@ -158,13 +158,24 @@ public class Jogo extends Application {
 		  System.out.println(out);
 	  }
 	  int opcao = sc.nextInt();
-	  jogador.getPoderes().get(opcao-1).aplicar(jogador, inimigo);
+	  while(opcao<1 || opcao>jogador.getPoderes().size()) {
+		  System.out.println("Opcao invalida. Tente novamente...");
+		  opcao = sc.nextInt();
+	  }
+	  while(jogador.getPoderes().get(opcao-1).getCusto()>jogador.getEnergia()) {
+		  System.out.println("Custo de energia muito alto. Selecione outro poder...");
+		  opcao = sc.nextInt();
+	  }
+	  jogador.getPoderes().get(opcao-1).aplicar(jogador, inimigo);	  
   }
   
-  // TODO: somente considerar os poderes que podem ser aplicados com a quantidade de energia disponível
+  // TODO: somente considerar os poderes que podem ser aplicados com a quantidade de energia disponivel
   private void poderInimigo(Drego jogador, Drego inimigo, Scanner sc) {
 	  Random random = new Random();
       int i = random.nextInt(inimigo.getPoderes().size()+1);
+      while(inimigo.getEnergia() < inimigo.getPoderes().get(i).getCusto()) {
+    	  i = random.nextInt(inimigo.getPoderes().size()+1);
+      }
 	  inimigo.getPoderes().get(i).aplicar(inimigo, jogador);
 	  System.out.println("O inimigo selecionou o poder " + inimigo.getPoderes().get(i).getNome());
   }
@@ -184,6 +195,9 @@ public class Jogo extends Application {
 					
 					drego.setEnergia(novaEnergia > 0 ? novaEnergia : 0);
 				}
+				break;
+			case PARALIZAR:
+				
 				break;
 			default:
 				break;
