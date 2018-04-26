@@ -12,7 +12,7 @@ public class ConfiguracaoPoder {
 	
 	final static Poder chute = new Poder("Chute", 12.0, 7.0, null);
 	
-	private final static ArrayList<Efeito> efeitosPepitaMagica = (ArrayList<Efeito>) Arrays.asList(new Efeito(TipoEfeito.ATORDOAR, 3.0, 2));
+	private final static ArrayList<Efeito> efeitosPepitaMagica = (ArrayList<Efeito>) Arrays.asList(new Efeito(TipoEfeito.ENFRAQUECER, 3.0, 2));
 	
 	final static Poder pepitaMagica = new Poder("Pepita Mágica", 23.0, 18.0, efeitosPepitaMagica);
 	

@@ -15,7 +15,11 @@ public class Poder {
 		this.efeitos = efeitos;
 	}
 	
-	public void aplicar(Drego conjurante, Drego atingido) {
+	public boolean aplicar(Drego conjurante, Drego atingido) {
+		if (conjurante.getEnergia() < this.custo) {
+			return false;
+		}
+		
 		atingido.diminuirVida(this.danoInstantaneo);
 		
 		if (atingido.getDiferencial() != null) {
@@ -62,6 +66,9 @@ public class Poder {
 			}
 		});
 		
+		conjurante.gastarEnergia(this.custo);
+		
+		return true;
 	}
 	
 	public String getNome() {

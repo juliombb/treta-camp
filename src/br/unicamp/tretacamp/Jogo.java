@@ -1,6 +1,7 @@
 package br.unicamp.tretacamp;
 
 import br.unicamp.tretacamp.modelo.Drego;
+import br.unicamp.tretacamp.modelo.Efeito;
 import br.unicamp.tretacamp.modelo.PoderEspecial;
 import br.unicamp.tretacamp.modelo.Tipo;
 import javafx.application.Application;
@@ -8,7 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import br.unicamp.tretacamp.ConfiguracaoPoder;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -138,7 +141,9 @@ public class Jogo extends Application {
     }
   }
   
-  private void poderJogador(Drego jogador, Drego inimigo, Scanner sc) {
+	  // TODO: Caso o usuario selecione uma opção invalida ou um poder cujo custo
+  	  // não corresponda com a quantidade de energia que ele possua exigir uma opção válida
+	  private void poderJogador(Drego jogador, Drego inimigo, Scanner sc) {
 	  int j=1;
 	  String out;
 	  System.out.println("Selecione o poder que deseja aplicar: ");
@@ -156,7 +161,7 @@ public class Jogo extends Application {
 	  jogador.getPoderes().get(opcao-1).aplicar(jogador, inimigo);
   }
   
-  
+  // TODO: somente considerar os poderes que podem ser aplicados com a quantidade de energia disponível
   private void poderInimigo(Drego jogador, Drego inimigo, Scanner sc) {
 	  Random random = new Random();
       int i = random.nextInt(inimigo.getPoderes().size()+1);
@@ -164,6 +169,29 @@ public class Jogo extends Application {
 	  System.out.println("O inimigo selecionou o poder " + inimigo.getPoderes().get(i).getNome());
   }
   
+  // TODO: Verificar melhor maneira de tratar o efeito de PARALIZAR
+  private void trataEfeito(Drego drego) {
+	  drego.getEfeitos().forEach((efeito) -> {
+		  switch(efeito.getTipoEfeito()) {
+			case QUEIMAR:
+				if (efeito.reduzirDuracaoEmTurnos()) {
+					drego.diminuirVida(efeito.getValor());
+				}
+				break;
+			case ENFRAQUECER:
+				if (efeito.reduzirDuracaoEmTurnos()) {
+					double novaEnergia = drego.getEnergia() - efeito.getValor();
+					
+					drego.setEnergia(novaEnergia > 0 ? novaEnergia : 0);
+				}
+				break;
+			default:
+				break;
+		  }
+	  	});
+	  
+	  drego.getEfeitos().removeIf(efeito -> efeito.getDuracaoEmTurnos() == 0);
+  }
   
   
   private void limparConsole() {
