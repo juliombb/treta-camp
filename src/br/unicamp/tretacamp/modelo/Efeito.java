@@ -35,6 +35,15 @@ public class Efeito {
 		this.duracaoEmTurnos = duracaoEmTurnos;
 	}
 	
+	public boolean reduzirDuracaoEmTurnos() {
+		if (this.duracaoEmTurnos > 0) {
+			this.duracaoEmTurnos--;
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public Efeito clone() {
 		return new Efeito(this.tipoEfeito, this.valor, this.duracaoEmTurnos);
 	}

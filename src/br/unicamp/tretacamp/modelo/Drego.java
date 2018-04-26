@@ -43,6 +43,20 @@ public class Drego {
 		this.vida += aumento; 
 	}
 	
+	public void aumentarEnergia(double aumento) {
+		this.energia += aumento;
+	}
+	
+	public boolean gastarEnergia(double gasto) {
+		if (gasto > this.energia) {
+			return false;
+		}
+		else {
+			this.energia -= gasto;
+			return true;
+		}
+	}
+	
 	public boolean adicionarEfeito(Efeito efeito) {
 		if(!efeitos.contains(efeito)) {
 			return efeitos.add(efeito);
@@ -121,6 +135,10 @@ public class Drego {
 	
 	public ArrayList<Efeito> getEfeitos() {
 		return efeitos;
+	}
+	
+	public void setEfeitos(ArrayList<Efeito> efeitos) {
+		this.efeitos = efeitos;
 	}
 	
 	public ArrayList<Poder> getPoderes() {

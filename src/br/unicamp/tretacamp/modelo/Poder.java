@@ -54,9 +54,6 @@ public class Poder {
 				case SUGAR:
 					conjurante.aumentarVida(0.2 * this.danoInstantaneo);
 					break;
-				case ATORDOAR:
-					atingido.adicionarEfeito(efeito.clone());
-					break;
 				case ENFRAQUECER:
 					atingido.adicionarEfeito(efeito.clone());
 					break;
