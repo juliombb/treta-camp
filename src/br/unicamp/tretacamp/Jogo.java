@@ -11,7 +11,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import br.unicamp.tretacamp.ConfiguracaoPoder;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -36,6 +35,9 @@ public class Jogo extends Application {
         "monho", "monho.gif", 10.0, 10.0, Tipo.AGUA, null);
       final Drego cobroso = new Drego(
         "cobroso", "cobroso.png", 10.0, 10.0, Tipo.AGUA, null);
+      
+      //mago.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
+      
 
       final Drego[] dregos = { mago, espotenique, monho, cobroso };
 
@@ -57,6 +59,7 @@ public class Jogo extends Application {
         System.out.println("Seu turno: ");
         // menu do turno do jogador, mostra habilidades e deixa ele selecionar
         System.out.println("Selecione o poder para ser utilizado: ");
+        trataEfeito(jogador);
         poderJogador(jogador, inimigo, sc);
         System.out.println("Vida: " + jogador.getVida());
         System.out.println("Energia: " + jogador.getEnergia());
@@ -64,6 +67,7 @@ public class Jogo extends Application {
         
         System.out.println("Turno do oponente: ");
         // aleatorio
+        trataEfeito(inimigo);
         poderInimigo(jogador, inimigo, sc);
         System.out.println("Vida: " + inimigo.getVida());
         System.out.println("Energia: " + inimigo.getEnergia());
@@ -158,24 +162,26 @@ public class Jogo extends Application {
 		  System.out.println(out);
 	  }
 	  int opcao = sc.nextInt();
-	  while(opcao<1 || opcao>jogador.getPoderes().size()) {
+	  while(opcao < 1 || opcao > jogador.getPoderes().size()) {
 		  System.out.println("Opcao invalida. Tente novamente...");
 		  opcao = sc.nextInt();
 	  }
-	  while(jogador.getPoderes().get(opcao-1).getCusto()>jogador.getEnergia()) {
+	  while(jogador.getPoderes().get(opcao-1).getCusto() > jogador.getEnergia()) {
 		  System.out.println("Custo de energia muito alto. Selecione outro poder...");
 		  opcao = sc.nextInt();
 	  }
 	  jogador.getPoderes().get(opcao-1).aplicar(jogador, inimigo);	  
   }
   
-  // TODO: somente considerar os poderes que podem ser aplicados com a quantidade de energia disponivel
   private void poderInimigo(Drego jogador, Drego inimigo, Scanner sc) {
 	  Random random = new Random();
       int i = random.nextInt(inimigo.getPoderes().size()+1);
+      
+      // seleciona poder que condiz com a quantidade de energia que o drego possui
       while(inimigo.getEnergia() < inimigo.getPoderes().get(i).getCusto()) {
-    	  i = random.nextInt(inimigo.getPoderes().size()+1);
+    	  	i = random.nextInt(inimigo.getPoderes().size()+1);
       }
+      
 	  inimigo.getPoderes().get(i).aplicar(inimigo, jogador);
 	  System.out.println("O inimigo selecionou o poder " + inimigo.getPoderes().get(i).getNome());
   }
