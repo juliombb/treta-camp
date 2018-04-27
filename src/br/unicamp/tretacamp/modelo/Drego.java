@@ -151,5 +151,35 @@ public class Drego {
 				+ energia + ", tipo=" + tipo + ", diferencial=" + diferencial + ", itens=" + itens + ", efeitos="
 				+ efeitos + "]";
 	}
+	
+	public Drego clone() {
+		Drego clone = new Drego(this.nome, this.visual, this.vida, this.energia, this.tipo, this.diferencial);
+		
+		if (this.poderes.isEmpty()) {
+			clone.poderes = new ArrayList<Poder>();
+		} else {
+			ArrayList<Poder> poderes = new ArrayList<Poder>();
+			poderes.addAll(this.poderes);
+			clone.poderes = poderes;
+		}
+		
+		if (this.itens.isEmpty()) {
+			clone.itens = new ArrayList<Item>();
+		} else {
+			ArrayList<Item> itens = new ArrayList<Item>();
+			itens.addAll(this.itens);
+			clone.poderes = poderes;
+		}
+		
+		if (this.efeitos.isEmpty()) {
+			clone.efeitos = new ArrayList<Efeito>();
+		} else {
+			ArrayList<Efeito> efeitos = new ArrayList<Efeito>();
+			efeitos.addAll(this.efeitos);
+			clone.poderes = poderes;
+		}
+		
+		return clone;
+	}
 
 }

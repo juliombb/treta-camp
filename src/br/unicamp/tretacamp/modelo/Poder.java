@@ -12,7 +12,13 @@ public class Poder {
 		this.nome = nome;
 		this.danoInstantaneo = dano;
 		this.custo = custo;
-		this.efeitos = efeitos;
+		
+		if (efeitos != null) {
+			this.efeitos = efeitos;
+		}
+		else {
+			this.efeitos = new ArrayList<Efeito>();
+		}
 	}
 	
 	public boolean aplicar(Drego conjurante, Drego atingido) {
@@ -51,7 +57,7 @@ public class Poder {
 		 * que está nessa classe Poder.
 		 * 
 		 * */
-		
+
 		this.efeitos.forEach((efeito) -> {
 			switch(efeito.getTipoEfeito()) {
 				case PARALIZAR:

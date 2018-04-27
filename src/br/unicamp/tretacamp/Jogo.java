@@ -3,18 +3,24 @@ package br.unicamp.tretacamp;
 import br.unicamp.tretacamp.modelo.Drego;
 import br.unicamp.tretacamp.modelo.PoderEspecial;
 import br.unicamp.tretacamp.modelo.Tipo;
+import br.unicamp.tretacamp.config.ConfiguracaoPoder;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
 import static br.unicamp.tretacamp.Jogo.Perdedor.JOGADOR;
 
 public class Jogo extends Application {
+	
+	private SingletonMap<String, Drego> jogadores = new SingletonMap<String, Drego>();
 
     public static void main(String[] args) {
         launch(args);
@@ -26,20 +32,22 @@ public class Jogo extends Application {
             final Scanner sc = new Scanner(System.in);
 
             final Drego mago = new Drego(
-                "mago", "mago.png", 10.0, 10.0, Tipo.AGUA, null);
+                "mago", "mago.png", 100.0, 100.0, Tipo.AGUA, null);
             final Drego espotenique = new Drego(
-                "espotenique", "espotenique.png", 10.0, 10.0, Tipo.AGUA, null);
+                "espotenique", "espotenique.png", 100.0, 100.0, Tipo.AGUA, null);
             final Drego monho = new Drego(
-                "monho", "monho.gif", 10.0, 10.0, Tipo.AGUA, null);
+                "monho", "monho.gif", 100.0, 100.0, Tipo.AGUA, null);
             final Drego cobroso = new Drego(
-                "cobroso", "cobroso.png", 10.0, 10.0, Tipo.AGUA, null);
+                "cobroso", "cobroso.png", 100.0, 100.0, Tipo.AGUA, null);
 
-            //mago.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
-
+            mago.adicionarPoder(ConfiguracaoPoder.PEPITA_MAGICA);
+            espotenique.adicionarPoder(ConfiguracaoPoder.CHUTE);
+            monho.adicionarPoder(ConfiguracaoPoder.SOCO);
+            cobroso.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
 
             final Drego[] dregos = {mago, espotenique, monho, cobroso};
 
-            final Drego jogador = dregos[selecionaDrego("jogador", sc)];
+            final Map<String, Drego> jogador = Collections.singletonMap("jogador", dregos[selecionaDrego("jogador", sc)].clone());
             limparConsole();
             System.out.println("Drego escolhido para o jogador: " + jogador.getNome());
             Thread.sleep(1000);
@@ -56,19 +64,18 @@ public class Jogo extends Application {
             do {
                 System.out.println("Seu turno ");
                 // menu do turno do jogador, mostra habilidades e deixa ele selecionar
-                System.out.println("Selecione o poder para ser utilizado: ");
                 trataEfeito(jogador);
                 poderJogador(jogador, inimigo, sc);
-                System.out.println("Vida: " + jogador.getVida());
-                System.out.println("Energia: " + jogador.getEnergia());
+                System.out.println("Sua vida: " + jogador.getVida());
+                System.out.println("Sua energia: " + jogador.getEnergia());
                 System.out.println();
 
                 System.out.println("Turno do oponente ");
                 // aleatorio
                 trataEfeito(inimigo);
                 poderInimigo(jogador, inimigo, sc);
-                System.out.println("Vida: " + inimigo.getVida());
-                System.out.println("Energia: " + inimigo.getEnergia());
+                System.out.println("Sua Vida: " + inimigo.getVida());
+                System.out.println("Sua Energia: " + inimigo.getEnergia());
                 System.out.println();
 
             } while (jogador.getVida() > 0 && inimigo.getVida() > 0);
@@ -77,7 +84,6 @@ public class Jogo extends Application {
 
             //definir aqui se o jogador perdeu
             final String perdedor = JOGADOR;
-
 
             // Aqui ficaria a parte visual
             // para a primeira entrega, essa parte esta
@@ -108,6 +114,7 @@ public class Jogo extends Application {
 
         } catch (Exception e) {
             System.out.println("Problema inesperado: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -140,15 +147,13 @@ public class Jogo extends Application {
         }
     }
 
-    // TODO: Caso o usuario selecione uma opcao invalida ou um poder cujo custo
-    // nao corresponda com a quantidade de energia que ele possua exigir uma opcao valida
     private void poderJogador(Drego jogador, Drego inimigo, Scanner sc) {
         int j = 1;
         String out;
         System.out.println("Selecione o poder que deseja aplicar: ");
         for (int i = 0; i < jogador.getPoderes().size(); i++) {
-            out = null;
-            out += j + ". " + jogador.getPoderes().get(i).getNome() +
+        	    out = "";
+        	    out += j + ". " + jogador.getPoderes().get(i).getNome() +
                 "Custo: " + jogador.getPoderes().get(i).getCusto();
             if (jogador.getPoderes().get(i) instanceof PoderEspecial) {
                 out += "*";
@@ -170,11 +175,11 @@ public class Jogo extends Application {
 
     private void poderInimigo(Drego jogador, Drego inimigo, Scanner sc) {
         Random random = new Random();
-        int i = random.nextInt(inimigo.getPoderes().size() + 1);
+        int i = random.nextInt(inimigo.getPoderes().size());
 
         // seleciona poder que condiz com a quantidade de energia que o drego possui
         while (inimigo.getEnergia() < inimigo.getPoderes().get(i).getCusto()) {
-            i = random.nextInt(inimigo.getPoderes().size() + 1);
+            i = random.nextInt(inimigo.getPoderes().size());
         }
 
         inimigo.getPoderes().get(i).aplicar(inimigo, jogador);
