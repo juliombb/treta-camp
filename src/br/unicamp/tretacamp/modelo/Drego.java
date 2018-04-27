@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 public class Drego {
 	private String nome;
+	private String controlador;
 	private ArrayList<Poder> poderes;
 	private String visual;
 	private double vida;
@@ -88,7 +89,15 @@ public class Drego {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
+
+	public String getControlador() {
+		return controlador;
+	}
+
+	public void setControlador(String controlador) {
+		this.controlador = controlador;
+	}
+
 	public String getVisual() {
 		return visual;
 	}
@@ -151,7 +160,13 @@ public class Drego {
 				+ energia + ", tipo=" + tipo + ", diferencial=" + diferencial + ", itens=" + itens + ", efeitos="
 				+ efeitos + "]";
 	}
-	
+
+	public Drego clonarPara(String controlador) {
+		final Drego ret = this.clone();
+		ret.setControlador(controlador);
+		return ret;
+	}
+
 	public Drego clone() {
 		Drego clone = new Drego(this.nome, this.visual, this.vida, this.energia, this.tipo, this.diferencial);
 		

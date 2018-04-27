@@ -10,17 +10,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
 import static br.unicamp.tretacamp.Jogo.Perdedor.JOGADOR;
 
 public class Jogo extends Application {
-	
-	private SingletonMap<String, Drego> jogadores = new SingletonMap<String, Drego>();
 
     public static void main(String[] args) {
         launch(args);
@@ -47,13 +42,15 @@ public class Jogo extends Application {
 
             final Drego[] dregos = {mago, espotenique, monho, cobroso};
 
-            final Map<String, Drego> jogador = Collections.singletonMap("jogador", dregos[selecionaDrego("jogador", sc)].clone());
+            final Drego jogador =
+                dregos[selecionaDrego("jogador", sc)].clonarPara("jogador");
             limparConsole();
             System.out.println("Drego escolhido para o jogador: " + jogador.getNome());
             Thread.sleep(1000);
             limparConsole();
 
-            final Drego inimigo = dregos[selecionaDrego("inimigo", sc)];
+            final Drego inimigo =
+                dregos[selecionaDrego("inimigo", sc)].clonarPara("inimigo");
             limparConsole();
             System.out.println("Drego escolhido para o inimigo: " + inimigo.getNome());
             Thread.sleep(1000);
