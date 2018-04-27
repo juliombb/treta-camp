@@ -15,7 +15,6 @@ public class PoderEspecial extends Poder {
 		this.condicao = condicao;
 	}
 	
-	
 	/*
 	 * Poder especial, além de aplicar normalmente o poder caso seja válida uma condição,
 	 * também aumenta o dano causado caso o tipo do Drego seja atingido seja fraco contra

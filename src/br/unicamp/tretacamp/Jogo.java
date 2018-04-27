@@ -65,44 +65,48 @@ public class Jogo extends Application {
                 System.out.println("Seu turno ");
                 // menu do turno do jogador, mostra habilidades e deixa ele selecionar
                 trataEfeito(jogador);
-                if(verificarCustoMinimo(jogador)) {
-                	   poderJogador(jogador, inimigo, sc);
-                       System.out.println("Sua vida: " + jogador.getVida());
-                       System.out.println("Sua energia: " + jogador.getEnergia());
-                       System.out.println();
+                if (verificarCustoMinimo(jogador)) {
+					poderJogador(jogador, inimigo, sc);
+					mostraStatus(jogador, inimigo);
                 }
                 else {
-                	perdedor = JOGADOR;
-                	break;
+                		System.out.println("Jogador n tem habilidades para usar ");
+                		perdedor = JOGADOR;
+                		break;
                 }
              
 
                 System.out.println("Turno do oponente ");
+                Thread.sleep(2000);
                 // aleatorio
                 trataEfeito(inimigo);
                 if(verificarCustoMinimo(jogador)) {
-                	 poderInimigo(jogador, inimigo, sc);
-                     System.out.println("Sua Vida: " + inimigo.getVida());
-                     System.out.println("Sua Energia: " + inimigo.getEnergia());
-                     System.out.println();
+					poderInimigo(jogador, inimigo, sc);
+					mostraStatus(jogador, inimigo);
                 }
                 else {
-                	perdedor = INIMIGO;
-                	break;
+	                	perdedor = INIMIGO;
+	                	break;
                 }
                
 
             } while (jogador.getVida() > 0 && inimigo.getVida() > 0);
 
-            System.out.println("Fim");
 
-            //definir aqui se o jogador perdeu
+            // definir aqui se o jogador perdeu
             if(jogador.getVida() == 0) {
-            	 perdedor = JOGADOR;
+            		perdedor = JOGADOR;
+            } else if (inimigo.getVida() == 0) {
+            		perdedor = INIMIGO;
             }
-            else{
-            	perdedor = INIMIGO;
+            
+            if (perdedor.equals(JOGADOR)) {
+            		System.out.println(inimigo.getControlador() + " Venceu!");
+            } else {
+            		System.out.println(jogador.getControlador() + " Venceu!");
             }
+            System.out.println();
+            System.out.println("Fim");
            
 
             // Aqui ficaria a parte visual
@@ -213,15 +217,18 @@ public class Jogo extends Application {
 
                 case QUEIMAR:
                     if (efeito.reduzirDuracaoEmTurnos()) {
-                        drego.diminuirVida(efeito.getValor());
+                    		System.out.println("Devido ao efeito queimar " + drego.getControlador() +
+                    				" perde " + efeito.getValor() + " de vida");
+                    		drego.diminuirVida(efeito.getValor());
                     }
                     break;
 
                 case ENFRAQUECER:
                     if (efeito.reduzirDuracaoEmTurnos()) {
-                        double novaEnergia = drego.getEnergia() - efeito.getValor();
-
-                        drego.setEnergia(novaEnergia > 0 ? novaEnergia : 0);
+						System.out.println("Devido ao efeito enfraquecer " + drego.getControlador() +
+								" perde " + efeito.getValor() + " de energia");
+						double novaEnergia = drego.getEnergia() - efeito.getValor();
+						drego.setEnergia(novaEnergia > 0 ? novaEnergia : 0);
                     }
                     break;
 
@@ -237,19 +244,31 @@ public class Jogo extends Application {
         drego.getEfeitos().removeIf(efeito -> efeito.getDuracaoEmTurnos() == 0);
     }
     
+    private void mostraStatus(Drego jogador1, Drego jogador2) {
+    		System.out.println("---Status---");
+    		System.out.println("Vida: ");
+    		System.out.println("\t" + jogador1.getControlador() + ": " + jogador1.getVida());
+    		System.out.println("\t" + jogador2.getControlador() + ": " + jogador2.getVida());
+    		System.out.println("Energia: ");
+    		System.out.println("\t" + jogador1.getControlador() + ": " + jogador1.getEnergia());
+    		System.out.println("\t" + jogador2.getControlador() + ": " + jogador2.getEnergia());
+    		System.out.println();
+    }
+    
     private boolean verificarCustoMinimo (Drego drego) {
     	double min = 100; //valor inicial de energia(maximo)
-    	for(int i=0; i<drego.getPoderes().size(); i++) {
+    	
+    	for(int i = 0; i < drego.getPoderes().size(); i++) {
     		if(drego.getPoderes().get(i).getCusto() < min) {
     			min = drego.getPoderes().get(i).getCusto();
     		}
     	}
-    	if(drego.getVida() > min) {
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
+	    	if(drego.getEnergia() > min) {
+	    		return true;
+	    	}
+	    	else {
+	    		return false;
+	    	}
     }
 
 
@@ -261,7 +280,7 @@ public class Jogo extends Application {
     }
 
     static class Perdedor {
-        static final String JOGADOR = "jog";
-        static final String INIMIGO = "ini";
+        static final String JOGADOR = "jogador";
+        static final String INIMIGO = "inimigo";
     }
 }

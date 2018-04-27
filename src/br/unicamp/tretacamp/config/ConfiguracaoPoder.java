@@ -18,7 +18,7 @@ public class ConfiguracaoPoder {
 	public final static Poder PEPITA_MAGICA = new Poder("Pepita Mágica", 23.0, 18.0, EFEITOS_PEPITA_MAGICA);
 	
 	private final static ArrayList<Efeito> EFEITOS_BOLA_DE_FOGO =
-		new ArrayList<>(Arrays.asList(new Efeito(TipoEfeito.QUEIMAR, 3.0, 3)));
+		new ArrayList<>(Arrays.asList(new Efeito(TipoEfeito.QUEIMAR, 2.0, 3)));
 	
 	public final static Poder BOLA_DE_FOGO = new Poder("Bola de Fogo", 14.0, 18.0, EFEITOS_BOLA_DE_FOGO);
 	

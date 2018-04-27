@@ -37,13 +37,14 @@ public class Poder {
 		
 		atingido.diminuirVida(this.danoInstantaneo);
 		
-		if (atingido.getDiferencial() != null) {
+		// Implementação deixada para uma segunda parte do projeto
+		/*if (atingido.getDiferencial() != null) {
 			// Caso o Drego atingido tenha o diferencial de DEFESA_PERFURANTE é
 			// causado um dano de 20% do dano causado no drego atingido no drego conjurante
 			if (atingido.getDiferencial().equals(Diferencial.DEFESA_PERFURANTE)) {
 				conjurante.diminuirVida(0.2 * this.danoInstantaneo);
 			}
-		}
+		}*/
 		
 		/*
 		 * Os efeitos que um poder causa podem ter impactos tanto no momento
@@ -68,6 +69,9 @@ public class Poder {
 						if (!atingido.getDiferencial().equals(Diferencial.PROTECAO_FOGO)) {
 							atingido.adicionarEfeito(efeito.clone());
 						}
+					}
+					else {
+						atingido.adicionarEfeito(efeito.clone());
 					}
 					break;
 				case SUGAR:
