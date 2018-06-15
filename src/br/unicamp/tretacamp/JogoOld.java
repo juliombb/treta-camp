@@ -2,6 +2,7 @@ package br.unicamp.tretacamp;
 
 import br.unicamp.tretacamp.config.ConfiguracaoDregos;
 import br.unicamp.tretacamp.modelo.Drego;
+import br.unicamp.tretacamp.modelo.Item;
 import br.unicamp.tretacamp.modelo.PoderEspecial;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -55,6 +56,7 @@ public class JogoOld extends Application {
                 // menu do turno do jogador, mostra habilidades e deixa ele selecionar
                 trataEfeito(jogador);
                 if (verificarCustoMinimo(jogador)) {
+                    randomItem(true);
 					poderJogador(jogador, inimigo, sc);
 					mostraStatus(jogador, inimigo);
                 }
@@ -69,6 +71,7 @@ public class JogoOld extends Application {
                 // aleatorio
                 trataEfeito(inimigo);
                 if(verificarCustoMinimo(jogador)) {
+                    randomItem(false);
 					poderInimigo(jogador, inimigo, sc);
 					mostraStatus(jogador, inimigo);
                 }
@@ -280,6 +283,41 @@ public class JogoOld extends Application {
             System.out.println("\n");
         }
         System.out.flush();
+    }
+
+    private Item randomItem(boolean showMessages) {
+
+        Random random = new Random();
+
+        int numero = random.nextInt(30);
+
+        switch (numero) {
+            case 0: {
+                if (showMessages) {
+                    System.out.println("Um pimpolho muito simpático apareceu e te entregou um frasco... ");
+                    System.out.println("No vidro um escrito diz: Poção de Cura... será que é confiável?");
+                }
+                return new Item("Poção de Cura", "");
+            }
+            case 10: {
+                if (showMessages) {
+                    System.out.println("Um búfalo alado deixou cair ao seu lado uma garrafa... ");
+                    System.out.println("Você se lembra das aulas de arqueologia que antigos escritos ");
+                    System.out.print("já relataram de um búfalo que voava levando energia para a populaçao.");
+                }
+                return new Item("Blue Horse", "");
+            }
+            case 20: {
+                if (showMessages) {
+                    System.out.println("Alô Alô, Você sabe quem eu sou? Isso mesmo, a pantera da perdição. Miaaaaw");
+                    System.out.println("É como diz aquele ditado né? Fique com esse frasco!");
+                    System.out.println("Não há nada escrito no frasco.");
+                }
+                return new Item("Frasco Misterioso", "");
+
+            }
+            default: return null;
+        }
     }
 
     static class Perdedor {
