@@ -36,15 +36,20 @@ public class Poder {
 		}
 		
 		atingido.diminuirVida(this.danoInstantaneo);
-		
-		// Implementação deixada para uma segunda parte do projeto
-		/*if (atingido.getDiferencial() != null) {
+
+		if (atingido.getDiferencial() != null) {
 			// Caso o Drego atingido tenha o diferencial de DEFESA_PERFURANTE é
 			// causado um dano de 20% do dano causado no drego atingido no drego conjurante
 			if (atingido.getDiferencial().equals(Diferencial.DEFESA_PERFURANTE)) {
 				conjurante.diminuirVida(0.2 * this.danoInstantaneo);
 			}
-		}*/
+
+			if (atingido.getDiferencial().equals(Diferencial.CAÇADOR_DE_MANA)) {
+			    atingido.aumentarEnergia(0.1 * this.danoInstantaneo);
+            }
+		}
+
+
 		
 		/*
 		 * Os efeitos que um poder causa podem ter impactos tanto no momento
