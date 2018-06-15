@@ -1,8 +1,10 @@
 package br.unicamp.tretacamp.modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Poder {
+public class Poder implements Serializable{
+	private static final long serialVersionUID = 303L;
 	private final String nome;
 	private final ArrayList<Efeito> efeitos;
 	private final double danoInstantaneo;
