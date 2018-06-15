@@ -1,5 +1,6 @@
 package br.unicamp.tretacamp;
 
+import br.unicamp.tretacamp.config.ConfiguracaoDregos;
 import br.unicamp.tretacamp.modelo.Drego;
 import br.unicamp.tretacamp.modelo.PoderEspecial;
 import br.unicamp.tretacamp.modelo.Tipo;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import sun.security.krb5.Config;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -27,21 +29,7 @@ public class Jogo extends Application {
         try {
             final Scanner sc = new Scanner(System.in);
 
-            final Drego mago = new Drego(
-                "mago", "mago.png", 100.0, 100.0, Tipo.AGUA, null);
-            final Drego espotenique = new Drego(
-                "espotenique", "espotenique.png", 100.0, 100.0, Tipo.AGUA, null);
-            final Drego monho = new Drego(
-                "monho", "monho.gif", 100.0, 100.0, Tipo.AGUA, null);
-            final Drego cobroso = new Drego(
-                "cobroso", "cobroso.png", 100.0, 100.0, Tipo.AGUA, null);
-
-            mago.adicionarPoder(ConfiguracaoPoder.PEPITA_MAGICA);
-            espotenique.adicionarPoder(ConfiguracaoPoder.CHUTE);
-            monho.adicionarPoder(ConfiguracaoPoder.SOCO);
-            cobroso.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
-
-            final Drego[] dregos = {mago, espotenique, monho, cobroso};
+            Drego[] dregos = ConfiguracaoDregos.getInstance().dregos;
 
             final Drego jogador =
                 dregos[selecionaDrego("jogador", sc)].clonarPara("jogador");
@@ -74,7 +62,6 @@ public class Jogo extends Application {
                 		perdedor = JOGADOR;
                 		break;
                 }
-             
 
                 System.out.println("Turno do oponente ");
                 Thread.sleep(2000);
@@ -94,10 +81,10 @@ public class Jogo extends Application {
 
 
             // definir aqui se o jogador perdeu
-            if(jogador.getVida() == 0) {
-            		perdedor = JOGADOR;
+            if (jogador.getVida() == 0) {
+                perdedor = JOGADOR;
             } else if (inimigo.getVida() == 0) {
-            		perdedor = INIMIGO;
+                perdedor = INIMIGO;
             }
             
             if (perdedor.equals(JOGADOR)) {
