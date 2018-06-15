@@ -1,7 +1,9 @@
 package br.unicamp.tretacamp.modelo;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Drego {
+public class Drego implements Serializable {
+	private static final long serialVersionUID = 302L;
 	private String nome;
 	private String controlador;
 	private ArrayList<Poder> poderes;

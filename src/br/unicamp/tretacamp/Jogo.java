@@ -10,6 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -88,7 +91,13 @@ public class Jogo extends Application {
 	                	perdedor = INIMIGO;
 	                	break;
                 }
-               
+                
+                boolean j=true;
+                if(j) {
+                	this.salvarEstadoJogo();
+                	j=false;
+                }
+                
 
             } while (jogador.getVida() > 0 && inimigo.getVida() > 0);
 
@@ -270,6 +279,22 @@ public class Jogo extends Application {
 	    		return false;
 	    	}
     }
+    
+    private void salvarEstadoJogo() {
+    	String filename = "Jogo.dat";
+    	
+    	try {
+    		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream (filename));
+    		output.writeObject(JOGADOR);
+    		output.writeObject(INIMIGO);
+    		output.flush();
+    		output.close();
+    	}
+    	catch(IOException ex) {
+    		ex.printStackTrace();
+    	}	
+    }
+    
 
 
     private void limparConsole() {
