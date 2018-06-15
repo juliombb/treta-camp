@@ -44,7 +44,7 @@ public class Poder {
 				conjurante.diminuirVida(0.2 * this.danoInstantaneo);
 			}
 
-			if (atingido.getDiferencial().equals(Diferencial.CAÇADOR_DE_MANA)) {
+			if (atingido.getDiferencial().equals(Diferencial.CACADOR_DE_MANA)) {
 			    atingido.aumentarEnergia(0.1 * this.danoInstantaneo);
             }
 		}
