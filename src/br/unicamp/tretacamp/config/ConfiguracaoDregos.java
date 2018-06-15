@@ -4,7 +4,7 @@ import br.unicamp.tretacamp.modelo.Drego;
 import br.unicamp.tretacamp.modelo.Tipo;
 
 /**
- * @author Júlio Moreira Blás de Barros (julio.barros@movile.com)
+ * @author Júlio Moreira Blás de Barros (julio.barros@200491)
  * @since 15/06/18
  */
 public class ConfiguracaoDregos {
