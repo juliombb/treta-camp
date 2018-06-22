@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 public class PoderEspecial extends Poder {
+
+	private static final long serialVersionUID = 5890469086359661986L;
 	private Condicao condicao;
 	private final static Map<Tipo, List<Tipo>> tipoFraquezas = popularTipoFraquezas();
 	

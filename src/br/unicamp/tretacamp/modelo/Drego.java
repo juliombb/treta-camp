@@ -50,9 +50,9 @@ public class Drego implements Serializable {
 		this.energia += aumento;
 	}
 	
-	public boolean gastarEnergia(double gasto) {
+	public boolean gastarEnergia(double gasto) throws NotEnoughEnergyException {
 		if (gasto > this.energia) {
-			return false;
+			throw new NotEnoughEnergyException();
 		}
 		else {
 			this.energia -= gasto;

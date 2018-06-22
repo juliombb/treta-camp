@@ -1,6 +1,9 @@
 package br.unicamp.tretacamp.modelo;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable{
+	private static final long serialVersionUID = 505L;
 	private String nome;
 	private String imagem;
 

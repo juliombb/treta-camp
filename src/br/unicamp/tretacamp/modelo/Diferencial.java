@@ -2,7 +2,9 @@ package br.unicamp.tretacamp.modelo;
 
 public enum Diferencial {
 	PROTECAO_FOGO,
-	DEFESA_PERFURANTE;
+	DEFESA_PERFURANTE,
+	CACADOR_DE_MANA;
+
 	
 	private String nome;
 	private double valor;

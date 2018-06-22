@@ -1,16 +1,23 @@
 package br.unicamp.tretacamp;
 
 import br.unicamp.tretacamp.config.ConfiguracaoDregos;
+import br.unicamp.tretacamp.modelo.Diferencial;
 import br.unicamp.tretacamp.modelo.Drego;
+import br.unicamp.tretacamp.modelo.Item;
 import br.unicamp.tretacamp.modelo.PoderEspecial;
+import br.unicamp.tretacamp.modelo.Tipo;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;
 import java.util.Scanner;
@@ -18,7 +25,7 @@ import java.util.Scanner;
 import static br.unicamp.tretacamp.JogoOld.Perdedor.JOGADOR;
 import static br.unicamp.tretacamp.JogoOld.Perdedor.INIMIGO;
 
-@Deprecated
+
 public class JogoOld extends Application {
 
 	public static void main(String[] args) {
@@ -27,7 +34,7 @@ public class JogoOld extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        try {
+        try {      	
             final Scanner sc = new Scanner(System.in);
 
             Drego[] dregos = ConfiguracaoDregos.getInstance().dregos;
@@ -55,6 +62,7 @@ public class JogoOld extends Application {
                 // menu do turno do jogador, mostra habilidades e deixa ele selecionar
                 trataEfeito(jogador);
                 if (verificarCustoMinimo(jogador)) {
+                    randomItem(true);
 					poderJogador(jogador, inimigo, sc);
 					mostraStatus(jogador, inimigo);
                 }
@@ -69,6 +77,7 @@ public class JogoOld extends Application {
                 // aleatorio
                 trataEfeito(inimigo);
                 if(verificarCustoMinimo(jogador)) {
+                    randomItem(false);
 					poderInimigo(jogador, inimigo, sc);
 					mostraStatus(jogador, inimigo);
                 }
@@ -259,19 +268,46 @@ public class JogoOld extends Application {
 	    	}
     }
     
-    private void salvarEstadoJogo() {
+    private void salvarEstadoJogo(Drego jogador, Drego inimigo) {
     	String filename = "Jogo.dat";
     	
     	try {
     		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream (filename));
-    		output.writeObject(JOGADOR);
-    		output.writeObject(INIMIGO);
+    		output.writeObject(jogador);
+    		output.writeObject(inimigo);
     		output.flush();
     		output.close();
     	}
     	catch(IOException ex) {
     		ex.printStackTrace();
     	}	
+    }
+    
+    private void carregarEstadoJogo() {
+    	String filename = "Jogo.dat";
+    	
+    	try {
+    		ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
+    		
+    		Drego d1 = (Drego) input.readObject();
+    		System.out.println(d1);
+    		System.out.println();
+    		
+    		Drego d2 = (Drego) input.readObject();
+    		System.out.println(d2);
+    		System.out.println();
+    		
+    		input.close();
+    	}
+    	catch(EOFException endOfFileException) {
+    		endOfFileException.printStackTrace();
+    	}
+    	catch(ClassNotFoundException classNotFoundException) {
+    		classNotFoundException.printStackTrace();
+    	}
+    	catch(IOException ex) {
+    		ex.printStackTrace();
+    	}
     }
 
 
@@ -280,6 +316,41 @@ public class JogoOld extends Application {
             System.out.println("\n");
         }
         System.out.flush();
+    }
+
+    private Item randomItem(boolean showMessages) {
+
+        Random random = new Random();
+
+        int numero = random.nextInt(30);
+
+        switch (numero) {
+            case 0: {
+                if (showMessages) {
+                    System.out.println("Um pimpolho muito simpático apareceu e te entregou um frasco... ");
+                    System.out.println("No vidro um escrito diz: Poção de Cura... será que é confiável?");
+                }
+                return new Item("Poção de Cura", "");
+            }
+            case 10: {
+                if (showMessages) {
+                    System.out.println("Um búfalo alado deixou cair ao seu lado uma garrafa... ");
+                    System.out.println("Você se lembra das aulas de arqueologia que antigos escritos ");
+                    System.out.print("já relataram de um búfalo que voava levando energia para a populaçao.");
+                }
+                return new Item("Blue Horse", "");
+            }
+            case 20: {
+                if (showMessages) {
+                    System.out.println("Alô Alô, Você sabe quem eu sou? Isso mesmo, a pantera da perdição. Miaaaaw");
+                    System.out.println("É como diz aquele ditado né? Fique com esse frasco!");
+                    System.out.println("Não há nada escrito no frasco.");
+                }
+                return new Item("Frasco Misterioso", "");
+
+            }
+            default: return null;
+        }
     }
 
     static class Perdedor {

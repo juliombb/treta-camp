@@ -1,6 +1,9 @@
 package br.unicamp.tretacamp.modelo;
 
-public class Efeito {
+import java.io.Serializable;
+
+public class Efeito implements Serializable {
+	private static final long serialVersionUID = 304L;
 	private TipoEfeito tipoEfeito;
 	private double valor;
 	private int duracaoEmTurnos;
