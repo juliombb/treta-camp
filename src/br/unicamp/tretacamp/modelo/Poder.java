@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Poder implements Serializable{
-	private static final long serialVersionUID = 303L;
+	
+	private static final long serialVersionUID = -5753349859451331755L;
 	private final String nome;
 	private final ArrayList<Efeito> efeitos;
 	private final double danoInstantaneo;
@@ -33,7 +34,9 @@ public class Poder implements Serializable{
 			return false;
 		}
 
-		if (conjurante.getEnergia() < this.custo) {
+		try {
+			conjurante.gastarEnergia(this.custo);
+		} catch (NotEnoughEnergyException e) {
 			return false;
 		}
 		
@@ -92,7 +95,6 @@ public class Poder implements Serializable{
 			}
 		});
 		
-		conjurante.gastarEnergia(this.custo);
 		
 		return true;
 	}
