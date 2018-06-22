@@ -17,9 +17,9 @@ public class ConfiguracaoDregos {
     private final Drego cobroso = new Drego(
         "cobroso", "cobroso.png", 100.0, 100.0, Tipo.AGUA, null);
 
-    private static ConfiguracaoDregos instancia = null;
-
     public final Drego[] dregos = {mago, espotenique, monho, cobroso};
+
+    private static ConfiguracaoDregos instancia = null;
     public static ConfiguracaoDregos getInstance() {
         if (instancia == null) {
             instancia = new ConfiguracaoDregos();

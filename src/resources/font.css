@@ -1,0 +1,5 @@
+@font-face { font-family: 'pixel-love'; src: url('pixel-love.ttf'); }
+.pixel-love {
+    -fx-font-family: 'pixel-love';
+    -fx-font-size: 20px;
+}
