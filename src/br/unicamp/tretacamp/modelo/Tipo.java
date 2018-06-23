@@ -6,7 +6,8 @@ public enum Tipo {
 	FOGO("Fogo"),
 	VENTO("Vento"),
 	METAL("Metal"),
-	SONORO("Sonoro");
+	SONORO("Sonoro"),
+	TREVAS("Trevas");
 
 	private final String nome;
 

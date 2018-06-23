@@ -4,6 +4,7 @@ import br.unicamp.tretacamp.modelo.Drego;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -13,20 +14,39 @@ import java.io.FileInputStream;
  * @since 23/06/18
  */
 public class CarregadorDeImagens {
-    public static ImageView carregar(Drego drego, Stage primaryStage) {
-        ImageView imgJog;
+    public static Image carregarImg(String imgStr, Stage primaryStage) {
         try {
-            imgJog = new ImageView(new Image(
-                new FileInputStream(drego.getVisual())
-            ));
+            return new Image(
+                new FileInputStream(imgStr)
+            );
         } catch (Exception e) {
             new Alert(
                 Alert.AlertType.ERROR,
-                "Erro carregando imagem do drego: " + e.getMessage())
+                "Erro carregando imagem: " + e.getMessage())
                 .show();
             primaryStage.close();
             return null;
         }
-        return imgJog;
+    }
+
+    public static ImageView carregar(String imgStr, Stage primaryStage) {
+        ImageView img;
+        try {
+            img = new ImageView(new Image(
+                new FileInputStream(imgStr)
+            ));
+        } catch (Exception e) {
+            new Alert(
+                Alert.AlertType.ERROR,
+                "Erro carregando imagem: " + e.getMessage())
+                .show();
+            primaryStage.close();
+            return null;
+        }
+        return img;
+    }
+
+    public static ImageView carregar(Drego drego, Stage primaryStage) {
+        return carregar(drego.getVisual(), primaryStage);
     }
 }

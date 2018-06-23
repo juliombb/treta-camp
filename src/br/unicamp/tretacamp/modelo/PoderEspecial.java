@@ -15,8 +15,8 @@ public class PoderEspecial extends Poder {
 	private Condicao condicao;
 	private final static Map<Tipo, List<Tipo>> tipoFraquezas = popularTipoFraquezas();
 	
-	public PoderEspecial(String nome, double dano, double custo, Condicao condicao, ArrayList<Efeito> efeitos) {
-		super(nome, dano, custo, efeitos);
+	public PoderEspecial(String nome, String descricao, String icone, double dano, double custo, Condicao condicao, ArrayList<Efeito> efeitos) {
+		super(nome, descricao, icone, dano, custo, efeitos);
 		this.condicao = condicao;
 	}
 	

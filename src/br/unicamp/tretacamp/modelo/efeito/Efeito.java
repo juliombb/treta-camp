@@ -16,6 +16,8 @@ public abstract class Efeito implements Serializable {
 		this.valor = valor;
 		this.duracaoEmTurnos = duracaoEmTurnos;
 	}
+
+	public String getNome() { return this.getClass().getSimpleName(); }
 	
 	public double getValor() {
 		return valor;

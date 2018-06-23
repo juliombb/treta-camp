@@ -11,12 +11,16 @@ public class Poder implements Serializable{
 	
 	private static final long serialVersionUID = -5753349859451331755L;
 	private final String nome;
+	private final String descricao;
+	private final String icone;
 	private final ArrayList<Efeito> efeitos;
 	private final double danoInstantaneo;
 	private final double custo;
 	
-	public Poder(String nome, double dano, double custo, ArrayList<Efeito> efeitos) {
+	public Poder(String nome, String descricao, String icone, double dano, double custo, ArrayList<Efeito> efeitos) {
 		this.nome = nome;
+		this.descricao = descricao;
+		this.icone = icone;
 		this.danoInstantaneo = dano;
 		this.custo = custo;
 		
@@ -97,12 +101,27 @@ public class Poder implements Serializable{
 		return efeitos;
 	}
 
+	public String listaEfeitos() {
+		return efeitos.stream()
+			.map((eft) -> eft.getNome())
+			.reduce((a, b) -> a + ", " + b)
+			.orElse("Nenhum");
+	}
+
 	public double getDanoInstantaneo() {
 		return danoInstantaneo;
 	}
 
 	public double getCusto() {
 		return custo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public String getIcone() {
+		return icone;
 	}
 
 	@Override

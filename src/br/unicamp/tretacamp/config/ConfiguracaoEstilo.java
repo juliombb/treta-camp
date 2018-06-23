@@ -11,6 +11,10 @@ public class ConfiguracaoEstilo {
     public final String PIXEL_LOVE_SMALL;
     public final String PIXEL_LOVE_BIG;
     public final String HOVER_TEXT;
+    public final String HOVER_BUTTON;
+    public final String IMG;
+    public final String BRANCO;
+    public final String SOMBRA;
 
 
     private static ConfiguracaoEstilo instancia = null;
@@ -27,6 +31,10 @@ public class ConfiguracaoEstilo {
         PIXEL_LOVE_SMALL = "pixel-love-sm";
         PIXEL_LOVE_BIG = "pixel-love-big";
         HOVER_TEXT = "hover-text";
+        HOVER_BUTTON = "hover-button";
+        IMG = "img";
+        BRANCO = "branco";
+        SOMBRA = "sombra";
     }
 
 }

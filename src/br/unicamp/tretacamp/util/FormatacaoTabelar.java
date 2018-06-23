@@ -36,4 +36,9 @@ public class FormatacaoTabelar {
             (colunaAtual++)*(larguraColuna + espacamento),
             linhaAtual*(alturaColuna + espacamento));
     }
+
+    public void zerar() {
+        this.colunaAtual = 0;
+        this.linhaAtual = 0;
+    }
 }

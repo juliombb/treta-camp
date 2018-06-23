@@ -68,6 +68,7 @@ public class SelecaoDePersonagens {
                             Alert.AlertType.ERROR,
                             "Erro carregando campanha: " + e.getMessage())
                             .show();
+                        e.printStackTrace();
                         primaryStage.close();
                     }
                 };
