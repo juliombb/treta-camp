@@ -1,4 +1,6 @@
 package br.unicamp.tretacamp.modelo;
+import br.unicamp.tretacamp.modelo.efeito.Efeito;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 

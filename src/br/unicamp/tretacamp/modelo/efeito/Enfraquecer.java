@@ -1,10 +1,12 @@
-package br.unicamp.tretacamp.modelo;
+package br.unicamp.tretacamp.modelo.efeito;
 
-public class EfeitoEnfraquecer extends Efeito {
+import br.unicamp.tretacamp.modelo.Drego;
+
+public class Enfraquecer extends Efeito {
 
 	private static final long serialVersionUID = 971243691728442L;
 
-	public EfeitoEnfraquecer(double valor, int duracaoEmTurnos) {
+	public Enfraquecer(double valor, int duracaoEmTurnos) {
 		super(valor, duracaoEmTurnos);
 		// TODO Auto-generated constructor stub
 	}
@@ -19,7 +21,7 @@ public class EfeitoEnfraquecer extends Efeito {
 
 	@Override
 	public Efeito clone() {
-		return new EfeitoEnfraquecer(getValor(), getDuracaoEmTurnos());
+		return new Enfraquecer(getValor(), getDuracaoEmTurnos());
 	}
 	
 	

@@ -1,4 +1,6 @@
-package br.unicamp.tretacamp.modelo;
+package br.unicamp.tretacamp.modelo.condicao;
+
+import br.unicamp.tretacamp.modelo.Drego;
 
 public class EstarComVida implements Condicao {
 	private double vida;	

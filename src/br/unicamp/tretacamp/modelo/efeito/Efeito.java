@@ -1,4 +1,6 @@
-package br.unicamp.tretacamp.modelo;
+package br.unicamp.tretacamp.modelo.efeito;
+
+import br.unicamp.tretacamp.modelo.Drego;
 
 import java.io.Serializable;
 

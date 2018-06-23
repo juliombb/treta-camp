@@ -1,5 +1,9 @@
 package br.unicamp.tretacamp.modelo;
 
+import br.unicamp.tretacamp.modelo.efeito.Efeito;
+import br.unicamp.tretacamp.modelo.efeito.Paralisar;
+import br.unicamp.tretacamp.modelo.efeito.Queimar;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -28,7 +32,7 @@ public class Poder implements Serializable{
 		if (conjurante.getEfeitos()
 				.stream()
 				.anyMatch((efeito) ->
-					efeito instanceof EfeitoParalizar
+					efeito instanceof Paralisar
 					&& efeito.getDuracaoEmTurnos() > 0)) {
 
 			return false;
@@ -70,7 +74,7 @@ public class Poder implements Serializable{
 		 * */
 
 		this.efeitos.forEach((efeito) -> {
-			if (efeito instanceof EfeitoQueimar) {
+			if (efeito instanceof Queimar) {
 				if (atingido.getDiferencial() != null) {
 					if (!atingido.getDiferencial().equals(Diferencial.PROTECAO_FOGO)) {
 						atingido.adicionarEfeito(efeito.clone());

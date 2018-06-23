@@ -1,10 +1,12 @@
-package br.unicamp.tretacamp.modelo;
+package br.unicamp.tretacamp.modelo.efeito;
 
-public class EfeitoParalizar extends Efeito {
+import br.unicamp.tretacamp.modelo.Drego;
+
+public class Paralisar extends Efeito {
 
 	private static final long serialVersionUID = -21232970679943017L;
 
-	public EfeitoParalizar(double valor, int duracaoEmTurnos) {
+	public Paralisar(double valor, int duracaoEmTurnos) {
 		super(valor, duracaoEmTurnos);
 	}
 
@@ -16,7 +18,7 @@ public class EfeitoParalizar extends Efeito {
 
 	@Override
 	public Efeito clone() {
-		return new EfeitoParalizar(getValor(), getDuracaoEmTurnos());
+		return new Paralisar(getValor(), getDuracaoEmTurnos());
 	}
 	
 

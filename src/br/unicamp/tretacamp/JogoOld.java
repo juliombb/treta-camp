@@ -1,13 +1,11 @@
 package br.unicamp.tretacamp;
 
 import br.unicamp.tretacamp.config.ConfiguracaoDregos;
-import br.unicamp.tretacamp.modelo.Diferencial;
 import br.unicamp.tretacamp.modelo.Drego;
-import br.unicamp.tretacamp.modelo.Efeito;
-import br.unicamp.tretacamp.modelo.EfeitoParalizar;
+import br.unicamp.tretacamp.modelo.efeito.Efeito;
+import br.unicamp.tretacamp.modelo.efeito.Paralisar;
 import br.unicamp.tretacamp.modelo.Item;
 import br.unicamp.tretacamp.modelo.PoderEspecial;
-import br.unicamp.tretacamp.modelo.Tipo;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -15,7 +13,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.EOFException;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -223,7 +220,7 @@ public class JogoOld extends Application {
     
     private boolean estaParalizado(Drego drego) {
 	    	for (Efeito efeito: drego.getEfeitos()) {
-	    		if (efeito instanceof EfeitoParalizar) {
+	    		if (efeito instanceof Paralisar) {
 	    			return true;
 	    		}
 	    	}

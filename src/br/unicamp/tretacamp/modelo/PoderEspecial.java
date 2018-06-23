@@ -1,5 +1,8 @@
 package br.unicamp.tretacamp.modelo;
 
+import br.unicamp.tretacamp.modelo.condicao.Condicao;
+import br.unicamp.tretacamp.modelo.efeito.Efeito;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
