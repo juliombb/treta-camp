@@ -7,7 +7,7 @@ import br.unicamp.tretacamp.modelo.Drego;
 import br.unicamp.tretacamp.modelo.Poder;
 import br.unicamp.tretacamp.util.CarregadorDeImagens;
 import br.unicamp.tretacamp.util.FormatacaoTabelar;
-import com.sun.javafx.geom.Vec2d;
+import br.unicamp.tretacamp.util.Vect2;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Group;
@@ -21,9 +21,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -36,6 +39,8 @@ import java.util.Random;
  */
 
 public class Campanha {
+    private static MediaPlayer staticPlayer = null;
+    // isso previne q o player seja coletado pelo GC
 
     public static void iniciar(Drego jogador, Stage primaryStage) throws Exception {
         ConfiguracaoEstilo estilo = ConfiguracaoEstilo.getInstance();
@@ -47,13 +52,13 @@ public class Campanha {
 
         Drego inimigo = selecionarDregoInimigo(confDregos, jogador);
 
-        tocarSom();
-
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         redimensionarJanela(primaryStage, screenSize);
 
         Double widthTela = primaryStage.getWidth();
         Double heightTela = primaryStage.getHeight();
+
+        Text txtConsole = new Text("Seu turno. Escolha uma habilidade.");
 
         if (!configurarCenario(primaryStage, raiz, widthTela, heightTela)) return;
 
@@ -81,7 +86,7 @@ public class Campanha {
 
             btn.getStyleClass().addAll(estilo.PIXEL_LOVE, estilo.HOVER_BUTTON);
 
-            Vec2d pos = tab.proxCelula();
+            Vect2 pos = tab.proxCelula();
             Double pdX = imgJog.getTranslateX() + widthTela * 0.05;
             Double pdY = imgJog.getTranslateY() + imgJog.getFitHeight() + heightTela * 0.1;
             btn.setTranslateX(pdX + pos.x);
@@ -90,6 +95,12 @@ public class Campanha {
             btn.setOnMouseClicked((evt) -> {
                 poder.aplicar(jogador, inimigo);
                 atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
+                txtConsole.setText("Você atacou o inimigo com a habilidade " +
+                    poder.getNome() +
+                    " e deu " +
+                    poder.getDanoInstantaneo() +
+                    " de dano. Agora é a vez dele...");
+                btn.setDisable(true);
             });
 
             raiz.getChildren().add(btn);
@@ -103,6 +114,14 @@ public class Campanha {
         monitor.setY(imgIni.getY() + imgIni.getFitHeight() + heightTela * 0.025);
 
         raiz.getChildren().add(monitor);
+
+        txtConsole.setWrappingWidth(monitor.getFitWidth() * 0.8);
+        txtConsole.setX(monitor.getX() + monitor.getFitWidth() * 0.1);
+        txtConsole.setY(monitor.getY() + monitor.getFitHeight() * 0.2);
+        txtConsole.getStyleClass().addAll(estilo.CONSOLAS_BOLD, estilo.SOMBRA, estilo.BRANCO);
+        txtConsole.setFill(Color.WHITE);
+
+        raiz.getChildren().add(txtConsole);
 
         primaryStage.setTitle("Treta Camp - Campanha " + jogador.getNome());
         primaryStage.setScene(campanha);
@@ -118,7 +137,7 @@ public class Campanha {
 
     private static Label configLabelEnergiaJog(Drego jogador, ConfiguracaoEstilo estilo, Label lblVidaJog) {
         Label lblEnergiaJog = new Label("Sua energia: " + jogador.getEnergia());
-        lblEnergiaJog.getStyleClass().addAll(estilo.PIXEL_LOVE, estilo.BRANCO, estilo.SOMBRA);
+        lblEnergiaJog.getStyleClass().addAll(estilo.CONSOLAS_BOLD, estilo.BRANCO, estilo.SOMBRA);
         lblEnergiaJog.setTranslateY(lblVidaJog.getTranslateY() + lblVidaJog.getFont().getSize() * 2);
         lblEnergiaJog.setTranslateX(lblVidaJog.getTranslateX());
         return lblEnergiaJog;
@@ -126,7 +145,7 @@ public class Campanha {
 
     private static Label configurarLabelVidaJog(Drego jogador, ConfiguracaoEstilo estilo, ImageView imgJog) {
         Label lblVidaJog = new Label("Sua vida: " + jogador.getVida());
-        lblVidaJog.getStyleClass().addAll(estilo.PIXEL_LOVE, estilo.BRANCO, estilo.SOMBRA);
+        lblVidaJog.getStyleClass().addAll(estilo.CONSOLAS_BOLD, estilo.BRANCO, estilo.SOMBRA);
         lblVidaJog.setTranslateY(imgJog.getY() + imgJog.getFitHeight() * 0.2);
         lblVidaJog.setTranslateX(imgJog.getX() + imgJog.getFitWidth() * 0.8);
         return lblVidaJog;
@@ -134,7 +153,7 @@ public class Campanha {
 
     private static Label configLabelEnergiaIni(Drego inimigo, ConfiguracaoEstilo estilo, Label lblVidaIni) {
         Label lblEnergiaIni = new Label("Energia do inimigo: " + inimigo.getEnergia());
-        lblEnergiaIni.getStyleClass().addAll(estilo.PIXEL_LOVE, estilo.BRANCO, estilo.SOMBRA);
+        lblEnergiaIni.getStyleClass().addAll(estilo.CONSOLAS_BOLD, estilo.BRANCO, estilo.SOMBRA);
         lblEnergiaIni.setTranslateY(lblVidaIni.getTranslateY() + lblVidaIni.getFont().getSize() * 2);
         lblEnergiaIni.setTranslateX(lblVidaIni.getTranslateX());
         return lblEnergiaIni;
@@ -142,7 +161,7 @@ public class Campanha {
 
     private static Label configurarLabelVidaIni(Drego inimigo, ConfiguracaoEstilo estilo, ImageView imgIni) {
         Label lblVidaIni = new Label("Vida do inimigo: " + inimigo.getVida());
-        lblVidaIni.getStyleClass().addAll(estilo.PIXEL_LOVE, estilo.BRANCO, estilo.SOMBRA);
+        lblVidaIni.getStyleClass().addAll(estilo.CONSOLAS_BOLD, estilo.BRANCO, estilo.SOMBRA);
         lblVidaIni.setTranslateY(imgIni.getY() + imgIni.getFitHeight() * 0.2);
         lblVidaIni.setTranslateX(imgIni.getX());
         return lblVidaIni;
@@ -174,6 +193,7 @@ public class Campanha {
                 new BackgroundSize(0.2, 0.8, true, true, true, false))
         };
         btn.setBackground(new Background(fill, bi));
+        btn.setOnMouseExited((evt) -> tooltip.hide());
         return btn;
     }
 
@@ -187,7 +207,14 @@ public class Campanha {
                 "Dano: " + poder.getCusto() + System.lineSeparator() +
                 "Efeitos causados: " + poder.listaEfeitos()
         );
-        tooltip.setAutoHide(false);
+
+        if (Integer.valueOf(System.getProperty("java.version").split("\\.")[0]) > 8) {
+            tooltip.setShowDelay(Duration.ZERO);
+            tooltip.setAutoHide(false);
+            tooltip.setHideDelay(Duration.INDEFINITE);
+            tooltip.setShowDuration(Duration.INDEFINITE);
+            tooltip.setHideOnEscape(true);
+        }
         return tooltip;
     }
 
@@ -198,13 +225,16 @@ public class Campanha {
         primaryStage.setY(screenSize.getWidth() * 0.025);
     }
 
-    private static void tocarSom() {
+    private static MediaPlayer tocarSom() {
         Media media = new Media(
-            new File("src/resources/musica.mp3")
+            new File("src/resources/musicaLuta.mp3")
                 .toURI().toString()
         );
         MediaPlayer player = new MediaPlayer(media);
+        player.setVolume(0.008);
         player.play();
+
+        return player;
     }
 
     private static Label configurarLabelInimigo(ConfiguracaoEstilo estilo, ImageView imgIni) {
@@ -277,6 +307,7 @@ public class Campanha {
                 + " para te destruir. Boa Sorte!");
         ((Stage) alerta.getDialogPane().getScene().getWindow()).setAlwaysOnTop(true);
         alerta.show();
+        alerta.setOnCloseRequest((evt) -> staticPlayer = tocarSom());
 
         return ret;
     }

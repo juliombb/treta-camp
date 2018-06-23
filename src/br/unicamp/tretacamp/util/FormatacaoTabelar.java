@@ -1,7 +1,5 @@
 package br.unicamp.tretacamp.util;
 
-import com.sun.javafx.geom.Vec2d;
-
 /**
  * @author Júlio Moreira Blás de Barros (julio.barros@movile.com)
  * @since 22/06/18
@@ -26,13 +24,13 @@ public class FormatacaoTabelar {
         this.espacamento = espacamento;
     }
 
-    public Vec2d proxCelula() {
+    public Vect2 proxCelula() {
         if (colunaAtual + 1 > numColunas) {
             colunaAtual = 0;
             linhaAtual++;
         }
 
-        return new Vec2d(
+        return new Vect2(
             (colunaAtual++)*(larguraColuna + espacamento),
             linhaAtual*(alturaColuna + espacamento));
     }
@@ -42,3 +40,4 @@ public class FormatacaoTabelar {
         this.linhaAtual = 0;
     }
 }
+

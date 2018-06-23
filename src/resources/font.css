@@ -14,6 +14,11 @@
     -fx-font-size: 25px;
 }
 
+.consolas-bold {
+    -fx-font-family: 'Courier';
+    -fx-font-weight: bolder;
+}
+
 .hover-text:hover {
     -fx-background-color: rgba(0, 0, 255, 0.1);
 }

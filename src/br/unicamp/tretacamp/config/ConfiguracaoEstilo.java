@@ -10,6 +10,7 @@ public class ConfiguracaoEstilo {
     public final String PIXEL_LOVE;
     public final String PIXEL_LOVE_SMALL;
     public final String PIXEL_LOVE_BIG;
+    public final String CONSOLAS_BOLD;
     public final String HOVER_TEXT;
     public final String HOVER_BUTTON;
     public final String IMG;
@@ -35,6 +36,7 @@ public class ConfiguracaoEstilo {
         IMG = "img";
         BRANCO = "branco";
         SOMBRA = "sombra";
+        CONSOLAS_BOLD = "consolas-bold";
     }
 
 }

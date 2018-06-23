@@ -4,7 +4,7 @@ import br.unicamp.tretacamp.config.ConfiguracaoDregos;
 import br.unicamp.tretacamp.config.ConfiguracaoEstilo;
 import br.unicamp.tretacamp.util.CarregadorDeImagens;
 import br.unicamp.tretacamp.util.FormatacaoTabelar;
-import com.sun.javafx.geom.Vec2d;
+import br.unicamp.tretacamp.util.Vect2;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -75,7 +75,7 @@ public class SelecaoDePersonagens {
                 lblDrego.setOnMouseClicked(mouseClicked);
                 imgDrego.setOnMouseClicked(mouseClicked);
 
-                final Vec2d celula = layout.proxCelula();
+                final Vect2 celula = layout.proxCelula();
                 lblDrego.setTranslateX(PADDING_X + celula.x);
                 lblDrego.setTranslateY(PADDING_Y + celula.y);
 
