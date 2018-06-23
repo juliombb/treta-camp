@@ -98,19 +98,34 @@ public class Campanha {
             btn.setOnMouseClicked((evt) -> {
                 Poder.ResultadoPoder res = poder.aplicar(jogador, inimigo);
                 atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
-                txtConsole.setText(res.getDesc() + System.lineSeparator() + "Agora é a vez do inimigo...");
-                desabilitaBotoes(mapPoderBotao);
+                txtConsole.setText(res.getDesc() + System.lineSeparator());
+
+                if (jogador.getVida() == 0) {
+                    txtConsole.setText(txtConsole.getText() + "O jogador está morto. Fim de jogo ;--;");
+                    desabilitaBotoes(mapPoderBotao);
+                    return;
+                }
+
+                if (inimigo.getVida() == 0) {
+                    txtConsole.setText(txtConsole.getText() + "O inimigo está morto. Jogador venceu!!!");
+                    desabilitaBotoes(mapPoderBotao);
+                    return;
+                }
+
+                if (res.foiAplicado()) {
+                    txtConsole.setText(txtConsole.getText() + "Agora é a vez do inimigo...");
+                    desabilitaBotoes(mapPoderBotao);
+                    vezDoInimigo(jogador, inimigo, txtConsole);
+                    atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
+                    habilitaBotoes(mapPoderBotao);
+                }
             });
 
             raiz.getChildren().add(btn);
         });
 
-        ImageView monitor = CarregadorDeImagens.carregar("src/resources/monitor.png", primaryStage);
+        ImageView monitor = carregarMonitor(primaryStage, widthTela, heightTela, imgIni);
         if (monitor == null) return;
-        monitor.setFitWidth(widthTela * 0.5);
-        monitor.setFitHeight(heightTela * 0.4);
-        monitor.setX(imgIni.getX() - widthTela * 0.25);
-        monitor.setY(imgIni.getY() + imgIni.getFitHeight() + heightTela * 0.025);
 
         raiz.getChildren().add(monitor);
 
@@ -127,11 +142,41 @@ public class Campanha {
         primaryStage.show();
     }
 
+    private static ImageView carregarMonitor(Stage primaryStage, Double widthTela, Double heightTela, ImageView imgIni) {
+        ImageView monitor = CarregadorDeImagens.carregar("src/resources/monitor.png", primaryStage);
+        if (monitor == null) { return null; }
+
+        monitor.setFitWidth(widthTela * 0.5);
+        monitor.setFitHeight(heightTela * 0.4);
+        monitor.setX(imgIni.getX() - widthTela * 0.25);
+        monitor.setY(imgIni.getY() + imgIni.getFitHeight() + heightTela * 0.025);
+        return monitor;
+    }
+
+    private static void vezDoInimigo(Drego jogador, Drego inimigo, Text txtConsole) {
+        Random rdm = new Random();
+        Poder poder = inimigo.getPoderes().get(rdm.nextInt(inimigo.getPoderes().size()));
+        Poder.ResultadoPoder res = poder.aplicar(inimigo, jogador);
+
+        txtConsole.setText(txtConsole.getText() + System.lineSeparator()
+            + res.getDesc()
+            + System.lineSeparator()
+            + "Agora é sua vez...");
+    }
+
+    private static void esperar(Long m) {
+        try {
+            Thread.sleep(m);
+        } catch (InterruptedException e) {
+            System.out.println("Impossível esperar: " + e.getMessage());
+        }
+    }
+
     private static void desabilitaBotoes(HashMap<Poder, Button> mapPoderBotao) {
         mapPoderBotao.values().forEach((btn) -> btn.setDisable(true));
     }
 
-    private static void habilita(HashMap<Poder, Button> mapPoderBotao) {
+    private static void habilitaBotoes(HashMap<Poder, Button> mapPoderBotao) {
         mapPoderBotao.values().forEach((btn) -> btn.setDisable(false));
     }
 
@@ -211,7 +256,7 @@ public class Campanha {
         tooltip.setText(
             poder.getDescricao() + System.lineSeparator() +
                 "Custo: " + poder.getCusto() + System.lineSeparator() +
-                "Dano: " + poder.getCusto() + System.lineSeparator() +
+                "Dano: " + poder.getDanoInstantaneo() + System.lineSeparator() +
                 "Efeitos causados: " + poder.listaEfeitos()
         );
 

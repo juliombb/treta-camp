@@ -14,7 +14,7 @@ public class ConfiguracaoPoder {
 		"Um simples socão na boca",
 		"src/resources/soco.png",
 		10.0,
-		5.0,
+		0.0,
 		null);
 	
 	public final static Poder CHUTE = new Poder(
@@ -22,7 +22,16 @@ public class ConfiguracaoPoder {
 		"O Roundhouse Kick do agreste",
 		"src/resources/chute.png",
 		12.0,
-		7.0,
+		0.0,
+		null);
+
+	public final static Poder MORDIDA = new Poder(
+		"Mordida",
+		"Uma mordida sórdida. Só os mais arretados são capazes de " +
+			"executá-la.",
+		"src/resources/mordida.gif",
+		15.0,
+		0.0,
 		null);
 	
 	private final static ArrayList<Efeito> EFEITOS_PEPITA_MAGICA =

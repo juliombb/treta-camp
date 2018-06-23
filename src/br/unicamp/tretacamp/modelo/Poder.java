@@ -51,7 +51,8 @@ public class Poder implements Serializable{
 		}
 
 		atingido.diminuirVida(this.danoInstantaneo);
-		ResultadoPoder res = new ResultadoPoder(conjurante.getNome() +
+		ResultadoPoder res = new ResultadoPoder(this.getNome() + "!!!"
+			+ System.lineSeparator() + conjurante.getNome() +
 			" causa " + this.danoInstantaneo + " de dano em " + atingido.getNome(), true);
 
 		if (atingido.getDiferencial() != null) {

@@ -31,8 +31,10 @@ public class ConfiguracaoDregos {
     private ConfiguracaoDregos() {
         mago.adicionarPoder(ConfiguracaoPoder.PEPITA_MAGICA);
         mago.adicionarPoder(ConfiguracaoPoder.RAIO);
+        mago.adicionarPoder(ConfiguracaoPoder.SOCO);
         espotenique.adicionarPoder(ConfiguracaoPoder.CHUTE);
         monho.adicionarPoder(ConfiguracaoPoder.SOCO);
         cobroso.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
+        cobroso.adicionarPoder(ConfiguracaoPoder.MORDIDA);
     }
 }
