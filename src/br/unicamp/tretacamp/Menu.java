@@ -1,6 +1,6 @@
 package br.unicamp.tretacamp;
 
-import br.unicamp.tretacamp.config.ConfiguracaoFonte;
+import br.unicamp.tretacamp.config.ConfiguracaoEstilo;
 import javafx.application.Application;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -11,9 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.net.URL;
 
 /**
  * @author Júlio Moreira Blás de Barros (200491)
@@ -27,7 +25,7 @@ public class Menu extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ConfiguracaoFonte fontes = ConfiguracaoFonte.getInstance();
+        ConfiguracaoEstilo fontes = ConfiguracaoEstilo.getInstance();
 
         Group raiz = new Group();
         Scene menu = new Scene(raiz, 1000, 400);
@@ -55,7 +53,7 @@ public class Menu extends Application {
         });
         lblSair.setCursor(Cursor.HAND);
 
-        lblTitulo.getStyleClass().add(fontes.PIXEL_LOVE);
+        lblTitulo.getStyleClass().add(fontes.PIXEL_LOVE_BIG);
         lblInicio.getStyleClass().add(fontes.PIXEL_LOVE);
         lblSair.getStyleClass().add(fontes.PIXEL_LOVE);
 
@@ -65,20 +63,22 @@ public class Menu extends Application {
 
         raiz.getChildren().addAll(imgFundo, lblTitulo, lblInicio, lblSair);
 
-        imgFundo.setTranslateX(150);
+        imgFundo.setTranslateX(220);
         imgFundo.setTranslateY(150);
 
-        lblTitulo.setTranslateX(220);
+        lblTitulo.setTranslateX(260);
         lblTitulo.setTranslateY(100);
 
-        lblInicio.setTranslateX(100);
+        lblInicio.setTranslateX(170);
         lblInicio.setTranslateY(200);
 
-        lblSair.setTranslateX(400);
+        lblSair.setTranslateX(470);
         lblSair.setTranslateY(200);
 
-        primaryStage.setWidth(550);
-        primaryStage.setHeight(300);
+        primaryStage.setWidth(700);
+        primaryStage.setHeight(400);
+
+        primaryStage.setResizable(false);
 
         primaryStage.setTitle("Treta Camp - Menu");
         primaryStage.setScene(menu);

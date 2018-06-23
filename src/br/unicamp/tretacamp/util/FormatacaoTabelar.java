@@ -1,4 +1,4 @@
-package br.unicamp.tretacamp;
+package br.unicamp.tretacamp.util;
 
 import com.sun.javafx.geom.Vec2d;
 
@@ -10,22 +10,30 @@ public class FormatacaoTabelar {
     final Double larguraColuna;
     final Double alturaColuna;
     final Integer numColunas;
+    final Double espacamento;
 
     Integer colunaAtual = 0;
-    Double alturaAtual = 0.0;
+    Integer linhaAtual = 0;
 
-    public FormatacaoTabelar(Double larguraColuna, Double alturaColuna, Integer numColunas) {
+    public FormatacaoTabelar(
+        Double larguraColuna,
+        Double alturaColuna,
+        Integer numColunas,
+        Double espacamento) {
         this.larguraColuna = larguraColuna;
         this.alturaColuna = alturaColuna;
         this.numColunas = numColunas;
+        this.espacamento = espacamento;
     }
 
     public Vec2d proxCelula() {
-        if (colunaAtual + 1 >= numColunas) {
+        if (colunaAtual + 1 > numColunas) {
             colunaAtual = 0;
-            alturaAtual += alturaColuna;
+            linhaAtual++;
         }
 
-        return new Vec2d((colunaAtual++)*larguraColuna, alturaAtual);
+        return new Vec2d(
+            (colunaAtual++)*(larguraColuna + espacamento),
+            linhaAtual*(alturaColuna + espacamento));
     }
 }

@@ -1,5 +1,19 @@
 @font-face { font-family: 'pixel-love'; src: url('pixel-love.ttf'); }
 .pixel-love {
     -fx-font-family: 'pixel-love';
-    -fx-font-size: 20px;
+    -fx-font-size: 18px;
+}
+
+.pixel-love-sm {
+    -fx-font-family: 'pixel-love';
+    -fx-font-size: 10px;
+}
+
+.pixel-love-big {
+    -fx-font-family: 'pixel-love';
+    -fx-font-size: 25px;
+}
+
+.hover-text:hover {
+    -fx-background-color: rgba(0, 0, 255, 0.1);
 }
