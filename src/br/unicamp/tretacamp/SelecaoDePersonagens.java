@@ -16,6 +16,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+
+import java.awt.*;
 import java.io.FileInputStream;
 import java.util.Arrays;
 
@@ -98,6 +100,10 @@ public class SelecaoDePersonagens {
 
         primaryStage.setWidth(900);
         primaryStage.setHeight(500);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        primaryStage.setX((screenSize.getWidth() - 900.0)/2.0);
+        primaryStage.setY((screenSize.getHeight() - 500.0)/2.0);
         primaryStage.setTitle("Treta Camp - Selecionar personagem");
         primaryStage.setScene(selecao);
         primaryStage.show();

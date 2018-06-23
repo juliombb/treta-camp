@@ -8,6 +8,7 @@ import br.unicamp.tretacamp.modelo.Poder;
 import br.unicamp.tretacamp.util.CarregadorDeImagens;
 import br.unicamp.tretacamp.util.FormatacaoTabelar;
 import br.unicamp.tretacamp.util.Vect2;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Group;
@@ -33,6 +34,9 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Júlio Moreira Blás de Barros (julio.barros@movile.com)
@@ -46,6 +50,10 @@ public class Campanha {
     public static void iniciar(Drego jogador, Stage primaryStage) throws Exception {
         ConfiguracaoEstilo estilo = ConfiguracaoEstilo.getInstance();
         ConfiguracaoDregos confDregos = ConfiguracaoDregos.getInstance();
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        primaryStage.setOnCloseRequest((evt) -> {
+            executor.shutdown();
+        });
 
         Group raiz = new Group();
         Scene campanha = new Scene(raiz);
@@ -98,26 +106,27 @@ public class Campanha {
             btn.setOnMouseClicked((evt) -> {
                 Poder.ResultadoPoder res = poder.aplicar(jogador, inimigo);
                 atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
-                txtConsole.setText(res.getDesc() + System.lineSeparator());
+                txtConsole.setText(res.getDesc());
 
-                if (jogador.getVida() == 0) {
-                    txtConsole.setText(txtConsole.getText() + "O jogador está morto. Fim de jogo ;--;");
-                    desabilitaBotoes(mapPoderBotao);
-                    return;
-                }
-
-                if (inimigo.getVida() == 0) {
-                    txtConsole.setText(txtConsole.getText() + "O inimigo está morto. Jogador venceu!!!");
-                    desabilitaBotoes(mapPoderBotao);
-                    return;
-                }
+                if (verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao)) return;
 
                 if (res.foiAplicado()) {
-                    txtConsole.setText(txtConsole.getText() + "Agora é a vez do inimigo...");
+                    txtConsole.setText(txtConsole.getText() + System.lineSeparator() + "Agora é a vez do inimigo...");
                     desabilitaBotoes(mapPoderBotao);
-                    vezDoInimigo(jogador, inimigo, txtConsole);
-                    atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
-                    habilitaBotoes(mapPoderBotao);
+
+                    executor.schedule(() ->
+                        Platform.runLater(() -> {
+                                vezDoInimigo(jogador, inimigo, txtConsole);
+                                atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
+                                if (verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao)) return;
+
+                                txtConsole.setText(
+                                    txtConsole.getText()
+                                    + System.lineSeparator()
+                                    + "Agora é sua vez...");
+                                habilitaBotoes(mapPoderBotao);
+                            }),
+                        0, TimeUnit.SECONDS);
                 }
             });
 
@@ -142,6 +151,25 @@ public class Campanha {
         primaryStage.show();
     }
 
+    private static boolean verificaFim(Drego jogador, Drego inimigo, Text txtConsole, ImageView imgJog, ImageView imgIni, HashMap<Poder, Button> mapPoderBotao) {
+        if (jogador.getVida() == 0) {
+            txtConsole.setText(txtConsole.getText() + System.lineSeparator() + "O jogador está morto. Fim de jogo ;--;");
+            desabilitaBotoes(mapPoderBotao);
+            imgJog.setRotate(-90.0);
+            imgJog.setY(imgJog.getY() + (imgJog.getFitHeight() - imgJog.getFitWidth()));
+            return true;
+        }
+
+        if (inimigo.getVida() == 0) {
+            txtConsole.setText(txtConsole.getText() + System.lineSeparator() + "O inimigo está morto. Jogador venceu!!!");
+            desabilitaBotoes(mapPoderBotao);
+            imgIni.setRotate(90.0);
+            imgIni.setY(imgIni.getY() + (imgIni.getFitHeight() - imgIni.getFitWidth()));
+            return true;
+        }
+        return false;
+    }
+
     private static ImageView carregarMonitor(Stage primaryStage, Double widthTela, Double heightTela, ImageView imgIni) {
         ImageView monitor = CarregadorDeImagens.carregar("src/resources/monitor.png", primaryStage);
         if (monitor == null) { return null; }
@@ -159,17 +187,7 @@ public class Campanha {
         Poder.ResultadoPoder res = poder.aplicar(inimigo, jogador);
 
         txtConsole.setText(txtConsole.getText() + System.lineSeparator()
-            + res.getDesc()
-            + System.lineSeparator()
-            + "Agora é sua vez...");
-    }
-
-    private static void esperar(Long m) {
-        try {
-            Thread.sleep(m);
-        } catch (InterruptedException e) {
-            System.out.println("Impossível esperar: " + e.getMessage());
-        }
+            + res.getDesc());
     }
 
     private static void desabilitaBotoes(HashMap<Poder, Button> mapPoderBotao) {
