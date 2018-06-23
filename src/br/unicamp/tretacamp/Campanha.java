@@ -31,6 +31,7 @@ import javafx.util.Duration;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -64,13 +65,13 @@ public class Campanha {
 
         final ImageView imgJog = configurarImagemJogador(jogador, primaryStage, estilo, widthTela, heightTela);
         if (imgJog == null) return;
-        Label lblJog = configurarLabelJogador(estilo, imgJog);
+        Label lblJog = configurarLabelJogador(estilo, imgJog, jogador);
         Label lblVidaJog = configurarLabelVidaJog(jogador, estilo, imgJog);
         Label lblEnergiaJog = configLabelEnergiaJog(jogador, estilo, lblVidaJog);
 
         final ImageView imgIni = configurarImagemInimigo(primaryStage, estilo, inimigo, widthTela, heightTela);
         if (imgIni == null) return;
-        Label lblIni = configurarLabelInimigo(estilo, imgIni);
+        Label lblIni = configurarLabelInimigo(estilo, imgIni, inimigo);
         Label lblVidaIni = configurarLabelVidaIni(jogador, estilo, imgIni);
         Label lblEnergiaIni = configLabelEnergiaIni(jogador, estilo, lblVidaIni);
 
@@ -79,6 +80,7 @@ public class Campanha {
 
         FormatacaoTabelar tab = new FormatacaoTabelar(widthTela * 0.2, heightTela * 0.15, 2, heightTela * 0.05);
 
+        HashMap<Poder, Button> mapPoderBotao = new HashMap<>();
         jogador.getPoderes().forEach((poder) -> {
             Tooltip tooltip = criarTooltipPoder(widthTela, poder);
             Button btn = criarBotaoPoder(primaryStage, widthTela, heightTela, poder, tooltip);
@@ -91,16 +93,13 @@ public class Campanha {
             Double pdY = imgJog.getTranslateY() + imgJog.getFitHeight() + heightTela * 0.1;
             btn.setTranslateX(pdX + pos.x);
             btn.setTranslateY(pdY + pos.y);
+            mapPoderBotao.put(poder, btn);
 
             btn.setOnMouseClicked((evt) -> {
-                poder.aplicar(jogador, inimigo);
+                Poder.ResultadoPoder res = poder.aplicar(jogador, inimigo);
                 atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
-                txtConsole.setText("Você atacou o inimigo com a habilidade " +
-                    poder.getNome() +
-                    " e deu " +
-                    poder.getDanoInstantaneo() +
-                    " de dano. Agora é a vez dele...");
-                btn.setDisable(true);
+                txtConsole.setText(res.getDesc() + System.lineSeparator() + "Agora é a vez do inimigo...");
+                desabilitaBotoes(mapPoderBotao);
             });
 
             raiz.getChildren().add(btn);
@@ -126,6 +125,14 @@ public class Campanha {
         primaryStage.setTitle("Treta Camp - Campanha " + jogador.getNome());
         primaryStage.setScene(campanha);
         primaryStage.show();
+    }
+
+    private static void desabilitaBotoes(HashMap<Poder, Button> mapPoderBotao) {
+        mapPoderBotao.values().forEach((btn) -> btn.setDisable(true));
+    }
+
+    private static void habilita(HashMap<Poder, Button> mapPoderBotao) {
+        mapPoderBotao.values().forEach((btn) -> btn.setDisable(false));
     }
 
     private static void atualizarCoisas(Label lblVidaJog, Label lblEnergiaJog, Label lblVidaIni, Label lblEnergiaIni, Drego jogador, Drego inimigo) {
@@ -237,8 +244,8 @@ public class Campanha {
         return player;
     }
 
-    private static Label configurarLabelInimigo(ConfiguracaoEstilo estilo, ImageView imgIni) {
-        Label lblIni = new Label("Inimigo");
+    private static Label configurarLabelInimigo(ConfiguracaoEstilo estilo, ImageView imgIni, Drego inimigo) {
+        Label lblIni = new Label("Inimigo (" + inimigo.getNome() + ")");
         lblIni.getStyleClass().addAll(estilo.PIXEL_LOVE, estilo.BRANCO, estilo.SOMBRA);
         lblIni.setTranslateY(imgIni.getY());
         lblIni.setTranslateX(imgIni.getX());
@@ -258,8 +265,8 @@ public class Campanha {
         return imgIni;
     }
 
-    private static Label configurarLabelJogador(ConfiguracaoEstilo estilo, ImageView imgJog) {
-        Label lblJog = new Label("Voce");
+    private static Label configurarLabelJogador(ConfiguracaoEstilo estilo, ImageView imgJog, Drego jogador) {
+        Label lblJog = new Label("Voce (" + jogador.getNome() +  ")");
         lblJog.getStyleClass().addAll(estilo.PIXEL_LOVE, estilo.BRANCO, estilo.SOMBRA);
         lblJog.setTranslateY(imgJog.getY());
         lblJog.setTranslateX(imgJog.getX());

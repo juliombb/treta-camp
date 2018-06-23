@@ -32,33 +32,45 @@ public class Poder implements Serializable{
 		}
 	}
 	
-	public boolean aplicar(Drego conjurante, Drego atingido) {
+	public ResultadoPoder aplicar(Drego conjurante, Drego atingido) {
 		if (conjurante.getEfeitos()
 				.stream()
 				.anyMatch((efeito) ->
 					efeito instanceof Paralisar
 					&& efeito.getDuracaoEmTurnos() > 0)) {
 
-			return false;
+			return new ResultadoPoder(conjurante.getNome() +
+				" estava paralisad@ e não pôde atacar", true);
 		}
 
 		try {
 			conjurante.gastarEnergia(this.custo);
 		} catch (NotEnoughEnergyException e) {
-			return false;
+			return new ResultadoPoder(conjurante.getNome() + " não possui energia suficiente" +
+				" para conjurar " + this.getNome(), false);
 		}
-		
+
 		atingido.diminuirVida(this.danoInstantaneo);
+		ResultadoPoder res = new ResultadoPoder(conjurante.getNome() +
+			" causa " + this.danoInstantaneo + " de dano em " + atingido.getNome(), true);
 
 		if (atingido.getDiferencial() != null) {
 			// Caso o Drego atingido tenha o diferencial de DEFESA_PERFURANTE é
 			// causado um dano de 20% do dano causado no drego atingido no drego conjurante
 			if (atingido.getDiferencial().equals(Diferencial.DEFESA_PERFURANTE)) {
 				conjurante.diminuirVida(0.2 * this.danoInstantaneo);
+				res.descResultado += System.lineSeparator();
+				res.descResultado += "Por conta da defesa perfurante de " + atingido.getNome() +
+					", " + conjurante.getNome() + " levou " + (0.2 * this.danoInstantaneo)
+					+ " de dano";
 			}
 
 			if (atingido.getDiferencial().equals(Diferencial.CACADOR_DE_MANA)) {
 			    atingido.aumentarEnergia(0.1 * this.danoInstantaneo);
+				res.descResultado += System.lineSeparator();
+				res.descResultado += "Por conta de " + atingido.getNome() +
+					" ser caçador de mana, " + conjurante.getNome() + " levou " + (0.1 * this.danoInstantaneo)
+					+ " de sugação em sua mana";
             }
 		}
 
@@ -82,15 +94,17 @@ public class Poder implements Serializable{
 				if (atingido.getDiferencial() != null) {
 					if (!atingido.getDiferencial().equals(Diferencial.PROTECAO_FOGO)) {
 						atingido.adicionarEfeito(efeito.clone());
+						// TODO: adicionar texto no res
 					}
 				}
 			} else {
 				atingido.adicionarEfeito(efeito.clone());
+				// TODO: adicionar texto no res
 			}
 		});
 		
 		
-		return true;
+		return res;
 	}
 	
 	public String getNome() {
@@ -127,5 +141,27 @@ public class Poder implements Serializable{
 	@Override
 	public String toString() {
 		return "Poder [nome=" + nome + ", efeitos=" + efeitos + ", danoInstantaneo=" + danoInstantaneo + ", custo=" + custo + "]";
+	}
+
+	public static class ResultadoPoder {
+		String descResultado;
+		final boolean aplicado;
+
+		public ResultadoPoder(String descResultado, boolean aplicado) {
+			this.descResultado = descResultado;
+			this.aplicado = aplicado;
+		}
+
+		public String getDesc() {
+			return descResultado;
+		}
+
+		public void setDesc(String descResultado) {
+			this.descResultado = descResultado;
+		}
+
+		public boolean foiAplicado() {
+			return aplicado;
+		}
 	}
 }

@@ -26,18 +26,23 @@ public class PoderEspecial extends Poder {
 	 * o tipo do Drego conjurante.
 	 * */
 	@Override
-	public boolean aplicar (Drego conjurante, Drego atingido) {
+	public Poder.ResultadoPoder aplicar (Drego conjurante, Drego atingido) {
 		if (condicao.verificar(conjurante)) {
-			if (super.aplicar(conjurante, atingido)) {
+			Poder.ResultadoPoder res = super.aplicar(conjurante, atingido);
+			if (res.aplicado) {
 				double porcentagemAumento = getPorcentagemAumentoEfeito(conjurante, atingido);
 				
 				atingido.diminuirVida(porcentagemAumento * getDanoInstantaneo());
-				
-				return true;
+				res.descResultado += System.lineSeparator();
+				res.descResultado += "Poder especial! Dano aumentado em: ";
+				res.descResultado += porcentagemAumento * 100 + "%";
+
+				return res;
 			}
 		}
 		
-		return false;
+		return new Poder.ResultadoPoder("Condicao " + condicao.getNome()
+			+ " nao satisfeita", false);
 	}
 
 	public Condicao getCondicao() {

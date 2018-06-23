@@ -9,7 +9,7 @@ import br.unicamp.tretacamp.modelo.Tipo;
  */
 public class ConfiguracaoDregos {
     private final Drego mago = new Drego(
-        "El mago", "src/resources/mago.png", 100.0, 100.0, Tipo.AGUA, null);
+        "Mago implacavel", "src/resources/mago.png", 100.0, 100.0, Tipo.AGUA, null);
     private final Drego espotenique = new Drego(
         "Espotenique", "src/resources/espotenique.png", 100.0, 100.0, Tipo.TERRA, null);
     private final Drego monho = new Drego(
