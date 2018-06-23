@@ -9,7 +9,7 @@ public class PossuirItem implements Condicao {
 	
 	public boolean verificar(Drego drego) {
 		for(int i=0; i<drego.getItens().size(); i++) {
-			if(drego.getItens().get(i)==this.item) {
+			if(drego.getItens().get(i).equals(this.item)) {
 				return true;
 			}
 		}

@@ -33,4 +33,12 @@ public class Item implements Serializable{
 		return "Item [nome=" + nome + ", imagem=" + imagem + "]";
 	}
 	
+	public boolean equals(Object obj) {
+		if (obj instanceof Item) {
+			return ((Item) obj).getNome() == this.getNome() && ((Item) obj).getImagem() == this.getImagem();
+		}
+		
+		return false;
+	}
+	
 }

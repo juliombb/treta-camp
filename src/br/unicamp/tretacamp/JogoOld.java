@@ -3,6 +3,8 @@ package br.unicamp.tretacamp;
 import br.unicamp.tretacamp.config.ConfiguracaoDregos;
 import br.unicamp.tretacamp.modelo.Diferencial;
 import br.unicamp.tretacamp.modelo.Drego;
+import br.unicamp.tretacamp.modelo.Efeito;
+import br.unicamp.tretacamp.modelo.EfeitoParalizar;
 import br.unicamp.tretacamp.modelo.Item;
 import br.unicamp.tretacamp.modelo.PoderEspecial;
 import br.unicamp.tretacamp.modelo.Tipo;
@@ -62,9 +64,11 @@ public class JogoOld extends Application {
                 // menu do turno do jogador, mostra habilidades e deixa ele selecionar
                 trataEfeito(jogador);
                 if (verificarCustoMinimo(jogador)) {
-                    randomItem(true);
-					poderJogador(jogador, inimigo, sc);
-					mostraStatus(jogador, inimigo);
+                		if (!estaParalizado(jogador)) {
+	                    randomItem(true);
+						poderJogador(jogador, inimigo, sc);
+						mostraStatus(jogador, inimigo);
+                		}
                 }
                 else {
                 		System.out.println("Jogador n tem habilidades para usar ");
@@ -77,9 +81,11 @@ public class JogoOld extends Application {
                 // aleatorio
                 trataEfeito(inimigo);
                 if(verificarCustoMinimo(jogador)) {
-                    randomItem(false);
-					poderInimigo(jogador, inimigo, sc);
-					mostraStatus(jogador, inimigo);
+                		if (!estaParalizado(inimigo)) {
+	                    randomItem(false);
+						poderInimigo(jogador, inimigo, sc);
+						mostraStatus(jogador, inimigo);
+					}
                 }
                 else {
 	                	perdedor = INIMIGO;
@@ -209,36 +215,20 @@ public class JogoOld extends Application {
 
     private void trataEfeito(Drego drego) {
         drego.getEfeitos().forEach((efeito) -> {
-
-            switch (efeito.getTipoEfeito()) {
-
-                case QUEIMAR:
-                    if (efeito.reduzirDuracaoEmTurnos()) {
-                    		System.out.println("Devido ao efeito queimar " + drego.getControlador() +
-                    				" perde " + efeito.getValor() + " de vida");
-                    		drego.diminuirVida(efeito.getValor());
-                    }
-                    break;
-
-                case ENFRAQUECER:
-                    if (efeito.reduzirDuracaoEmTurnos()) {
-						System.out.println("Devido ao efeito enfraquecer " + drego.getControlador() +
-								" perde " + efeito.getValor() + " de energia");
-						double novaEnergia = drego.getEnergia() - efeito.getValor();
-						drego.setEnergia(novaEnergia > 0 ? novaEnergia : 0);
-                    }
-                    break;
-
-                case PARALIZAR:
-                    efeito.reduzirDuracaoEmTurnos();
-                    break;
-
-                default:
-                    break;
-            }
+        		efeito.acontecer(drego);
         });
 
         drego.getEfeitos().removeIf(efeito -> efeito.getDuracaoEmTurnos() == 0);
+    }
+    
+    private boolean estaParalizado(Drego drego) {
+	    	for (Efeito efeito: drego.getEfeitos()) {
+	    		if (efeito instanceof EfeitoParalizar) {
+	    			return true;
+	    		}
+	    	}
+	    	
+	    	return false;
     }
     
     private void mostraStatus(Drego jogador1, Drego jogador2) {
@@ -253,14 +243,15 @@ public class JogoOld extends Application {
     }
     
     private boolean verificarCustoMinimo (Drego drego) {
-    	double min = 100; //valor inicial de energia(maximo)
-    	
-    	for(int i = 0; i < drego.getPoderes().size(); i++) {
-    		if(drego.getPoderes().get(i).getCusto() < min) {
-    			min = drego.getPoderes().get(i).getCusto();
-    		}
-    	}
-	    	if(drego.getEnergia() > min) {
+	    	double min = 100; //valor inicial de energia(maximo)
+	    	
+	    	for(int i = 0; i < drego.getPoderes().size(); i++) {
+	    		if(drego.getPoderes().get(i).getCusto() < min) {
+	    			min = drego.getPoderes().get(i).getCusto();
+	    		}
+	    	}
+	    	
+	    	if (drego.getEnergia() > min) {
 	    		return true;
 	    	}
 	    	else {
@@ -269,45 +260,45 @@ public class JogoOld extends Application {
     }
     
     private void salvarEstadoJogo(Drego jogador, Drego inimigo) {
-    	String filename = "Jogo.dat";
-    	
-    	try {
-    		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream (filename));
-    		output.writeObject(jogador);
-    		output.writeObject(inimigo);
-    		output.flush();
-    		output.close();
-    	}
-    	catch(IOException ex) {
-    		ex.printStackTrace();
-    	}	
+	    	String filename = "Jogo.dat";
+	    	
+	    	try {
+	    		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream (filename));
+	    		output.writeObject(jogador);
+	    		output.writeObject(inimigo);
+	    		output.flush();
+	    		output.close();
+	    	}
+	    	catch(IOException ex) {
+	    		ex.printStackTrace();
+	    	}
     }
     
     private void carregarEstadoJogo() {
-    	String filename = "Jogo.dat";
-    	
-    	try {
-    		ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
-    		
-    		Drego d1 = (Drego) input.readObject();
-    		System.out.println(d1);
-    		System.out.println();
-    		
-    		Drego d2 = (Drego) input.readObject();
-    		System.out.println(d2);
-    		System.out.println();
-    		
-    		input.close();
-    	}
-    	catch(EOFException endOfFileException) {
-    		endOfFileException.printStackTrace();
-    	}
-    	catch(ClassNotFoundException classNotFoundException) {
-    		classNotFoundException.printStackTrace();
-    	}
-    	catch(IOException ex) {
-    		ex.printStackTrace();
-    	}
+	    	String filename = "Jogo.dat";
+	    	
+	    	try {
+	    		ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
+	    		
+	    		Drego d1 = (Drego) input.readObject();
+	    		System.out.println(d1);
+	    		System.out.println();
+	    		
+	    		Drego d2 = (Drego) input.readObject();
+	    		System.out.println(d2);
+	    		System.out.println();
+	    		
+	    		input.close();
+	    	}
+	    	catch (EOFException endOfFileException) {
+	    		endOfFileException.printStackTrace();
+	    	}
+	    	catch (ClassNotFoundException classNotFoundException) {
+	    		classNotFoundException.printStackTrace();
+	    	}
+	    	catch(IOException ex) {
+	    		ex.printStackTrace();
+	    	}
     }
 
 

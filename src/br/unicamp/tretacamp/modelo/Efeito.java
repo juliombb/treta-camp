@@ -2,26 +2,19 @@ package br.unicamp.tretacamp.modelo;
 
 import java.io.Serializable;
 
-public class Efeito implements Serializable {
-	private static final long serialVersionUID = 304L;
-	private TipoEfeito tipoEfeito;
+public abstract class Efeito implements Serializable {
+	private static final long serialVersionUID = 134124765347272L;
 	private double valor;
 	private int duracaoEmTurnos;
 	
-	public Efeito(TipoEfeito tipoEfeito, double valor, int duracaoEmTurnos) {
-		this.tipoEfeito = tipoEfeito;
+	public abstract void acontecer(Drego drego);
+	public abstract Efeito clone();
+	
+	public Efeito(double valor, int duracaoEmTurnos) {
 		this.valor = valor;
 		this.duracaoEmTurnos = duracaoEmTurnos;
 	}
-
-	public TipoEfeito getTipoEfeito() {
-		return tipoEfeito;
-	}
-
-	public void setTipoEfeito(TipoEfeito tipoEfeito) {
-		this.tipoEfeito = tipoEfeito;
-	}
-
+	
 	public double getValor() {
 		return valor;
 	}
@@ -47,13 +40,13 @@ public class Efeito implements Serializable {
 		return false;
 	}
 	
-	public Efeito clone() {
-		return new Efeito(this.tipoEfeito, this.valor, this.duracaoEmTurnos);
-	}
+	//public Efeito clone() {
+	//	return new Efeito(this.tipoEfeito, this.valor, this.duracaoEmTurnos);
+	//}
 
 	@Override
 	public String toString() {
-		return "Efeito [tipoEfeito=" + tipoEfeito + ", valor=" + valor + ", duracaoEmTurnos=" + duracaoEmTurnos + "]";
+		return "Efeito [valor=" + valor + ", duracaoEmTurnos=" + duracaoEmTurnos + "]";
 	}
 	
 }

@@ -28,7 +28,7 @@ public class Poder implements Serializable{
 		if (conjurante.getEfeitos()
 				.stream()
 				.anyMatch((efeito) ->
-					efeito.getTipoEfeito() == TipoEfeito.PARALIZAR
+					efeito instanceof EfeitoParalizar
 					&& efeito.getDuracaoEmTurnos() > 0)) {
 
 			return false;
@@ -70,28 +70,14 @@ public class Poder implements Serializable{
 		 * */
 
 		this.efeitos.forEach((efeito) -> {
-			switch(efeito.getTipoEfeito()) {
-				case PARALIZAR:
-					atingido.adicionarEfeito(efeito.clone());
-					break;
-				case QUEIMAR:
-					if (atingido.getDiferencial() != null) {
-						if (!atingido.getDiferencial().equals(Diferencial.PROTECAO_FOGO)) {
-							atingido.adicionarEfeito(efeito.clone());
-						}
-					}
-					else {
+			if (efeito instanceof EfeitoQueimar) {
+				if (atingido.getDiferencial() != null) {
+					if (!atingido.getDiferencial().equals(Diferencial.PROTECAO_FOGO)) {
 						atingido.adicionarEfeito(efeito.clone());
 					}
-					break;
-				case SUGAR:
-					conjurante.aumentarVida(0.2 * this.danoInstantaneo);
-					break;
-				case ENFRAQUECER:
-					atingido.adicionarEfeito(efeito.clone());
-					break;
-				default:
-					break;
+				}
+			} else {
+				atingido.adicionarEfeito(efeito.clone());
 			}
 		});
 		
