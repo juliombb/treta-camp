@@ -8,6 +8,7 @@ import br.unicamp.tretacamp.modelo.Poder;
 import br.unicamp.tretacamp.util.CarregadorDeImagens;
 import br.unicamp.tretacamp.util.FormatacaoTabelar;
 import br.unicamp.tretacamp.util.Vect2;
+import javafx.animation.RotateTransition;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
@@ -111,6 +112,7 @@ public class Campanha {
                 if (verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao)) return;
 
                 if (res.foiAplicado()) {
+                    animacaozinha(imgIni);
                     txtConsole.setText(txtConsole.getText() + System.lineSeparator() + "Agora é a vez do inimigo...");
                     desabilitaBotoes(mapPoderBotao);
 
@@ -120,13 +122,14 @@ public class Campanha {
                                 atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
                                 if (verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao)) return;
 
+                                animacaozinha(imgJog);
                                 txtConsole.setText(
                                     txtConsole.getText()
                                     + System.lineSeparator()
                                     + "Agora é sua vez...");
                                 habilitaBotoes(mapPoderBotao);
                             }),
-                        0, TimeUnit.SECONDS);
+                        1, TimeUnit.SECONDS);
                 }
             });
 
@@ -149,6 +152,44 @@ public class Campanha {
         primaryStage.setTitle("Treta Camp - Campanha " + jogador.getNome());
         primaryStage.setScene(campanha);
         primaryStage.show();
+    }
+
+    private static void animacaozinha(ImageView img) {
+        RotateTransition ft = new RotateTransition();
+        ft.setNode(img);
+        ft.setDuration(new Duration(100));
+        ft.setFromAngle(0.0);
+        ft.setToAngle(45.0);
+        ft.setCycleCount(6);
+        ft.setAutoReverse(true);
+        ft.play();
+
+        RotateTransition ft2 = new RotateTransition();
+        ft.setNode(img);
+        ft.setDuration(new Duration(100));
+        ft.setFromAngle(45.0);
+        ft.setToAngle(-45.0);
+        ft.setCycleCount(12);
+        ft.setAutoReverse(true);
+        ft.play();
+
+        RotateTransition ft3 = new RotateTransition();
+        ft.setNode(img);
+        ft.setDuration(new Duration(100));
+        ft.setFromAngle(-45.0);
+        ft.setToAngle(45.0);
+        ft.setCycleCount(12);
+        ft.setAutoReverse(true);
+        ft.play();
+
+        RotateTransition ft4 = new RotateTransition();
+        ft.setNode(img);
+        ft.setDuration(new Duration(100));
+        ft.setFromAngle(45.0);
+        ft.setToAngle(0.0);
+        ft.setCycleCount(6);
+        ft.setAutoReverse(true);
+        ft.play();
     }
 
     private static boolean verificaFim(Drego jogador, Drego inimigo, Text txtConsole, ImageView imgJog, ImageView imgIni, HashMap<Poder, Button> mapPoderBotao) {
