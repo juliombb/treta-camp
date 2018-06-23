@@ -1,0 +1,16 @@
+Random rdm = new Random();
+rect.setFill(
+    Paint.valueOf("rgb("
+        + (rdm.nextInt(155) + 100)
+        + ", " + (rdm.nextInt(155) + 100)
+        + ", " + (rdm.nextInt(155) + 100)
+        + ")"));
+
+Random rdm = new Random();
+lblDrego.setBackground(new Background(new BackgroundFill(
+    Paint.valueOf("rgb("
+        + (rdm.nextInt(155) + 100)
+        + ", " + (rdm.nextInt(155) + 100)
+        + ", " + (rdm.nextInt(155) + 100)
+        + ")"), null, null
+)));

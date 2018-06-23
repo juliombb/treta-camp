@@ -9,13 +9,13 @@ import br.unicamp.tretacamp.modelo.Tipo;
  */
 public class ConfiguracaoDregos {
     private final Drego mago = new Drego(
-        "mago", "mago.png", 100.0, 100.0, Tipo.AGUA, null);
+        "mago", "src/resources/mago.png", 100.0, 100.0, Tipo.AGUA, null);
     private final Drego espotenique = new Drego(
-        "espotenique", "espotenique.png", 100.0, 100.0, Tipo.AGUA, null);
+        "espotenique", "src/resources/espotenique.png", 100.0, 100.0, Tipo.AGUA, null);
     private final Drego monho = new Drego(
-        "monho", "monho.gif", 100.0, 100.0, Tipo.AGUA, null);
+        "monho", "src/resources/monho.gif", 100.0, 100.0, Tipo.AGUA, null);
     private final Drego cobroso = new Drego(
-        "cobroso", "cobroso.png", 100.0, 100.0, Tipo.AGUA, null);
+        "cobroso", "src/resources/cobroso.png", 100.0, 100.0, Tipo.AGUA, null);
 
     public final Drego[] dregos = {mago, espotenique, monho, cobroso};
 
