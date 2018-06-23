@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,7 +19,7 @@ import java.net.URL;
  * @author Júlio Moreira Blás de Barros (200491)
  * @since 15/06/18
  */
-public class Jogo extends Application {
+public class Menu extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -37,7 +38,15 @@ public class Jogo extends Application {
         Label lblInicio = new Label("Jogar");
         lblInicio.setCursor(Cursor.HAND);
         lblInicio.setOnMouseClicked((evt) -> {
-            System.out.println("Jogo iniciado");
+            try {
+                SelecaoDePersonagens.iniciar(primaryStage);
+            } catch (Exception e) {
+                new Alert(
+                    Alert.AlertType.ERROR,
+                    "Erro carregando selecao de personagens: " + e.getMessage())
+                .show();
+                primaryStage.close();
+            }
         });
 
         Label lblSair = new Label("Sair");
