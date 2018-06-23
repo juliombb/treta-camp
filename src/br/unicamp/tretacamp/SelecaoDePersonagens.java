@@ -2,6 +2,7 @@ package br.unicamp.tretacamp;
 
 import br.unicamp.tretacamp.config.ConfiguracaoDregos;
 import br.unicamp.tretacamp.config.ConfiguracaoEstilo;
+import br.unicamp.tretacamp.util.CarregadorDeImagens;
 import br.unicamp.tretacamp.util.FormatacaoTabelar;
 import com.sun.javafx.geom.Vec2d;
 import javafx.event.EventHandler;
@@ -50,18 +51,9 @@ public class SelecaoDePersonagens {
                 lblDrego.setCursor(Cursor.HAND);
 
                 ImageView imgDrego = null;
-                try {
-                    imgDrego = new ImageView(new Image(
-                        new FileInputStream(drego.getVisual())
-                    ));
-                } catch (Exception e) {
-                    new Alert(
-                        Alert.AlertType.ERROR,
-                        "Erro carregando imagem do drego: " + e.getMessage())
-                        .show();
-                    primaryStage.close();
-                    return;
-                }
+                imgDrego = CarregadorDeImagens.carregar(drego, primaryStage);
+                if (imgDrego == null) return;
+
                 imgDrego.setFitHeight(100.0);
                 imgDrego.setFitWidth(130.0);
                 imgDrego.getStyleClass().add(fontes.HOVER_TEXT);
