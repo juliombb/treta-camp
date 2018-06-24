@@ -11,10 +11,14 @@ public class Queimar extends Efeito {
 	}
 
 	@Override
-	public void acontecer(Drego drego) {
+	public boolean acontecer(Drego drego) {
 		if (this.reduzirDuracaoEmTurnos()) {
 	    		drego.diminuirVida(this.getValor());
+	    		
+	    		return true;
 	    }
+		
+		return false;
 	}
 
 	@Override

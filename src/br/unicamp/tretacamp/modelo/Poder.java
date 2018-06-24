@@ -1,6 +1,7 @@
 package br.unicamp.tretacamp.modelo;
 
 import br.unicamp.tretacamp.modelo.efeito.Efeito;
+import br.unicamp.tretacamp.modelo.efeito.Enfraquecer;
 import br.unicamp.tretacamp.modelo.efeito.Paralisar;
 import br.unicamp.tretacamp.modelo.efeito.Queimar;
 
@@ -37,8 +38,8 @@ public class Poder implements Serializable{
 				.stream()
 				.anyMatch((efeito) ->
 					efeito instanceof Paralisar
-					&& efeito.getDuracaoEmTurnos() > 0)) {
-
+					&& efeito.acontecer(conjurante))) {
+			
 			return new ResultadoPoder(conjurante.getNome() +
 				" estava paralisad@ e não pôde atacar", true);
 		}
@@ -95,12 +96,28 @@ public class Poder implements Serializable{
 				if (atingido.getDiferencial() != null) {
 					if (!atingido.getDiferencial().equals(Diferencial.PROTECAO_FOGO)) {
 						atingido.adicionarEfeito(efeito.clone());
-						// TODO: adicionar texto no res
+						res.descResultado += System.lineSeparator();
+						res.descResultado += "Por conta do poder " + this.getNome() + atingido.getNome() +
+								" está queimando por " + efeito.getDuracaoEmTurnos() + " turnos!";
 					}
+					
+					res.descResultado += System.lineSeparator();
+					res.descResultado += atingido.getNome() + " se livrou de queimar pois tem proteção " +
+								"a este tipo de efeito!";
 				}
-			} else {
+			} else if (efeito instanceof Enfraquecer) {
 				atingido.adicionarEfeito(efeito.clone());
-				// TODO: adicionar texto no res
+				
+				res.descResultado += System.lineSeparator();
+				res.descResultado += "Por conta do poder " + this.getNome() + atingido.getNome() +
+						" perderá energia por " + efeito.getDuracaoEmTurnos() + " turnos!";
+			}
+			else if (efeito instanceof Paralisar){
+				atingido.adicionarEfeito(efeito.clone());
+				
+				res.descResultado += System.lineSeparator();
+				res.descResultado += "Por conta do poder " + this.getNome() + atingido.getNome() +
+						" ficará paralizado por " + efeito.getDuracaoEmTurnos() + " turnos!";
 			}
 		});
 		

@@ -12,8 +12,8 @@ public class Paralisar extends Efeito {
 
 	@Override
 	// not working yet
-	public void acontecer(Drego drego) {
-		this.reduzirDuracaoEmTurnos();
+	public boolean acontecer(Drego drego) {
+		return this.reduzirDuracaoEmTurnos();
 	}
 
 	@Override

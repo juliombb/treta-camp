@@ -9,7 +9,7 @@ public abstract class Efeito implements Serializable {
 	private double valor;
 	private int duracaoEmTurnos;
 	
-	public abstract void acontecer(Drego drego);
+	public abstract boolean acontecer(Drego drego);
 	public abstract Efeito clone();
 	
 	public Efeito(double valor, int duracaoEmTurnos) {

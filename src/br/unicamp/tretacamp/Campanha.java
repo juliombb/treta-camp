@@ -5,6 +5,9 @@ import br.unicamp.tretacamp.config.ConfiguracaoDregos;
 import br.unicamp.tretacamp.config.ConfiguracaoEstilo;
 import br.unicamp.tretacamp.modelo.Drego;
 import br.unicamp.tretacamp.modelo.Poder;
+import br.unicamp.tretacamp.modelo.efeito.Efeito;
+import br.unicamp.tretacamp.modelo.efeito.Enfraquecer;
+import br.unicamp.tretacamp.modelo.efeito.Queimar;
 import br.unicamp.tretacamp.util.CarregadorDeImagens;
 import br.unicamp.tretacamp.util.FormatacaoTabelar;
 import br.unicamp.tretacamp.util.Vect2;
@@ -118,11 +121,13 @@ public class Campanha {
 
                     executor.schedule(() ->
                         Platform.runLater(() -> {
+                        	       trataEfeito(inimigo, imgIni, txtConsole);
                                 vezDoInimigo(jogador, inimigo, txtConsole);
                                 atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
                                 if (verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao)) return;
 
                                 animacaozinha(imgJog);
+                                trataEfeito(jogador, imgJog, txtConsole);
                                 txtConsole.setText(
                                     txtConsole.getText()
                                     + System.lineSeparator()
@@ -153,6 +158,26 @@ public class Campanha {
         primaryStage.setScene(campanha);
         primaryStage.show();
     }
+    
+    private static void trataEfeito(Drego drego, ImageView img, Text txtConsole) {
+    		for (Efeito efeito: drego.getEfeitos()) {
+    			if (efeito instanceof Queimar) {
+    				efeito.acontecer(drego);
+    				txtConsole.setText(txtConsole.getText() + System.lineSeparator() +
+    						drego.getNome() + " está queimando e perde " + efeito.getValor() + " de vida!");
+    				animacaozinha(img);
+    			}
+    			
+    			if (efeito instanceof Enfraquecer) {
+    				efeito.acontecer(drego);
+    				txtConsole.setText(txtConsole.getText() + System.lineSeparator() +
+    						drego.getNome() + " está sofrendo as consequências do enfraquecer, e perde "
+    						+ efeito.getValor() + " de energia!");
+    				animacaozinha(img);
+    				
+    			}
+    		}
+    };
 
     private static void animacaozinha(ImageView img) {
         RotateTransition ft = new RotateTransition();

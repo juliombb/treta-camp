@@ -12,11 +12,14 @@ public class Enfraquecer extends Efeito {
 	}
 
 	@Override
-	public void acontecer(Drego drego) {
+	public boolean acontecer(Drego drego) {
 		if (this.reduzirDuracaoEmTurnos()) {
 			double novaEnergia = drego.getEnergia() - this.getValor();
 			drego.setEnergia(novaEnergia > 0 ? novaEnergia : 0);
+			return true;
         }
+		
+		return false;
 	}
 
 	@Override
