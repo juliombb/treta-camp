@@ -17,7 +17,7 @@ public class ConfiguracaoDregos {
     private final Drego cobroso = new Drego(
         "Cobroso", "src/resources/cobroso.png", 100.0, 100.0, Tipo.FOGO, null);
     private final Drego satan = new Drego(
-            "Satab", "src/resources/satan.gif", 100.0, 100.0, Tipo.FOGO, null);
+            "Satan", "src/resources/satan.gif", 100.0, 100.0, Tipo.FOGO, null);
     private final Drego robot = new Drego(
             "Robot", "src/resources/robot.png", 100.0, 100.0, Tipo.AGUA, null);
     private final Drego taurus = new Drego(

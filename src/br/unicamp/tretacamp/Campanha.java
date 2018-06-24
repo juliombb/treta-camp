@@ -13,12 +13,14 @@ import br.unicamp.tretacamp.util.FormatacaoTabelar;
 import br.unicamp.tretacamp.util.Vect2;
 import javafx.animation.RotateTransition;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -31,6 +33,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 import java.awt.Dimension;
@@ -161,6 +164,22 @@ public class Campanha {
         primaryStage.setTitle("Treta Camp - Campanha " + jogador.getNome());
         primaryStage.setScene(campanha);
         primaryStage.show();
+        
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+            	ButtonType sim = new ButtonType("Sim");
+                Alert alerta = new Alert(
+                    Alert.AlertType.NONE,
+                    "Quer salvar o jogo?", sim);
+                alerta.showAndWait().ifPresent(response -> {
+                    if (response == sim) {
+                    	Persistencia persistencia = new Persistencia();
+                    	persistencia.salvarEstadoJogo(jogador, inimigo);
+                    } 
+            });
+          }  
+        });
     }
     
     private static void trataEfeito(Drego drego, ImageView img, Text txtConsole) {
@@ -417,6 +436,7 @@ public class Campanha {
         imgJog.setY(heightTela * 0.05);
         return imgJog;
     }
+    
 
     private static boolean configurarCenario(Stage primaryStage, Group raiz, Double widthTela, Double heightTela) {
         ImageView cenario = null;
