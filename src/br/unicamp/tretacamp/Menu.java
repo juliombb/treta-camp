@@ -67,7 +67,6 @@ public class Menu extends Application {
                  e.printStackTrace();
                  primaryStage.close();
              }
-            primaryStage.close();
         });
         lblSair.setCursor(Cursor.HAND);
 
