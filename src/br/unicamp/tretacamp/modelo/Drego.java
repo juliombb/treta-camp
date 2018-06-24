@@ -187,7 +187,7 @@ public class Drego implements Serializable {
 		} else {
 			ArrayList<Item> itens = new ArrayList<Item>();
 			itens.addAll(this.itens);
-			clone.poderes = poderes;
+			clone.itens = itens;
 		}
 		
 		if (this.efeitos.isEmpty()) {
@@ -195,7 +195,7 @@ public class Drego implements Serializable {
 		} else {
 			ArrayList<Efeito> efeitos = new ArrayList<Efeito>();
 			efeitos.addAll(this.efeitos);
-			clone.poderes = poderes;
+			clone.efeitos = efeitos;
 		}
 		
 		return clone;

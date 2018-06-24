@@ -9,7 +9,7 @@ public abstract class Efeito implements Serializable {
 	private double valor;
 	private int duracaoEmTurnos;
 	
-	public abstract void acontecer(Drego drego);
+	public abstract String acontecer(Drego drego);
 	public abstract Efeito clone();
 	
 	public Efeito(double valor, int duracaoEmTurnos) {
@@ -44,10 +44,6 @@ public abstract class Efeito implements Serializable {
 		return false;
 	}
 	
-	//public Efeito clone() {
-	//	return new Efeito(this.tipoEfeito, this.valor, this.duracaoEmTurnos);
-	//}
-
 	@Override
 	public String toString() {
 		return "Efeito [valor=" + valor + ", duracaoEmTurnos=" + duracaoEmTurnos + "]";

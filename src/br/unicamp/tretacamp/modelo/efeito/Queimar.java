@@ -11,10 +11,14 @@ public class Queimar extends Efeito {
 	}
 
 	@Override
-	public void acontecer(Drego drego) {
+	public String acontecer(Drego drego) {
 		if (this.reduzirDuracaoEmTurnos()) {
 	    		drego.diminuirVida(this.getValor());
+	    		
+	    		return drego.getNome() + " ainda está queimando e perde " + getValor() + " de vida";
 	    }
+		
+		return null;
 	}
 
 	@Override
