@@ -12,16 +12,11 @@ public class Enfraquecer extends Efeito {
 	}
 
 	@Override
-	public String acontecer(Drego drego) {
+	public void acontecer(Drego drego) {
 		if (this.reduzirDuracaoEmTurnos()) {
 			double novaEnergia = drego.getEnergia() - this.getValor();
 			drego.setEnergia(novaEnergia > 0 ? novaEnergia : 0);
-			
-			return drego.getNome() + " por ainda está atordoado pelo efeito de "
-					+ "enfraquecer e perde " + getValor() + " de energia";
         }
-		
-		return null;
 	}
 
 	@Override

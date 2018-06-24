@@ -12,12 +12,8 @@ public class Paralisar extends Efeito {
 
 	@Override
 	// not working yet
-	public String acontecer(Drego drego) {
-		if (this.reduzirDuracaoEmTurnos()) {
-			return drego.getNome() + " ainda está paralizado e não cosegue aplicar seu poder";
-		}
-		
-		return null;
+	public void acontecer(Drego drego) {
+		this.reduzirDuracaoEmTurnos();
 	}
 
 	@Override
