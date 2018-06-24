@@ -16,8 +16,16 @@ public class ConfiguracaoDregos {
         "Monho", "src/resources/monho.gif", 100.0, 100.0, Tipo.TREVAS, null);
     private final Drego cobroso = new Drego(
         "Cobroso", "src/resources/cobroso.png", 100.0, 100.0, Tipo.FOGO, null);
-
-    public final Drego[] dregos = {mago, espotenique, monho, cobroso};
+    private final Drego satan = new Drego(
+            "Satab", "src/resources/satan.gif", 100.0, 100.0, Tipo.FOGO, null);
+    private final Drego robot = new Drego(
+            "Robot", "src/resources/robot.png", 100.0, 100.0, Tipo.AGUA, null);
+    private final Drego taurus = new Drego(
+            "Taurus", "src/resources/taurus.png", 100.0, 100.0, Tipo.TERRA, null);
+    private final Drego gladio = new Drego(
+            "Gladio", "src/resources/gladio.gif", 100.0, 100.0, Tipo.TREVAS, null);
+    
+    public final Drego[] dregos = {mago, espotenique, monho, cobroso, satan, robot, taurus, gladio};
 
     private static ConfiguracaoDregos instancia = null;
     public static ConfiguracaoDregos getInstance() {
@@ -36,5 +44,13 @@ public class ConfiguracaoDregos {
         monho.adicionarPoder(ConfiguracaoPoder.SOCO);
         cobroso.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
         cobroso.adicionarPoder(ConfiguracaoPoder.MORDIDA);
+        satan.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
+        satan.adicionarPoder(ConfiguracaoPoder.MORDIDA);
+        robot.adicionarPoder(ConfiguracaoPoder.RAIO);
+        robot.adicionarPoder(ConfiguracaoPoder.SOCO);
+        taurus.adicionarPoder(ConfiguracaoPoder.CHUTE);
+        taurus.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
+        gladio.adicionarPoder(ConfiguracaoPoder.CHUTE);
+        gladio.adicionarPoder(ConfiguracaoPoder.PEPITA_MAGICA);
     }
 }

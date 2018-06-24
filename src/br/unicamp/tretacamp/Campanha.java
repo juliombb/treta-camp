@@ -51,7 +51,7 @@ public class Campanha {
     private static MediaPlayer staticPlayer = null;
     // isso previne q o player seja coletado pelo GC
 
-    public static void iniciar(Drego jogador, Stage primaryStage) throws Exception {
+    public static void iniciar(Drego jogador, Drego inimigoAnterior, Stage primaryStage) throws Exception {
         ConfiguracaoEstilo estilo = ConfiguracaoEstilo.getInstance();
         ConfiguracaoDregos confDregos = ConfiguracaoDregos.getInstance();
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
@@ -62,9 +62,13 @@ public class Campanha {
         Group raiz = new Group();
         Scene campanha = new Scene(raiz);
         campanha.getStylesheets().add("resources/font.css");
-
-        Drego inimigo = selecionarDregoInimigo(confDregos, jogador);
-
+       
+        if(inimigoAnterior == null) {
+        	inimigoAnterior = selecionarDregoInimigo(confDregos, jogador);
+        }
+        
+        final Drego inimigo = inimigoAnterior;
+        
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         redimensionarJanela(primaryStage, screenSize);
 

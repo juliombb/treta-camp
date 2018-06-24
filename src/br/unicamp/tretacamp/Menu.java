@@ -1,6 +1,7 @@
 package br.unicamp.tretacamp;
 
 import br.unicamp.tretacamp.config.ConfiguracaoEstilo;
+import br.unicamp.tretacamp.modelo.Drego;
 import javafx.application.Application;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -12,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 
 /**
  * @author Júlio Moreira Blás de Barros (200491)
@@ -47,8 +49,24 @@ public class Menu extends Application {
             }
         });
 
-        Label lblSair = new Label("Sair");
+        Label lblSair = new Label("Continuar �ltimo jogo");
         lblSair.setOnMouseClicked((evt) -> {
+        	 try {
+        		 Persistencia persistencia = new Persistencia();
+        		 ArrayList<Drego> dregos = new ArrayList<Drego>();
+        		 dregos = persistencia.carregarEstadoJogo();
+        		 
+                 Campanha.iniciar(dregos.get(0),dregos.get(1), primaryStage);
+                 
+             } catch (Exception e) {
+
+                 new Alert(
+                     Alert.AlertType.ERROR,
+                     "Erro carregando campanha: " + e.getMessage())
+                     .show();
+                 e.printStackTrace();
+                 primaryStage.close();
+             }
             primaryStage.close();
         });
         lblSair.setCursor(Cursor.HAND);

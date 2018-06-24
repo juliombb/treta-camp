@@ -256,47 +256,7 @@ public class JogoOld extends Application {
 	    	}
     }
     
-    private void salvarEstadoJogo(Drego jogador, Drego inimigo) {
-	    	String filename = "Jogo.dat";
-	    	
-	    	try {
-	    		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream (filename));
-	    		output.writeObject(jogador);
-	    		output.writeObject(inimigo);
-	    		output.flush();
-	    		output.close();
-	    	}
-	    	catch(IOException ex) {
-	    		ex.printStackTrace();
-	    	}
-    }
-    
-    private void carregarEstadoJogo() {
-	    	String filename = "Jogo.dat";
-	    	
-	    	try {
-	    		ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
-	    		
-	    		Drego d1 = (Drego) input.readObject();
-	    		System.out.println(d1);
-	    		System.out.println();
-	    		
-	    		Drego d2 = (Drego) input.readObject();
-	    		System.out.println(d2);
-	    		System.out.println();
-	    		
-	    		input.close();
-	    	}
-	    	catch (EOFException endOfFileException) {
-	    		endOfFileException.printStackTrace();
-	    	}
-	    	catch (ClassNotFoundException classNotFoundException) {
-	    		classNotFoundException.printStackTrace();
-	    	}
-	    	catch(IOException ex) {
-	    		ex.printStackTrace();
-	    	}
-    }
+   
 
 
     private void limparConsole() {
