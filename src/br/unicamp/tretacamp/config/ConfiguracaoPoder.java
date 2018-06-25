@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import br.unicamp.tretacamp.modelo.efeito.Efeito;
 import br.unicamp.tretacamp.modelo.efeito.Enfraquecer;
+import br.unicamp.tretacamp.modelo.efeito.Paralisar;
 import br.unicamp.tretacamp.modelo.efeito.Queimar;
 import br.unicamp.tretacamp.modelo.Poder;
 
@@ -65,5 +66,50 @@ public class ConfiguracaoPoder {
 		20.0,
 		20.0,
 		null);
+
+	private final static ArrayList<Efeito> EFEITOS_NECROMANCIA =
+		new ArrayList<>(Arrays.asList(
+			new Queimar(3.0, 3),
+			new Paralisar(2)));
+
+	public final static Poder NECROMANCIA = new Poder(
+		"Necromancia",
+		"Os deuses da morte servem ao adversário uma dose do seu doce elixir",
+		"src/resources/necromancia.png",
+		13.0,
+		10.0,
+		EFEITOS_NECROMANCIA);
+
+	public final static Poder ESPADA = new Poder(
+		"Espada mágica",
+		"Usa uma espada oculta em seu coração para desferir um golpe redentor",
+		"src/resources/espada.png",
+		20.0,
+		15.0,
+		null);
+
+	private final static ArrayList<Efeito> EFEITOS_DONUT =
+		new ArrayList<>(Arrays.asList(
+			new Paralisar(1)));
+
+	public final static Poder GATO_DONUT = new Poder(
+		"Gato donut",
+		"Um gato espacial desce e desintegra tudo em um raio de um donut",
+		"src/resources/gatodonut.png",
+		50.0,
+		60.0,
+		EFEITOS_DONUT);
+
+	private final static ArrayList<Efeito> EFEITOS_GELO =
+		new ArrayList<>(Arrays.asList(
+			new Paralisar(5)));
+
+	public final static Poder GELO = new Poder(
+		"Gelinho",
+		"Congela o adversário e causa um pouco de dano",
+		"src/resources/gelo.png",
+		2.0,
+		20.0,
+		EFEITOS_GELO);
 	
 }

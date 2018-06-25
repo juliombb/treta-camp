@@ -1,5 +1,6 @@
 package br.unicamp.tretacamp.config;
 
+import br.unicamp.tretacamp.modelo.Diferencial;
 import br.unicamp.tretacamp.modelo.Drego;
 import br.unicamp.tretacamp.modelo.Tipo;
 
@@ -11,13 +12,13 @@ public class ConfiguracaoDregos {
     private final Drego mago = new Drego(
         "Mago implacavel", "src/resources/mago.png", 100.0, 100.0, Tipo.AGUA, null);
     private final Drego espotenique = new Drego(
-        "Espotenique", "src/resources/espotenique.png", 100.0, 100.0, Tipo.TERRA, null);
+        "Espotenique", "src/resources/espotenique.png", 100.0, 100.0, Tipo.TERRA, Diferencial.PROTECAO_FOGO);
     private final Drego monho = new Drego(
         "Monho", "src/resources/monho.gif", 100.0, 100.0, Tipo.TREVAS, null);
     private final Drego cobroso = new Drego(
         "Cobroso", "src/resources/cobroso.png", 100.0, 100.0, Tipo.FOGO, null);
     private final Drego satan = new Drego(
-            "Satan", "src/resources/satan.gif", 100.0, 100.0, Tipo.FOGO, null);
+            "Satan", "src/resources/satan.gif", 100.0, 100.0, Tipo.FOGO, Diferencial.DEFESA_PERFURANTE);
     private final Drego robot = new Drego(
             "Robot", "src/resources/robot.png", 100.0, 100.0, Tipo.AGUA, null);
     private final Drego taurus = new Drego(
@@ -41,16 +42,18 @@ public class ConfiguracaoDregos {
         mago.adicionarPoder(ConfiguracaoPoder.RAIO);
         mago.adicionarPoder(ConfiguracaoPoder.SOCO);
         espotenique.adicionarPoder(ConfiguracaoPoder.CHUTE);
+        espotenique.adicionarPoder(ConfiguracaoPoder.GELO);
         monho.adicionarPoder(ConfiguracaoPoder.SOCO);
+        monho.adicionarPoder(ConfiguracaoPoder.NECROMANCIA);
         cobroso.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
         cobroso.adicionarPoder(ConfiguracaoPoder.MORDIDA);
-        satan.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
+        satan.adicionarPoder(ConfiguracaoPoder.NECROMANCIA);
         satan.adicionarPoder(ConfiguracaoPoder.MORDIDA);
-        robot.adicionarPoder(ConfiguracaoPoder.RAIO);
-        robot.adicionarPoder(ConfiguracaoPoder.SOCO);
+        robot.adicionarPoder(ConfiguracaoPoder.CHUTE);
+        robot.adicionarPoder(ConfiguracaoPoder.GATO_DONUT);
         taurus.adicionarPoder(ConfiguracaoPoder.CHUTE);
         taurus.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
         gladio.adicionarPoder(ConfiguracaoPoder.CHUTE);
-        gladio.adicionarPoder(ConfiguracaoPoder.PEPITA_MAGICA);
+        gladio.adicionarPoder(ConfiguracaoPoder.ESPADA);
     }
 }

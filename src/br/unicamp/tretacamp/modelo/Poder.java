@@ -92,39 +92,49 @@ public class Poder implements Serializable{
 		 * */
 
 		this.efeitos.forEach((efeito) -> {
-			if (efeito instanceof Queimar) {
-				if (atingido.getDiferencial() != null) {
-					if (!atingido.getDiferencial().equals(Diferencial.PROTECAO_FOGO)) {
-						atingido.adicionarEfeito(efeito.clone());
-						res.descResultado += System.lineSeparator();
-						res.descResultado += "Por conta do poder " + this.getNome() + atingido.getNome() +
-								" está queimando por " + efeito.getDuracaoEmTurnos() + " turnos!";
-					}
-					
-					res.descResultado += System.lineSeparator();
-					res.descResultado += atingido.getNome() + " se livrou de queimar pois tem proteção " +
-								"a este tipo de efeito!";
-				}
-			} else if (efeito instanceof Enfraquecer) {
-				atingido.adicionarEfeito(efeito.clone());
-				
+			if (atingido.getEfeitos().stream().anyMatch((ef) -> ef.getNome().equals(efeito.getNome()))) {
 				res.descResultado += System.lineSeparator();
-				res.descResultado += "Por conta do poder " + this.getNome() + atingido.getNome() +
-						" perderá energia por " + efeito.getDuracaoEmTurnos() + " turnos!";
+				res.descResultado += "O drego " + atingido.getNome() + " ja tem um efeito de " + efeito.getNome();
+				return;
 			}
-			else if (efeito instanceof Paralisar){
-				atingido.adicionarEfeito(efeito.clone());
-				
-				res.descResultado += System.lineSeparator();
-				res.descResultado += "Por conta do poder " + this.getNome() + atingido.getNome() +
-						" ficará paralizado por " + efeito.getDuracaoEmTurnos() + " turnos!";
-			}
+
+			aplicarEfeito(atingido, res, efeito);
 		});
 		
 		
 		return res;
 	}
-	
+
+	private void aplicarEfeito(Drego atingido, ResultadoPoder res, Efeito efeito) {
+		if (efeito instanceof Queimar) {
+            if (atingido.getDiferencial() != null) {
+                if (!atingido.getDiferencial().equals(Diferencial.PROTECAO_FOGO)) {
+                    atingido.adicionarEfeito(efeito.clone());
+                    res.descResultado += System.lineSeparator();
+                    res.descResultado += "Por conta do poder " + this.getNome() + ", " + atingido.getNome() +
+                            " está queimando por " + efeito.getDuracaoEmTurnos() + " turnos!";
+                }
+
+                res.descResultado += System.lineSeparator();
+                res.descResultado += atingido.getNome() + " se livrou de queimar pois tem proteção " +
+                            "a este tipo de efeito!";
+            }
+        } else if (efeito instanceof Enfraquecer) {
+            atingido.adicionarEfeito(efeito.clone());
+
+            res.descResultado += System.lineSeparator();
+            res.descResultado += "Por conta do poder " + this.getNome() + ", " + atingido.getNome() +
+                    " perderá energia por " + efeito.getDuracaoEmTurnos() + " turnos!";
+        }
+        else if (efeito instanceof Paralisar){
+            atingido.adicionarEfeito(efeito.clone());
+
+            res.descResultado += System.lineSeparator();
+            res.descResultado += "Por conta do poder " + this.getNome() + ", " + atingido.getNome() +
+                    " ficará paralizado por " + efeito.getDuracaoEmTurnos() + " turnos!";
+        }
+	}
+
 	public String getNome() {
 		return nome;
 	}

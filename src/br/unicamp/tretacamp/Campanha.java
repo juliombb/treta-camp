@@ -13,7 +13,6 @@ import br.unicamp.tretacamp.util.FormatacaoTabelar;
 import br.unicamp.tretacamp.util.Vect2;
 import javafx.animation.RotateTransition;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Group;
@@ -33,9 +32,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
@@ -66,8 +64,10 @@ public class Campanha {
         Scene campanha = new Scene(raiz);
         campanha.getStylesheets().add("resources/font.css");
        
-        if(inimigoAnterior == null) {
-        	inimigoAnterior = selecionarDregoInimigo(confDregos, jogador);
+        if (inimigoAnterior == null) {
+        	inimigoAnterior = selecionarDregoInimigoETocarSom(confDregos, jogador);
+        } else {
+            staticPlayer = tocarSom();
         }
         
         final Drego inimigo = inimigoAnterior;
@@ -77,8 +77,6 @@ public class Campanha {
 
         Double widthTela = primaryStage.getWidth();
         Double heightTela = primaryStage.getHeight();
-
-        Text txtConsole = new Text("Seu turno. Escolha uma habilidade.");
 
         if (!configurarCenario(primaryStage, raiz, widthTela, heightTela)) return;
 
@@ -99,6 +97,7 @@ public class Campanha {
 
         FormatacaoTabelar tab = new FormatacaoTabelar(widthTela * 0.2, heightTela * 0.15, 2, heightTela * 0.05);
 
+        Text txtConsole = new Text();
         HashMap<Poder, Button> mapPoderBotao = new HashMap<>();
         jogador.getPoderes().forEach((poder) -> {
             Tooltip tooltip = criarTooltipPoder(widthTela, poder);
@@ -123,30 +122,35 @@ public class Campanha {
 
                 if (res.foiAplicado()) {
                     animacaozinha(imgIni);
-                    txtConsole.setText(txtConsole.getText() + System.lineSeparator() + "Agora é a vez do inimigo...");
+                    txtConsole.setText(txtConsole.getText() + System.lineSeparator() + "Agora é a vez do inimigo..." + System.lineSeparator());
                     desabilitaBotoes(mapPoderBotao);
 
                     executor.schedule(() ->
                         Platform.runLater(() -> {
-                        	       trataEfeito(inimigo, imgIni, txtConsole);
-                                vezDoInimigo(jogador, inimigo, txtConsole);
-                                atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
-                                if (verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao)) return;
+                            trataEfeito(inimigo, imgIni, txtConsole);
+                            vezDoInimigo(jogador, inimigo, txtConsole);
+                            atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
+                            if (verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao)) return;
 
-                                animacaozinha(imgJog);
-                                trataEfeito(jogador, imgJog, txtConsole);
-                                txtConsole.setText(
-                                    txtConsole.getText()
-                                    + System.lineSeparator()
-                                    + "Agora é sua vez...");
-                                habilitaBotoes(mapPoderBotao);
-                            }),
-                        1, TimeUnit.SECONDS);
+                            animacaozinha(imgJog);
+                            trataEfeito(jogador, imgJog, txtConsole);
+                            txtConsole.setText(
+                                txtConsole.getText()
+                                + System.lineSeparator()
+                                + "Agora é sua vez...");
+                            habilitaBotoes(mapPoderBotao);
+                        }),
+                    1, TimeUnit.SECONDS);
                 }
             });
 
             raiz.getChildren().add(btn);
         });
+
+        // no caso de ter se iniciado um game acabado
+        if (!verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao)) {
+            txtConsole.setText("Seu turno. Escolha uma habilidade.");
+        }
 
         ImageView monitor = carregarMonitor(primaryStage, widthTela, heightTela, imgIni);
         if (monitor == null) return;
@@ -165,20 +169,26 @@ public class Campanha {
         primaryStage.setScene(campanha);
         primaryStage.show();
         
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent t) {
-            	ButtonType sim = new ButtonType("Sim");
-                Alert alerta = new Alert(
-                    Alert.AlertType.NONE,
-                    "Quer salvar o jogo?", sim);
-                alerta.showAndWait().ifPresent(response -> {
-                    if (response == sim) {
-                    	Persistencia persistencia = new Persistencia();
-                    	persistencia.salvarEstadoJogo(jogador, inimigo);
-                    } 
+        primaryStage.setOnHiding(t -> {
+            ButtonType sim = new ButtonType("Sim");
+            ButtonType nao = new ButtonType("Não");
+            Alert alerta = new Alert(
+                Alert.AlertType.CONFIRMATION,
+                "Quer salvar o jogo?", sim, nao);
+            alerta.setHeaderText("Você esá saindo de um jogo não salvo.");
+
+            alerta.initStyle(StageStyle.UNDECORATED);
+            alerta.showAndWait().ifPresent(response -> {
+                if (response == sim) {
+                    Persistencia persistencia = new Persistencia();
+                    persistencia.salvarEstadoJogo(jogador, inimigo);
+                    alerta.close();
+                    primaryStage.close();
+                } else {
+                    alerta.close();
+                    primaryStage.close();
+                }
             });
-          }  
         });
     }
     
@@ -274,6 +284,11 @@ public class Campanha {
         Random rdm = new Random();
         Poder poder = inimigo.getPoderes().get(rdm.nextInt(inimigo.getPoderes().size()));
         Poder.ResultadoPoder res = poder.aplicar(inimigo, jogador);
+
+        while (!res.foiAplicado()) {
+            poder = inimigo.getPoderes().get(rdm.nextInt(inimigo.getPoderes().size()));
+            res = poder.aplicar(inimigo, jogador);
+        }
 
         txtConsole.setText(txtConsole.getText() + System.lineSeparator()
             + res.getDesc());
@@ -453,7 +468,7 @@ public class Campanha {
         return true;
     }
 
-    private static Drego selecionarDregoInimigo(ConfiguracaoDregos confDregos, Drego jogador) {
+    private static Drego selecionarDregoInimigoETocarSom(ConfiguracaoDregos confDregos, Drego jogador) {
         Random rdm = new Random();
         Drego ret = jogador;
         while (ret.equals(jogador)) {

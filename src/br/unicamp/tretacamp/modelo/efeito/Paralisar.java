@@ -6,8 +6,8 @@ public class Paralisar extends Efeito {
 
 	private static final long serialVersionUID = -21232970679943017L;
 
-	public Paralisar(double valor, int duracaoEmTurnos) {
-		super(valor, duracaoEmTurnos);
+	public Paralisar(int duracaoEmTurnos) {
+		super(0.0, duracaoEmTurnos);
 	}
 
 	@Override
@@ -18,7 +18,7 @@ public class Paralisar extends Efeito {
 
 	@Override
 	public Efeito clone() {
-		return new Paralisar(getValor(), getDuracaoEmTurnos());
+		return new Paralisar(getDuracaoEmTurnos());
 	}
 	
 

@@ -49,12 +49,11 @@ public class Menu extends Application {
             }
         });
 
-        Label lblSair = new Label("Continuar último jogo");
-        lblSair.setOnMouseClicked((evt) -> {
+        Label lblContinuar = new Label("Continuar" + System.lineSeparator() + "Ãºltimo jogo");
+        lblContinuar.setOnMouseClicked((evt) -> {
         	 try {
         		 Persistencia persistencia = new Persistencia();
-        		 ArrayList<Drego> dregos = new ArrayList<Drego>();
-        		 dregos = persistencia.carregarEstadoJogo();
+        		 ArrayList<Drego> dregos = persistencia.carregarEstadoJogo();
         		 
                  Campanha.iniciar(dregos.get(0),dregos.get(1), primaryStage);
                  
@@ -68,17 +67,17 @@ public class Menu extends Application {
                  primaryStage.close();
              }
         });
-        lblSair.setCursor(Cursor.HAND);
+        lblContinuar.setCursor(Cursor.HAND);
 
         lblTitulo.getStyleClass().add(fontes.PIXEL_LOVE_BIG);
         lblInicio.getStyleClass().add(fontes.PIXEL_LOVE);
-        lblSair.getStyleClass().add(fontes.PIXEL_LOVE);
+        lblContinuar.getStyleClass().add(fontes.PIXEL_LOVE);
 
         ImageView imgFundo = new ImageView(new Image(
             new FileInputStream("src/resources/intro.gif")
         ));
 
-        raiz.getChildren().addAll(imgFundo, lblTitulo, lblInicio, lblSair);
+        raiz.getChildren().addAll(imgFundo, lblTitulo, lblInicio, lblContinuar);
 
         imgFundo.setTranslateX(220);
         imgFundo.setTranslateY(150);
@@ -89,10 +88,10 @@ public class Menu extends Application {
         lblInicio.setTranslateX(170);
         lblInicio.setTranslateY(200);
 
-        lblSair.setTranslateX(470);
-        lblSair.setTranslateY(200);
+        lblContinuar.setTranslateX(470);
+        lblContinuar.setTranslateY(180);
 
-        primaryStage.setWidth(700);
+        primaryStage.setWidth(710);
         primaryStage.setHeight(400);
 
         primaryStage.setResizable(false);
