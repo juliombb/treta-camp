@@ -3,6 +3,8 @@ package br.unicamp.tretacamp.config;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import br.unicamp.tretacamp.modelo.PoderEspecial;
+import br.unicamp.tretacamp.modelo.condicao.EstarComVida;
 import br.unicamp.tretacamp.modelo.efeito.Efeito;
 import br.unicamp.tretacamp.modelo.efeito.Enfraquecer;
 import br.unicamp.tretacamp.modelo.efeito.Paralisar;
@@ -93,7 +95,7 @@ public class ConfiguracaoPoder {
 			new Paralisar(1)));
 
 	public final static Poder GATO_DONUT = new Poder(
-		"Gato donut",
+		"Gato" + System.lineSeparator() + "donut",
 		"Um gato espacial desce e desintegra tudo em um raio de um donut",
 		"src/resources/gatodonut.png",
 		50.0,
@@ -113,11 +115,21 @@ public class ConfiguracaoPoder {
 		EFEITOS_GELO);
 
 	public final static Poder LAB = new Poder(
-			"Sistema de caronas",
+			"Laboratório!",
 			"Dano por dificuldade",
 			"src/resources/gelo.png",
 			60.0,
 			20.0,
 			EFEITOS_GELO);
+
+	public final static PoderEspecial INVESTIDA =
+		new PoderEspecial(
+			"Investida" + System.lineSeparator() + "robótica",
+			"Uma investida com poder metálico de PIPOCO",
+			"src/resources/investida.png",
+			60.0,
+			5.0,
+			new EstarComVida(40.0),
+			null);
 	
 }

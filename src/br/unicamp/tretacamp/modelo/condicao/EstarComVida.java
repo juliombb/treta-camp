@@ -10,8 +10,11 @@ public class EstarComVida implements Condicao {
 	}
 
 	public boolean verificar(Drego drego) {
-		return drego.getVida() >= this.vida;
+		return drego.getVida() <= this.vida;
 	}
+
+	@Override
+	public String getNome() { return "Estar com " + vida + " de vida"; }
 
 	@Override
 	public String toString() {

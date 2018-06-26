@@ -2,7 +2,9 @@ package br.unicamp.tretacamp.modelo.condicao;
 
 import br.unicamp.tretacamp.modelo.Drego;
 
-public interface Condicao {
+import java.io.Serializable;
+
+public interface Condicao extends Serializable {
 	
 	public boolean verificar(Drego drego);
 

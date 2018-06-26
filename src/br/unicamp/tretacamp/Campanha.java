@@ -293,6 +293,9 @@ public class Campanha {
         int numero = random.nextInt(5);
         String texto = "";
 
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setHeaderText("Você dropou um item!!");
+
         switch (numero) {
             case 0: {
                 texto += "Um pimpolho muito simpático apareceu e te entregou um frasco... " + System.lineSeparator();
@@ -316,10 +319,11 @@ public class Campanha {
             }
             default:
                 texto += "Nada foi dropado :(";
+                alerta.setHeaderText("Que triste!");
                 break;
         }
 
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION, texto);
+        alerta.setContentText(texto);
         ((Stage) alerta.getDialogPane().getScene().getWindow()).setAlwaysOnTop(true);
         alerta.showAndWait();
     }

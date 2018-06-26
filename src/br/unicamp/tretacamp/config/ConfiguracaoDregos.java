@@ -31,16 +31,18 @@ public class ConfiguracaoDregos {
         "Draconis", "src/resources/draconis.png", 120.0, 100.0, Tipo.METAL, null);
     private final Drego moradne = new Drego(
         "M O R A D N E", "src/resources/moradne.png", 50.0, 120.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
+    private final Drego esots = new Drego(
+        "Esoteria", "src/resources/esuter2.png", 60.0, 2000.0, Tipo.SONORO, Diferencial.PROTECAO_FOGO);
     private final Drego esther = new Drego(
-            "ESTHER", "src/resources/esuter2.png", 302.0, 2000.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
+            "ESTHER", "src/resources/easterEggs/esuter.png", 302.0, 2000.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
     private final Drego gpt = new Drego(
-            "ESTHER", "src/resources/easterEggs/gpt.png", 202.0, 2000.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
+            "G.P.T.", "src/resources/easterEggs/gpt.png", 202.0, 2000.0, Tipo.TREVAS, Diferencial.CACADOR_DE_MANA);
     private final Drego guido = new Drego(
-            "ESTHER", "src/resources/easterEggs/guido.png", 102.0, 2000.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
+            "Guido", "src/resources/easterEggs/guido.png", 102.0, 2000.0, Tipo.TREVAS, Diferencial.CACADOR_DE_MANA);
 
     private final Drego[] dregosIni = {mago, espotenique, monho, cobroso, satan, robot, taurus, gladio};
-    private final Drego[] dregosMid = {draconis, moradne};
-    private final Drego[] dregosFim = {esther};
+    private final Drego[] dregosMid = {draconis, esots};
+    private final Drego[] dregosFim = {esther, guido, gpt};
     private static ConfiguracaoDregos instancia = null;
     public static ConfiguracaoDregos getInstance() {
         if (instancia == null) {
@@ -65,6 +67,7 @@ public class ConfiguracaoDregos {
         mago.adicionarPoder(ConfiguracaoPoder.SOCO);
         espotenique.adicionarPoder(ConfiguracaoPoder.CHUTE);
         espotenique.adicionarPoder(ConfiguracaoPoder.GELO);
+        espotenique.adicionarPoder(ConfiguracaoPoder.INVESTIDA);
         monho.adicionarPoder(ConfiguracaoPoder.SOCO);
         monho.adicionarPoder(ConfiguracaoPoder.NECROMANCIA);
         cobroso.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
@@ -82,6 +85,7 @@ public class ConfiguracaoDregos {
         draconis.adicionarPoder(ConfiguracaoPoder.PEPITA_MAGICA);
         moradne.adicionarPoder(ConfiguracaoPoder.GATO_DONUT);
         moradne.adicionarPoder(ConfiguracaoPoder.SOCO);
+        esots.adicionarPoder(ConfiguracaoPoder.GATO_DONUT);
         esther.adicionarPoder(ConfiguracaoPoder.LAB);
         guido.adicionarPoder(ConfiguracaoPoder.LAB);
         gpt.adicionarPoder(ConfiguracaoPoder.LAB);
