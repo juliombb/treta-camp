@@ -55,7 +55,7 @@ public class Menu extends Application {
         		 Persistencia persistencia = new Persistencia();
         		 ArrayList<Drego> dregos = persistencia.carregarEstadoJogo();
         		 
-                 Campanha.iniciar(dregos.get(0),dregos.get(1), primaryStage);
+        		 Campanha.iniciar(dregos.get(0),dregos.get(1), primaryStage, persistencia.getFase());
                  
              } catch (Exception e) {
 

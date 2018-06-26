@@ -12,18 +12,21 @@ import br.unicamp.tretacamp.modelo.Drego;
 
 public class Persistencia {
 	private ArrayList<Drego> dregos;
+	private int fase;
 	
 	public Persistencia() {
 		dregos = new ArrayList<Drego>();
 	}
 
-	 public void salvarEstadoJogo(Drego jogador, Drego inimigo) {
+	 public void salvarEstadoJogo(Drego jogador, Drego inimigo, int fase) {
 	    	String filename = "jogo.dat";
 	
 		try {
 			ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream (filename));
 			output.writeObject(jogador);   		
 			output.writeObject(inimigo);
+			output.writeInt(fase);
+			System.out.print(fase);
 			output.flush();
 			output.close();
 		}
@@ -39,6 +42,7 @@ public class Persistencia {
 			ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
 			Drego d1 = (Drego) input.readObject();
 			Drego d2 = (Drego) input.readObject();
+			this.fase = input.readInt();
 			input.close();
 			
 			dregos.add(d1);
@@ -56,4 +60,8 @@ public class Persistencia {
 		}
 		return null;
 	}
+
+	public int getFase() {
+		return fase;
+	}	
 }
