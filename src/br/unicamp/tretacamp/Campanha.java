@@ -17,6 +17,7 @@ import javafx.animation.RotateTransition;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -174,6 +175,8 @@ public class Campanha {
 
         raiz.getChildren().add(txtConsole);
 
+        if (!carregarMochila(jogador, primaryStage, raiz, widthTela, heightTela)) return;
+
         primaryStage.setTitle("Treta Camp - Campanha " + jogador.getNome() + " | Fase " + fase);
         primaryStage.setScene(campanha);
         primaryStage.show();
@@ -181,6 +184,46 @@ public class Campanha {
         primaryStage.setOnHiding(t -> {
             promptSave(jogador, primaryStage, inimigo, fase);
         });
+    }
+
+    private static boolean carregarMochila(Drego jogador, Stage primaryStage, Group raiz, Double widthTela, Double heightTela) {
+        ImageView mochila = CarregadorDeImagens.carregar("src/resources/mochila.png", primaryStage);
+        if (mochila == null) return false;
+        mochila.setFitHeight(heightTela * 0.1);
+        mochila.setFitWidth(widthTela * 0.1);
+        mochila.setY(heightTela * 0.85);
+        mochila.setX(widthTela * 0.85);
+        mochila.setOnMouseClicked((evt) -> {
+            FormatacaoTabelar ftInv = new FormatacaoTabelar(
+                    widthTela * 0.05, heightTela *0.05, 8, widthTela*0.05);
+
+            Group raizItens = new Group();
+            Scene secondScene = new Scene(raizItens);
+            Stage secStage = new Stage();
+            secStage.setTitle("Inventário");
+            secStage.setScene(secondScene);
+            secStage.setX(primaryStage.getX() + widthTela*0.025);
+            secStage.setY(primaryStage.getY() + heightTela*0.025);
+            secStage.setHeight(heightTela *0.9);
+            secStage.setWidth(widthTela *0.9);
+            jogador.getItens().forEach((item) -> {
+                Tooltip ttpItem = new Tooltip(item.getNome());
+                ImageView imgItem = CarregadorDeImagens.carregar(item.getImagem(), primaryStage);
+                if (imgItem == null) return;
+                imgItem.setFitHeight(heightTela *0.05);
+                imgItem.setFitWidth(widthTela * 0.05);
+                Vect2 pos = ftInv.proxCelula();
+                imgItem.setTranslateX(widthTela * 0.05 + pos.x);
+                imgItem.setTranslateY(heightTela *0.05 + pos.y);
+                Tooltip.install(imgItem, ttpItem);
+                raizItens.getChildren().add(imgItem);
+            });
+
+            secStage.show();
+        });
+        mochila.setCursor(Cursor.HAND);
+        raiz.getChildren().add(mochila);
+        return true;
     }
 
     private static void limpaEfeitos(Drego inimigo, Drego jogador) {

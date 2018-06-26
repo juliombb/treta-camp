@@ -30,11 +30,13 @@ public class ConfiguracaoDregos {
     private final Drego draconis = new Drego(
         "Draconis", "src/resources/draconis.png", 120.0, 100.0, Tipo.METAL, null);
     private final Drego moradne = new Drego(
-        "M O R A D N E", "src/resources/gladio.gif", 200.0, 120.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
+        "M O R A D N E", "src/resources/moradne.png", 50.0, 120.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
+    private final Drego esther = new Drego(
+            "ESTHER", "src/resources/esuter.png", 302.0, 2000.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
 
     private final Drego[] dregosIni = {mago, espotenique, monho, cobroso, satan, robot, taurus, gladio};
-    private final Drego[] dregosMid = {draconis};
-    private final Drego[] dregosFim = {moradne};
+    private final Drego[] dregosMid = {draconis, moradne};
+    private final Drego[] dregosFim = {esther};
     private static ConfiguracaoDregos instancia = null;
     public static ConfiguracaoDregos getInstance() {
         if (instancia == null) {
@@ -76,5 +78,6 @@ public class ConfiguracaoDregos {
         draconis.adicionarPoder(ConfiguracaoPoder.PEPITA_MAGICA);
         moradne.adicionarPoder(ConfiguracaoPoder.GATO_DONUT);
         moradne.adicionarPoder(ConfiguracaoPoder.SOCO);
+        esther.adicionarPoder(ConfiguracaoPoder.LAB);
     }
 }

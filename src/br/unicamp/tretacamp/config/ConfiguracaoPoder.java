@@ -111,5 +111,13 @@ public class ConfiguracaoPoder {
 		2.0,
 		20.0,
 		EFEITOS_GELO);
+
+	public final static Poder LAB = new Poder(
+			"Sistema de caronas",
+			"Dano por dificuldade",
+			"src/resources/gelo.png",
+			60.0,
+			20.0,
+			EFEITOS_GELO);
 	
 }
