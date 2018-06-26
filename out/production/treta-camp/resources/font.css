@@ -1,0 +1,40 @@
+@font-face { font-family: 'pixel-love'; src: url('pixel-love.ttf'); }
+.pixel-love {
+    -fx-font-family: 'pixel-love';
+    -fx-font-size: 18px;
+}
+
+.pixel-love-sm {
+    -fx-font-family: 'pixel-love';
+    -fx-font-size: 10px;
+}
+
+.pixel-love-big {
+    -fx-font-family: 'pixel-love';
+    -fx-font-size: 25px;
+}
+
+.consolas-bold {
+    -fx-font-family: 'Courier';
+    -fx-font-weight: bolder;
+}
+
+.hover-text:hover {
+    -fx-background-color: rgba(0, 0, 255, 0.1);
+}
+
+.hover-button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(132, 179, 255, 0.9), 10, 0.5, 0, 0);
+}
+
+.img {
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.9), 10, 0.5, 0, 0);
+}
+
+.sombra {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.9), 10, 0.5, 0, 0);
+}
+
+.branco {
+    -fx-text-fill: #FFFFFF;
+}

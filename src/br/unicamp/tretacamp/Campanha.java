@@ -3,7 +3,9 @@ package br.unicamp.tretacamp;
 import br.unicamp.tretacamp.config.ConfiguracaoCenario;
 import br.unicamp.tretacamp.config.ConfiguracaoDregos;
 import br.unicamp.tretacamp.config.ConfiguracaoEstilo;
+import br.unicamp.tretacamp.config.ConfiguracaoItem;
 import br.unicamp.tretacamp.modelo.Drego;
+import br.unicamp.tretacamp.modelo.Item;
 import br.unicamp.tretacamp.modelo.Poder;
 import br.unicamp.tretacamp.modelo.efeito.Efeito;
 import br.unicamp.tretacamp.modelo.efeito.Enfraquecer;
@@ -252,25 +254,31 @@ public class Campanha {
             case 0: {
                 texto += "Um pimpolho muito simpático apareceu e te entregou um frasco... " + System.lineSeparator();
                 texto += "No vidro um escrito diz: Poção de Cura... será que é confiável?" + System.lineSeparator();
-                new Item("Poção de Cura", "");
+                jogador.adicionarItem(ConfiguracaoItem.POCAO_VIDA);
+                break;
             }
             case 10: {
-                texto += "Um búfalo alado deixou cair ao seu lado uma garrafa... " + System.lineSeparator());
+                texto += "Um búfalo alado deixou cair ao seu lado uma garrafa... " + System.lineSeparator();
                 texto += "Você se lembra das aulas de arqueologia que antigos escritos ";
                 texto += "já relataram de um búfalo que voava levando energia para a populaçao.";
-                new Item("Blue Horse", "");
+                jogador.adicionarItem(ConfiguracaoItem.POCAO_MANA);
+                break;
             }
             case 20: {
                 texto += "Alô Alô, Você sabe quem eu sou? Isso mesmo, a pantera daperdição. Miaaaaw" + System.lineSeparator();
                 texto += "É como diz aquele ditado né? Fique com esse frasco!" + System.lineSeparator();
                 texto += "Não há nada escrito no frasco." + System.lineSeparator();
-                new Item("Frasco Misterioso", "");
-
+                jogador.adicionarItem(ConfiguracaoItem.BLUE_HORSE);
+                break;
             }
-            default: texto += "Nada foi dropado :c"
+            default:
+                texto += "Nada foi dropado :(";
+                break;
         }
 
-        // alert texto
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION, texto);
+        ((Stage) alerta.getDialogPane().getScene().getWindow()).setAlwaysOnTop(true);
+        alerta.showAndWait();
     }
 
     private static void trataEfeito(Drego drego, ImageView img, Text txtConsole) {
@@ -567,8 +575,9 @@ public class Campanha {
         Alert alerta = new Alert(
             Alert.AlertType.INFORMATION,
             "As forças malignas escolheram o drego " +
-                ">>" + ret.getNome() + "<<"
+                ">>" + ret.getNome() + "<<" + System.lineSeparator()
                 + " para te destruir. Boa Sorte!");
+        alerta.setWidth(1000);
         ((Stage) alerta.getDialogPane().getScene().getWindow()).setAlwaysOnTop(true);
         alerta.show();
         alerta.setOnCloseRequest((evt) -> tocarSom());
