@@ -6,18 +6,20 @@ import br.unicamp.tretacamp.modelo.efeito.Paralisar;
 import br.unicamp.tretacamp.modelo.efeito.Queimar;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Poder implements Serializable{
 	
 	private static final long serialVersionUID = -5753349859451331755L;
+	private static final DecimalFormat df = new DecimalFormat("0.00");
 	private final String nome;
 	private final String descricao;
 	private final String icone;
 	private final ArrayList<Efeito> efeitos;
 	private final double danoInstantaneo;
 	private final double custo;
-	
+
 	public Poder(String nome, String descricao, String icone, double dano, double custo, ArrayList<Efeito> efeitos) {
 		this.nome = nome;
 		this.descricao = descricao;
@@ -63,7 +65,7 @@ public class Poder implements Serializable{
 				conjurante.diminuirVida(0.2 * this.danoInstantaneo);
 				res.descResultado += System.lineSeparator();
 				res.descResultado += "Por conta da defesa perfurante de " + atingido.getNome() +
-					", " + conjurante.getNome() + " levou " + (0.2 * this.danoInstantaneo)
+					", " + conjurante.getNome() + " levou " + df.format(0.2 * this.danoInstantaneo)
 					+ " de dano";
 			}
 
@@ -71,7 +73,7 @@ public class Poder implements Serializable{
 			    atingido.aumentarEnergia(0.1 * this.danoInstantaneo);
 				res.descResultado += System.lineSeparator();
 				res.descResultado += "Por conta de " + atingido.getNome() +
-					" ser caçador de mana, " + conjurante.getNome() + " levou " + (0.1 * this.danoInstantaneo)
+					" ser caçador de mana, " + conjurante.getNome() + " levou " + df.format(0.1 * this.danoInstantaneo)
 					+ " de sugação em sua mana";
             }
 		}
@@ -113,11 +115,11 @@ public class Poder implements Serializable{
                     res.descResultado += System.lineSeparator();
                     res.descResultado += "Por conta do poder " + this.getNome() + ", " + atingido.getNome() +
                             " está queimando por " + efeito.getDuracaoEmTurnos() + " turnos!";
-                }
-
-                res.descResultado += System.lineSeparator();
-                res.descResultado += atingido.getNome() + " se livrou de queimar pois tem proteção " +
-                            "a este tipo de efeito!";
+                } else {
+					res.descResultado += System.lineSeparator();
+					res.descResultado += atingido.getNome() + " se livrou de queimar pois tem proteção " +
+						"a este tipo de efeito!";
+				}
             }
         } else if (efeito instanceof Enfraquecer) {
             atingido.adicionarEfeito(efeito.clone());

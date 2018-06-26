@@ -37,6 +37,7 @@ import javafx.util.Duration;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -52,13 +53,15 @@ public class Campanha {
     private static MediaPlayer staticPlayer = null;
     // isso previne q o player seja coletado pelo GC
 
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+
     public static void iniciar(Drego jogador, Drego inimigoAnterior, Stage primaryStage) throws Exception {
+        iniciar(jogador, inimigoAnterior, primaryStage, 1);
+    }
+
+    public static void iniciar(Drego jogador, Drego inimigoAnterior, Stage primaryStage, int fase) throws Exception {
         ConfiguracaoEstilo estilo = ConfiguracaoEstilo.getInstance();
         ConfiguracaoDregos confDregos = ConfiguracaoDregos.getInstance();
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        primaryStage.setOnCloseRequest((evt) -> {
-            executor.shutdown();
-        });
 
         Group raiz = new Group();
         Scene campanha = new Scene(raiz);
@@ -67,7 +70,7 @@ public class Campanha {
         if (inimigoAnterior == null) {
         	inimigoAnterior = selecionarDregoInimigoETocarSom(confDregos, jogador);
         } else {
-            staticPlayer = tocarSom();
+            tocarSom();
         }
         
         final Drego inimigo = inimigoAnterior;
@@ -89,8 +92,8 @@ public class Campanha {
         final ImageView imgIni = configurarImagemInimigo(primaryStage, estilo, inimigo, widthTela, heightTela);
         if (imgIni == null) return;
         Label lblIni = configurarLabelInimigo(estilo, imgIni, inimigo);
-        Label lblVidaIni = configurarLabelVidaIni(jogador, estilo, imgIni);
-        Label lblEnergiaIni = configLabelEnergiaIni(jogador, estilo, lblVidaIni);
+        Label lblVidaIni = configurarLabelVidaIni(inimigo, estilo, imgIni);
+        Label lblEnergiaIni = configLabelEnergiaIni(inimigo, estilo, lblVidaIni);
 
         raiz.getChildren().addAll(imgJog, lblJog, lblVidaJog, lblEnergiaJog,
             imgIni, lblIni, lblVidaIni, lblEnergiaIni);
@@ -118,19 +121,20 @@ public class Campanha {
                 atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
                 txtConsole.setText(res.getDesc());
 
-                if (verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao)) return;
+                if (verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao, primaryStage, fase, raiz)) return;
 
                 if (res.foiAplicado()) {
                     animacaozinha(imgIni);
                     txtConsole.setText(txtConsole.getText() + System.lineSeparator() + "Agora é a vez do inimigo..." + System.lineSeparator());
                     desabilitaBotoes(mapPoderBotao);
 
-                    executor.schedule(() ->
+                    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+                    executor.schedule(() -> {
                         Platform.runLater(() -> {
                             trataEfeito(inimigo, imgIni, txtConsole);
                             vezDoInimigo(jogador, inimigo, txtConsole);
                             atualizarCoisas(lblVidaJog, lblEnergiaJog, lblVidaIni, lblEnergiaIni, jogador, inimigo);
-                            if (verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao)) return;
+                            if (verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao, primaryStage, fase, raiz)) return;
 
                             animacaozinha(imgJog);
                             trataEfeito(jogador, imgJog, txtConsole);
@@ -138,8 +142,11 @@ public class Campanha {
                                 txtConsole.getText()
                                 + System.lineSeparator()
                                 + "Agora é sua vez...");
+                            limpaEfeitos(inimigo, jogador);
                             habilitaBotoes(mapPoderBotao);
-                        }),
+                        });
+                        executor.shutdownNow();
+                    },
                     1, TimeUnit.SECONDS);
                 }
             });
@@ -148,7 +155,7 @@ public class Campanha {
         });
 
         // no caso de ter se iniciado um game acabado
-        if (!verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao)) {
+        if (!verificaFim(jogador, inimigo, txtConsole, imgJog, imgIni, mapPoderBotao, primaryStage, fase, raiz)) {
             txtConsole.setText("Seu turno. Escolha uma habilidade.");
         }
 
@@ -165,40 +172,80 @@ public class Campanha {
 
         raiz.getChildren().add(txtConsole);
 
-        primaryStage.setTitle("Treta Camp - Campanha " + jogador.getNome());
+        primaryStage.setTitle("Treta Camp - Campanha " + jogador.getNome() + " | Fase " + fase);
         primaryStage.setScene(campanha);
         primaryStage.show();
         
         primaryStage.setOnHiding(t -> {
-            ButtonType sim = new ButtonType("Sim");
-            ButtonType nao = new ButtonType("Não");
-            Alert alerta = new Alert(
-                Alert.AlertType.CONFIRMATION,
-                "Quer salvar o jogo?", sim, nao);
-            alerta.setHeaderText("Você esá saindo de um jogo não salvo.");
-
-            alerta.initStyle(StageStyle.UNDECORATED);
-            alerta.showAndWait().ifPresent(response -> {
-                if (response == sim) {
-                    Persistencia persistencia = new Persistencia();
-                    persistencia.salvarEstadoJogo(jogador, inimigo);
-                    alerta.close();
-                    primaryStage.close();
-                } else {
-                    alerta.close();
-                    primaryStage.close();
-                }
-            });
+            promptSave(jogador, primaryStage, inimigo);
         });
     }
-    
+
+    private static void limpaEfeitos(Drego inimigo, Drego jogador) {
+        inimigo.getEfeitos().removeIf((eft) -> eft.getDuracaoEmTurnos() <= 0);
+        jogador.getEfeitos().removeIf((eft) -> eft.getDuracaoEmTurnos() <= 0);
+    }
+
+    private static void promptSave(Drego jogador, Stage primaryStage, Drego inimigo) {
+        ButtonType sim = new ButtonType("Sim");
+        ButtonType nao = new ButtonType("Não");
+        Alert alerta = new Alert(
+            Alert.AlertType.CONFIRMATION,
+            "Quer salvar o jogo?", sim, nao);
+        alerta.setHeaderText("Você está saindo de um jogo não salvo.");
+
+        alerta.initStyle(StageStyle.UNDECORATED);
+        alerta.showAndWait().ifPresent(response -> {
+            if (response == sim) {
+                Persistencia persistencia = new Persistencia();
+                persistencia.salvarEstadoJogo(jogador, inimigo);
+                alerta.close();
+                primaryStage.close();
+            } else {
+                alerta.close();
+                primaryStage.close();
+            }
+        });
+    }
+
+    private static void promptProxFase(Drego jogador, Stage primaryStage, int faseAtual, Group raiz) {
+        if (jogador.getVida() <= 0.0) {
+            return;
+        }
+
+        ButtonType sim = new ButtonType("Sim");
+        ButtonType nao = new ButtonType("Não");
+        Alert alerta = new Alert(
+            Alert.AlertType.CONFIRMATION,
+            "Quer ir para a próxima fase?", sim, nao);
+        alerta.setHeaderText("Você venceu!");
+
+        alerta.initStyle(StageStyle.UNDECORATED);
+        alerta.showAndWait().ifPresent(response -> {
+            if (response == sim) {
+                alerta.close();
+                try {
+                    raiz.getChildren().clear();
+                    staticPlayer.pause();
+                    iniciar(jogador, null, primaryStage, faseAtual + 1);
+                } catch (Exception e) {
+                    new Alert(
+                        Alert.AlertType.ERROR,
+                        "Erro carregando campanha: " + e.getMessage())
+                        .show();
+                    e.printStackTrace();
+                    primaryStage.close();
+                }
+            }
+        });
+    }
+
     private static void trataEfeito(Drego drego, ImageView img, Text txtConsole) {
     		for (Efeito efeito: drego.getEfeitos()) {
     			if (efeito instanceof Queimar) {
     				efeito.acontecer(drego);
     				txtConsole.setText(txtConsole.getText() + System.lineSeparator() +
     						drego.getNome() + " está queimando e perde " + efeito.getValor() + " de vida!");
-    				animacaozinha(img);
     			}
     			
     			if (efeito instanceof Enfraquecer) {
@@ -206,7 +253,6 @@ public class Campanha {
     				txtConsole.setText(txtConsole.getText() + System.lineSeparator() +
     						drego.getNome() + " está sofrendo as consequências do enfraquecer, e perde "
     						+ efeito.getValor() + " de energia!");
-    				animacaozinha(img);
     				
     			}
     		}
@@ -250,7 +296,10 @@ public class Campanha {
         ft.play();
     }
 
-    private static boolean verificaFim(Drego jogador, Drego inimigo, Text txtConsole, ImageView imgJog, ImageView imgIni, HashMap<Poder, Button> mapPoderBotao) {
+    private static boolean verificaFim(Drego jogador, Drego inimigo,
+                                       Text txtConsole, ImageView imgJog, ImageView imgIni,
+                                       HashMap<Poder, Button> mapPoderBotao,
+                                       Stage primaryStage, int faseAtual, Group raiz) {
         if (jogador.getVida() == 0) {
             txtConsole.setText(txtConsole.getText() + System.lineSeparator() + "O jogador está morto. Fim de jogo ;--;");
             desabilitaBotoes(mapPoderBotao);
@@ -264,6 +313,7 @@ public class Campanha {
             desabilitaBotoes(mapPoderBotao);
             imgIni.setRotate(90.0);
             imgIni.setY(imgIni.getY() + (imgIni.getFitHeight() - imgIni.getFitWidth()));
+            promptProxFase(jogador, primaryStage, faseAtual, raiz);
             return true;
         }
         return false;
@@ -303,14 +353,14 @@ public class Campanha {
     }
 
     private static void atualizarCoisas(Label lblVidaJog, Label lblEnergiaJog, Label lblVidaIni, Label lblEnergiaIni, Drego jogador, Drego inimigo) {
-        lblVidaJog.setText("Sua vida: " + jogador.getVida());
-        lblEnergiaJog.setText("Sua energia: " + jogador.getEnergia());
-        lblVidaIni.setText("Vida do inimigo: " + inimigo.getVida());
-        lblEnergiaIni.setText("Energia do inimigo: " + inimigo.getEnergia());
+        lblVidaJog.setText("Sua vida: " + df.format(jogador.getVida()));
+        lblEnergiaJog.setText("Sua energia: " + df.format(jogador.getEnergia()));
+        lblVidaIni.setText("Vida do inimigo: " + df.format(inimigo.getVida()));
+        lblEnergiaIni.setText("Energia do inimigo: " + df.format(inimigo.getEnergia()));
     }
 
     private static Label configLabelEnergiaJog(Drego jogador, ConfiguracaoEstilo estilo, Label lblVidaJog) {
-        Label lblEnergiaJog = new Label("Sua energia: " + jogador.getEnergia());
+        Label lblEnergiaJog = new Label("Sua energia: " + df.format(jogador.getEnergia()));
         lblEnergiaJog.getStyleClass().addAll(estilo.CONSOLAS_BOLD, estilo.BRANCO, estilo.SOMBRA);
         lblEnergiaJog.setTranslateY(lblVidaJog.getTranslateY() + lblVidaJog.getFont().getSize() * 2);
         lblEnergiaJog.setTranslateX(lblVidaJog.getTranslateX());
@@ -318,7 +368,7 @@ public class Campanha {
     }
 
     private static Label configurarLabelVidaJog(Drego jogador, ConfiguracaoEstilo estilo, ImageView imgJog) {
-        Label lblVidaJog = new Label("Sua vida: " + jogador.getVida());
+        Label lblVidaJog = new Label("Sua vida: " + df.format(jogador.getVida()));
         lblVidaJog.getStyleClass().addAll(estilo.CONSOLAS_BOLD, estilo.BRANCO, estilo.SOMBRA);
         lblVidaJog.setTranslateY(imgJog.getY() + imgJog.getFitHeight() * 0.2);
         lblVidaJog.setTranslateX(imgJog.getX() + imgJog.getFitWidth() * 0.8);
@@ -326,7 +376,7 @@ public class Campanha {
     }
 
     private static Label configLabelEnergiaIni(Drego inimigo, ConfiguracaoEstilo estilo, Label lblVidaIni) {
-        Label lblEnergiaIni = new Label("Energia do inimigo: " + inimigo.getEnergia());
+        Label lblEnergiaIni = new Label("Energia do inimigo: " + df.format(inimigo.getEnergia()));
         lblEnergiaIni.getStyleClass().addAll(estilo.CONSOLAS_BOLD, estilo.BRANCO, estilo.SOMBRA);
         lblEnergiaIni.setTranslateY(lblVidaIni.getTranslateY() + lblVidaIni.getFont().getSize() * 2);
         lblEnergiaIni.setTranslateX(lblVidaIni.getTranslateX());
@@ -334,7 +384,7 @@ public class Campanha {
     }
 
     private static Label configurarLabelVidaIni(Drego inimigo, ConfiguracaoEstilo estilo, ImageView imgIni) {
-        Label lblVidaIni = new Label("Vida do inimigo: " + inimigo.getVida());
+        Label lblVidaIni = new Label("Vida do inimigo: " + df.format(inimigo.getVida()));
         lblVidaIni.getStyleClass().addAll(estilo.CONSOLAS_BOLD, estilo.BRANCO, estilo.SOMBRA);
         lblVidaIni.setTranslateY(imgIni.getY() + imgIni.getFitHeight() * 0.2);
         lblVidaIni.setTranslateX(imgIni.getX());
@@ -399,7 +449,12 @@ public class Campanha {
         primaryStage.setY(screenSize.getWidth() * 0.025);
     }
 
-    private static MediaPlayer tocarSom() {
+    private static void tocarSom() {
+        if (staticPlayer != null) {
+            staticPlayer.play();
+            return;
+        }
+
         Media media = new Media(
             new File("src/resources/musicaLuta.mp3")
                 .toURI().toString()
@@ -408,7 +463,7 @@ public class Campanha {
         player.setVolume(0.008);
         player.play();
 
-        return player;
+        staticPlayer = player;
     }
 
     private static Label configurarLabelInimigo(ConfiguracaoEstilo estilo, ImageView imgIni, Drego inimigo) {
@@ -471,8 +526,8 @@ public class Campanha {
     private static Drego selecionarDregoInimigoETocarSom(ConfiguracaoDregos confDregos, Drego jogador) {
         Random rdm = new Random();
         Drego ret = jogador;
-        while (ret.equals(jogador)) {
-            ret = confDregos.dregos[rdm.nextInt(confDregos.dregos.length)];
+        while (ret.getNome().equals(jogador.getNome())) {
+            ret = confDregos.dregos[rdm.nextInt(confDregos.dregos.length)].clone();
         }
 
         Alert alerta = new Alert(
@@ -482,7 +537,7 @@ public class Campanha {
                 + " para te destruir. Boa Sorte!");
         ((Stage) alerta.getDialogPane().getScene().getWindow()).setAlwaysOnTop(true);
         alerta.show();
-        alerta.setOnCloseRequest((evt) -> staticPlayer = tocarSom());
+        alerta.setOnCloseRequest((evt) -> tocarSom());
 
         return ret;
     }

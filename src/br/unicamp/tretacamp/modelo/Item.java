@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class Item implements Serializable{
 	private static final long serialVersionUID = 505L;
-	private String nome;
-	private String imagem;
+	private final String nome;
+	private final String imagem;
 
 	public Item(String nome, String imagem) {
 		this.nome = nome;
@@ -16,16 +16,8 @@ public class Item implements Serializable{
 		return nome;
 	}
 	
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	
 	public String getImagem() {
 		return imagem;
-	}
-	
-	public void setImagem(String imagem) {
-		this.imagem = imagem;
 	}
 
 	@Override

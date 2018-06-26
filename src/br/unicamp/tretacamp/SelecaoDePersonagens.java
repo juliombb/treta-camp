@@ -64,7 +64,7 @@ public class SelecaoDePersonagens {
 
                 EventHandler<MouseEvent> mouseClicked = event -> {
                     try {
-                        Campanha.iniciar(drego, null, primaryStage);
+                        Campanha.iniciar(drego.clone(), null, primaryStage);
                     } catch (Exception e) {
 
                         new Alert(
