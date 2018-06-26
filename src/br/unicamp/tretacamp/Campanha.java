@@ -290,7 +290,7 @@ public class Campanha {
     private static void droparItem(Drego jogador, Stage primaryStage, int faseAtual) {
         Random random = new Random();
 
-        int numero = random.nextInt(30);
+        int numero = random.nextInt(5);
         String texto = "";
 
         switch (numero) {
@@ -300,14 +300,14 @@ public class Campanha {
                 jogador.adicionarItem(ConfiguracaoItem.POCAO_VIDA);
                 break;
             }
-            case 10: {
+            case 1: {
                 texto += "Um búfalo alado deixou cair ao seu lado uma garrafa... " + System.lineSeparator();
                 texto += "Você se lembra das aulas de arqueologia que antigos escritos ";
                 texto += "já relataram de um búfalo que voava levando energia para a populaçao.";
                 jogador.adicionarItem(ConfiguracaoItem.POCAO_MANA);
                 break;
             }
-            case 20: {
+            case 3: {
                 texto += "Alô Alô, Você sabe quem eu sou? Isso mesmo, a pantera daperdição. Miaaaaw" + System.lineSeparator();
                 texto += "É como diz aquele ditado né? Fique com esse frasco!" + System.lineSeparator();
                 texto += "Não há nada escrito no frasco." + System.lineSeparator();

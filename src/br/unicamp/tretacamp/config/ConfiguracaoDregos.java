@@ -32,7 +32,11 @@ public class ConfiguracaoDregos {
     private final Drego moradne = new Drego(
         "M O R A D N E", "src/resources/moradne.png", 50.0, 120.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
     private final Drego esther = new Drego(
-            "ESTHER", "src/resources/esuter.png", 302.0, 2000.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
+            "ESTHER", "src/resources/esuter2.png", 302.0, 2000.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
+    private final Drego gpt = new Drego(
+            "ESTHER", "src/resources/easterEggs/gpt.png", 202.0, 2000.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
+    private final Drego guido = new Drego(
+            "ESTHER", "src/resources/easterEggs/guido.png", 102.0, 2000.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
 
     private final Drego[] dregosIni = {mago, espotenique, monho, cobroso, satan, robot, taurus, gladio};
     private final Drego[] dregosMid = {draconis, moradne};
@@ -79,5 +83,7 @@ public class ConfiguracaoDregos {
         moradne.adicionarPoder(ConfiguracaoPoder.GATO_DONUT);
         moradne.adicionarPoder(ConfiguracaoPoder.SOCO);
         esther.adicionarPoder(ConfiguracaoPoder.LAB);
+        guido.adicionarPoder(ConfiguracaoPoder.LAB);
+        gpt.adicionarPoder(ConfiguracaoPoder.LAB);
     }
 }

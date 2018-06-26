@@ -24,7 +24,7 @@ import java.util.Scanner;
 import static br.unicamp.tretacamp.JogoOld.Perdedor.JOGADOR;
 import static br.unicamp.tretacamp.JogoOld.Perdedor.INIMIGO;
 
-
+@Deprecated
 public class JogoOld extends Application {
 
 	public static void main(String[] args) {
