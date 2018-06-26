@@ -23,10 +23,9 @@ public class Persistencia {
 	
 		try {
 			ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream (filename));
-			output.writeObject(jogador);   		
+			output.writeObject(jogador);
 			output.writeObject(inimigo);
 			output.writeInt(fase);
-			System.out.print(fase);
 			output.flush();
 			output.close();
 		}
