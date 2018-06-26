@@ -577,7 +577,7 @@ public class Campanha {
             "As forças malignas escolheram o drego " +
                 ">>" + ret.getNome() + "<<" + System.lineSeparator()
                 + " para te destruir. Boa Sorte!");
-        alerta.setWidth(1000);
+        alerta.setWidth(800);
         ((Stage) alerta.getDialogPane().getScene().getWindow()).setAlwaysOnTop(true);
         alerta.show();
         alerta.setOnCloseRequest((evt) -> tocarSom());
