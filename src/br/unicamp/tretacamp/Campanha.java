@@ -177,7 +177,7 @@ public class Campanha {
         primaryStage.show();
         
         primaryStage.setOnHiding(t -> {
-            promptSave(jogador, primaryStage, inimigo);
+            promptSave(jogador, primaryStage, inimigo, fase);
         });
     }
 
@@ -186,7 +186,7 @@ public class Campanha {
         jogador.getEfeitos().removeIf((eft) -> eft.getDuracaoEmTurnos() <= 0);
     }
 
-    private static void promptSave(Drego jogador, Stage primaryStage, Drego inimigo) {
+    private static void promptSave(Drego jogador, Stage primaryStage, Drego inimigo, int fase) {
         ButtonType sim = new ButtonType("Sim");
         ButtonType nao = new ButtonType("Não");
         Alert alerta = new Alert(
@@ -198,7 +198,8 @@ public class Campanha {
         alerta.showAndWait().ifPresent(response -> {
             if (response == sim) {
                 Persistencia persistencia = new Persistencia();
-                persistencia.salvarEstadoJogo(jogador, inimigo);
+    			System.out.print(fase);
+                persistencia.salvarEstadoJogo(jogador, inimigo, fase);
                 alerta.close();
                 primaryStage.close();
             } else {
