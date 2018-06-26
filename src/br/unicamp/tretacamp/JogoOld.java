@@ -36,7 +36,7 @@ public class JogoOld extends Application {
         try {      	
             final Scanner sc = new Scanner(System.in);
 
-            Drego[] dregos = ConfiguracaoDregos.getInstance().dregos;
+            Drego[] dregos = ConfiguracaoDregos.getInstance().getDregos(1);
 
             final Drego jogador =
                 dregos[selecionaDrego("jogador", sc)].clonarPara("jogador");

@@ -4,6 +4,8 @@ import br.unicamp.tretacamp.modelo.Diferencial;
 import br.unicamp.tretacamp.modelo.Drego;
 import br.unicamp.tretacamp.modelo.Tipo;
 
+import java.util.stream.Stream;
+
 /**
  * @author Júlio Moreira Blás de Barros (julio.barros@200491)
  * @since 15/06/18
@@ -25,9 +27,14 @@ public class ConfiguracaoDregos {
             "Taurus", "src/resources/taurus.png", 100.0, 100.0, Tipo.TERRA, null);
     private final Drego gladio = new Drego(
             "Gladio", "src/resources/gladio.gif", 100.0, 100.0, Tipo.TREVAS, null);
-    
-    public final Drego[] dregos = {mago, espotenique, monho, cobroso, satan, robot, taurus, gladio};
+    private final Drego draconis = new Drego(
+        "Draconis", "src/resources/draconis.png", 120.0, 100.0, Tipo.METAL, null);
+    private final Drego moradne = new Drego(
+        "M O R A D N E", "src/resources/gladio.gif", 200.0, 120.0, Tipo.SONORO, Diferencial.CACADOR_DE_MANA);
 
+    private final Drego[] dregosIni = {mago, espotenique, monho, cobroso, satan, robot, taurus, gladio};
+    private final Drego[] dregosMid = {draconis};
+    private final Drego[] dregosFim = {moradne};
     private static ConfiguracaoDregos instancia = null;
     public static ConfiguracaoDregos getInstance() {
         if (instancia == null) {
@@ -35,6 +42,15 @@ public class ConfiguracaoDregos {
         }
 
         return instancia;
+    }
+
+    public Drego[] getDregos(int fase) {
+        switch (fase) {
+            case 1: return dregosIni;
+            case 2: return dregosMid;
+            case 3: return dregosFim;
+            default: return Stream.of(dregosIni, dregosMid, dregosFim).flatMap(Stream::of).toArray(Drego[]::new);
+        }
     }
 
     private ConfiguracaoDregos() {
@@ -55,5 +71,10 @@ public class ConfiguracaoDregos {
         taurus.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
         gladio.adicionarPoder(ConfiguracaoPoder.CHUTE);
         gladio.adicionarPoder(ConfiguracaoPoder.ESPADA);
+        draconis.adicionarPoder(ConfiguracaoPoder.BOLA_DE_FOGO);
+        draconis.adicionarPoder(ConfiguracaoPoder.MORDIDA);
+        draconis.adicionarPoder(ConfiguracaoPoder.PEPITA_MAGICA);
+        moradne.adicionarPoder(ConfiguracaoPoder.GATO_DONUT);
+        moradne.adicionarPoder(ConfiguracaoPoder.SOCO);
     }
 }

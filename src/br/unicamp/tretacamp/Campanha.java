@@ -68,7 +68,7 @@ public class Campanha {
         campanha.getStylesheets().add("resources/font.css");
        
         if (inimigoAnterior == null) {
-        	inimigoAnterior = selecionarDregoInimigoETocarSom(confDregos, jogador);
+        	inimigoAnterior = selecionarDregoInimigoETocarSom(confDregos, jogador, fase);
         } else {
             tocarSom();
         }
@@ -523,11 +523,12 @@ public class Campanha {
         return true;
     }
 
-    private static Drego selecionarDregoInimigoETocarSom(ConfiguracaoDregos confDregos, Drego jogador) {
+    private static Drego selecionarDregoInimigoETocarSom(ConfiguracaoDregos confDregos, Drego jogador, int fase) {
         Random rdm = new Random();
         Drego ret = jogador;
+        Drego[] dregos = confDregos.getDregos(fase);
         while (ret.getNome().equals(jogador.getNome())) {
-            ret = confDregos.dregos[rdm.nextInt(confDregos.dregos.length)].clone();
+            ret = dregos[rdm.nextInt(dregos.length)].clone();
         }
 
         Alert alerta = new Alert(

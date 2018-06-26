@@ -41,7 +41,7 @@ public class SelecaoDePersonagens {
         FormatacaoTabelar layout = new FormatacaoTabelar(
             140.0, 120.0, 4, 40.0);
 
-        Arrays.stream(confDregos.dregos)
+        Arrays.stream(confDregos.getDregos(1))
             .forEach((drego) -> {
                 Label lblDrego = new Label(drego.getNome());
                 lblDrego.setMinWidth(140.0);
