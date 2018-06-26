@@ -228,6 +228,7 @@ public class Campanha {
                 try {
                     raiz.getChildren().clear();
                     staticPlayer.pause();
+                    droparItem(jogador, primaryStage, faseAtual);
                     iniciar(jogador, null, primaryStage, faseAtual + 1);
                 } catch (Exception e) {
                     new Alert(
@@ -239,6 +240,37 @@ public class Campanha {
                 }
             }
         });
+    }
+
+    private static void droparItem(Drego jogador, Stage primaryStage, int faseAtual) {
+        Random random = new Random();
+
+        int numero = random.nextInt(30);
+        String texto = "";
+
+        switch (numero) {
+            case 0: {
+                texto += "Um pimpolho muito simpático apareceu e te entregou um frasco... " + System.lineSeparator();
+                texto += "No vidro um escrito diz: Poção de Cura... será que é confiável?" + System.lineSeparator();
+                new Item("Poção de Cura", "");
+            }
+            case 10: {
+                texto += "Um búfalo alado deixou cair ao seu lado uma garrafa... " + System.lineSeparator());
+                texto += "Você se lembra das aulas de arqueologia que antigos escritos ";
+                texto += "já relataram de um búfalo que voava levando energia para a populaçao.";
+                new Item("Blue Horse", "");
+            }
+            case 20: {
+                texto += "Alô Alô, Você sabe quem eu sou? Isso mesmo, a pantera daperdição. Miaaaaw" + System.lineSeparator();
+                texto += "É como diz aquele ditado né? Fique com esse frasco!" + System.lineSeparator();
+                texto += "Não há nada escrito no frasco." + System.lineSeparator();
+                new Item("Frasco Misterioso", "");
+
+            }
+            default: texto += "Nada foi dropado :c"
+        }
+
+        // alert texto
     }
 
     private static void trataEfeito(Drego drego, ImageView img, Text txtConsole) {
